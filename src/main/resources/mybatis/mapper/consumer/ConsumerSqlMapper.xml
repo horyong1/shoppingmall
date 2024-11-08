@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper">
+    <!-- 소비자 계정 생성 -->
+    <insert id="createConsumer">
+        <selectKey resultType="int" keyProperty="no" order="AFTER">
+            SELECT  MAX(sc.no)
+            FROM    sp_consumer sc
+        </selectKey>
+        INSERT INTO sp_consumer (id, password, nickname, gender)
+        VALUES(#{id},#{password},#{nickname},#{gender})
+    </insert>
+
+    <!-- 소비자 배송주소 -->
+    <insert id="createConsumerAdress">
+        INSERT INTO sp_consumer_adress (user_no,user_adress)
+        VALUES(#{userNo}, #{userAdress});
+    </insert>
+
+    <!-- 소비자 로그인 아이디 비밀번호 확인 -->
+    <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
+        SELECT 	(sc.no) AS no,
+                (sc.id) AS id,
+                (sc.password) AS password,
+                (sc.nickname) AS nickname,
+                (sc.gender) AS gender,
+                (sc.created_at) AS createAt
+        FROM 	sp_consumer sc
+        WHERE 	sc.id = #{id}
+        AND 	sc.password = #{password}
+    </select>
+</mapper>
