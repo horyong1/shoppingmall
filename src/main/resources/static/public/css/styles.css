@@ -4,3 +4,24 @@
     padding: 0;
     
 }
+
+.fs-0-6{
+    font-size: 0.6em;
+}
+.fs-0-7{
+    font-size: 0.7em;
+}
+.fs-0-8{
+    font-size: 0.8em;
+}
+.fs-0-9{
+    font-size: 0.9em;
+}
+.fs-10-0{
+    font-size: 1em;
+}
+
+
+.link-dcr-none {
+    text-decoration: none; /* 밑줄 제거 */
+}
