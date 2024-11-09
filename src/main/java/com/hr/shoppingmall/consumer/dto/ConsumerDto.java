@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class ConsumerDto {
-    private int no;
-    private String id;
+    private int consumerNo;
+    private String consumerId;
     private String password;
     private String nickname;
     private String gender;

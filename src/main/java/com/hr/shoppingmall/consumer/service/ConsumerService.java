@@ -13,17 +13,18 @@ public class ConsumerService {
     @Autowired 
     private ConsumerSqlMapper consumerSqlMapper;
 
+    // 고객 회원가입 
     public void registerConsumer(ConsumerDto consumerDto, String adress){
-        ConsumerAdressDto adressDto = new ConsumerAdressDto();
+        ConsumerAdressDto consumerAdressDto = new ConsumerAdressDto();
         consumerSqlMapper.createConsumer(consumerDto);
         
-        adressDto.setUserNo(consumerDto.getNo());
-        adressDto.setUserAdress(adress);
-        consumerSqlMapper.createConsumerAdress(adressDto);
+        consumerAdressDto.setConsumerNo(consumerDto.getConsumerNo());
+        consumerAdressDto.setConsumerAdress(adress);
+        consumerSqlMapper.createConsumerAdress(consumerAdressDto);
 
     }
 
-
+    // 로그인 확인
     public ConsumerDto loginCheck(ConsumerDto consumerDto){
         return consumerSqlMapper.findByIdAndPassword(consumerDto);
     }

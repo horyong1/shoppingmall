@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ConsumerAdressDto {
-    private int no;
-    private int userNo;
-    private String userAdress;
+    private int adressNo;
+    private int consumerNo;
+    private String consumerAdress;
 }

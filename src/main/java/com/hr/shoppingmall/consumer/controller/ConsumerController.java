@@ -21,6 +21,12 @@ public class ConsumerController {
         return "consumer/consumerLoginPage";
     }
 
+    // 소비자 회원가입 페이지
+    @RequestMapping("registerConsumerPage")
+    public String registerConsumerPage(){
+        return "consumer/registerConsumerPage";
+    }
+
     // 소비자 로그인 프로세스
     @RequestMapping("loginProcess")
     public String loginPageProcess(ConsumerDto consumerDto){
@@ -32,13 +38,8 @@ public class ConsumerController {
 
         return "shop/mainPage";
     }
-
-    // 소비자 회원가입
-    @RequestMapping("registerConsumerPage")
-    public String registerConsumerPage(){
-        return "consumer/registerConsumerPage";
-    }
-
+    
+    // 회원가입 프로세스
     @RequestMapping("registerConsumerProcess")
     public String registerConsumerProcess(@RequestParam("adress")String adress, ConsumerDto consumerDto){
         consumerService.registerConsumer(consumerDto, adress);
