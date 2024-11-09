@@ -3,6 +3,4 @@
 
 ## ERD
 초기 테이블 구조
-![image](https://github.com/user-attachments/assets/ceb9a0bc-210a-4e22-bece-e7d56b32b576)
-
-
+![스크린샷 2024-11-09 193959](https://github.com/user-attachments/assets/c25ea4c8-602c-4752-a803-6f47f0020ecc)
