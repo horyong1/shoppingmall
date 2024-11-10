@@ -1,9 +1,11 @@
-<div th:fragment="topNavi" class="container-fluid p-0 border-bottom fixed-top mw">
+<div th:fragment="topNavi" class="container-fluid p-0 mw">
     <div class="row ">
-        <div class="col mx-auto ">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="col mx-auto border-bottom p-0">
+            <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
-                <a class="navbar-brand" href="/shop/mainPage">로고</a>
+                    <a class="navbar-brand p-0" href="/shop/mainPage">
+                        <img class="img-fluid" src="/public/img/logo.png" alt="" style="width: 30px;">
+                    </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

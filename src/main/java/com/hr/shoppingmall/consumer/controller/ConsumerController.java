@@ -43,6 +43,6 @@ public class ConsumerController {
     @RequestMapping("registerConsumerProcess")
     public String registerConsumerProcess(@RequestParam("adress")String adress, ConsumerDto consumerDto){
         consumerService.registerConsumer(consumerDto, adress);
-        return "consumer/registerSuccesPage";
+        return "consumer/registerSuccessPage";
     }   
 }

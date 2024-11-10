@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>판매자 회원가입</title>
     <link rel="stylesheet" th:href="@{/public/css/styles.css}"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -25,15 +25,15 @@
                     <div class="col">
                         <div class="row py-3">
                             <div class="col text-center fs-1">
-                                회원 가입
+                                판매자 회원 가입
                             </div>
                         </div>
                         <!-- 회원가입 form start -->
-                        <form action="./registerConsumerProcess" method="post" class="row">
+                        <form action="./registerSellerProcess" method="post" class="row">
                             <div class="col">
                                 <div class="row pb-2">
                                     <div class="col">
-                                        <input class="form-control" name="consumerId" type="text" placeholder="아이디">
+                                        <input class="form-control" name="sellerId" type="text" placeholder="아이디">
                                     </div>
                                 </div>
                                 <div class="row pb-2">
@@ -43,18 +43,7 @@
                                 </div>
                                 <div class="row pb-2">
                                     <div class="col">
-                                        <input class="form-control" name="nickname" type="text" placeholder="닉네임">
-                                    </div>
-                                </div>
-                                <div class="row pb-2">
-                                    <div class="col">
-                                        <input class="form-check-input" type="radio" name="gender" value="M" checked>남
-                                        <input class="form-check-input" type="radio" name="gender" value="F">여
-                                    </div>
-                                </div>
-                                <div class="row pb-3">
-                                    <div class="col">
-                                        <input class="form-control" name="adress" type="text" placeholder="주소" >
+                                        <input class="form-control" name="shopName" type="text" placeholder="쇼핑몰이름">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -69,7 +58,7 @@
                         <div class="row">
                             <div class="col text-end">
                                <span class="text-secondary fs-0-7">이미 회원이신가요?</span>
-                               <a class="link-dcr-none fs-0-9" href="/consumer/loginPage">로그인</a>
+                               <a class="link-dcr-none fs-0-9" href="./loginPage">로그인</a>
                             </div>
                         </div>
                     </div>

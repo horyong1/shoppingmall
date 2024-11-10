@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr.shoppingmall.seller.mapper.SellerSqlMapper">
+    <insert id="createSeller">
+        INSERT INTO sp_seller (seller_id, password, shop_name)
+        VALUES(#{sellerId},#{password},#{shopName}); 
+    </insert>
+
+    <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.seller.mapper.SellerSqlMapper">
+        SELECT  *
+        FROM    sp_seller ss
+        WHERE   ss.seller_id = #{sellerId}
+        AND     ss.password = #{password}
+    </select>
+</mapper>
