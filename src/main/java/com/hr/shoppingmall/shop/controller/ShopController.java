@@ -39,13 +39,13 @@ public class ShopController {
     @RequestMapping("productDetailPage")
         public String productDetailPage(@RequestParam("productNo")int productNo, Model model){
             
-            ProductDto productDto = shopService.getProductDetail(productNo);
-            SellerDto sellerDto = sellerService.findById(productDto.getSellerNo());
+            Map<String,Object> map =  shopService.getProductDetail(productNo);
+            SellerDto sellerDto = sellerService.findById((int)map.get("sellerNo"));
             
-            System.out.println("정보내놔 " + productDto);
+            System.out.println("정보내놔 " + map);
             System.out.println("정보내놔 " + sellerDto);
             
-            model.addAttribute("productDto", productDto);
+            model.addAttribute("productDto", map);
             model.addAttribute("sellerDto", sellerDto);
 
             return"shop/productDetailPage";

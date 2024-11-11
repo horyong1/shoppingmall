@@ -37,25 +37,34 @@ public class ShopService {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         for(ProductDto dto : shopSqlMapper.productLimitFindCategoryId(no)){
 
-            Map<String,Object> map = new HashMap<>();
-            map.put("productNo", dto.getProductNo()); 
-            map.put("categoryNo", dto.getCategoryNo()); 
-            map.put("sellerNo", dto.getSellerNo()); 
-            map.put("productName", dto.getProductName()); 
-            // map.put("productDescription", dto.getProductNo()); 
-            map.put("price", decimalFormat.format(dto.getPrice())); 
-            map.put("mainImageUrl", dto.getMainImageUrl()); 
-            // map.put("totalQuantity", dto.getProductNo()); 
-            // map.put("createdAt", dto.getProductNo()); 
+            Map<String,Object> map = productSettingMap(dto);
+           
             list.add(map);  
         }
         return list;
     }
 
     // 상품 상세정보 가져오기
-    public ProductDto getProductDetail(int productNo){
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    public Map<String,Object> getProductDetail(int productNo){
         ProductDto dto = shopSqlMapper.findByProductNo(productNo);
-        return dto;
+        
+        return productSettingMap(dto);
+    }
+
+    private Map<String,Object> productSettingMap(ProductDto dto){
+        Map<String,Object> map = new HashMap<>();
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        
+        map.put("productNo", dto.getProductNo()); 
+        map.put("categoryNo", dto.getCategoryNo()); 
+        map.put("sellerNo", dto.getSellerNo()); 
+        map.put("productName", dto.getProductName()); 
+        map.put("productDescription", dto.getProductDescription()); 
+        map.put("price", decimalFormat.format(dto.getPrice())); 
+        map.put("mainImageUrl", dto.getMainImageUrl()); 
+        map.put("totalQuantity", dto.getTotalQuantity()); 
+        map.put("createdAt", dto.getCreatedAt());
+        
+        return map; 
     }
 }

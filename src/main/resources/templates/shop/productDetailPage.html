@@ -29,24 +29,29 @@
                     </div>
                     <div class="row py-2 border-bottom border-top">
                         <div class="col text-secondary fs-0-9" th:text="${sellerDto.shopName}"></div>
+                        <div class="col-auto ms-auto">별점</div>
                     </div>
                     <div class="row">
-                        <div class="col" th:text="${productDto.productName}"></div>
+                        <div class="col-auto fw-bold py-2" th:text="${productDto.productName}"></div>
+                        
                     </div>
-                    <div class="row">
-                        <div class="col" th:text="${productDto.price}"></div>
+                    <div class="row py-2">
+                        <div class="col fw-bold" th:text="${productDto.price}"></div>
                     </div>
-                    <div class="row">
+                    <div class="row py-4">
                         <div class="col" th:text="${productDto.productDescription}"></div>
                     </div>
+                    
                     <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary">구매하기</button>
+                        <div class="col d-grid">
+                            <button th:if="${productDto.totalQuantity != 0}" class="btn btn-dark">구매하기</button>
+                            <button th:unless="${productDto.totalQuantity != 0}" class="btn btn-secondary" disabled="true">품절</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        <div class="row py-5"></div>
         <!-- footer start -->
         <footer>
             <div class="row">
