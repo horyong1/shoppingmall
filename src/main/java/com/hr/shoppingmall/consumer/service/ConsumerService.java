@@ -1,5 +1,7 @@
 package com.hr.shoppingmall.consumer.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +29,19 @@ public class ConsumerService {
     // 로그인 확인
     public ConsumerDto loginCheck(ConsumerDto consumerDto){
         return consumerSqlMapper.findByIdAndPassword(consumerDto);
+    }
+
+    // 배송지 등록
+    public void registerAdress(ConsumerAdressDto adressDto){
+        consumerSqlMapper.createConsumerAdress(adressDto);
+    }
+
+    // 배송지 목록 
+    public List<ConsumerAdressDto> getAdressList(int consumerId){
+        return consumerSqlMapper.adressFindByConsumerId(consumerId);
+    }
+
+    public void deleteAdress(ConsumerAdressDto adressDto){
+        consumerSqlMapper.deleteAdress(adressDto);
     }
 }
