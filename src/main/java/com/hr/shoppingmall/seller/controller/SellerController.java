@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("seller")
 public class SellerController {
@@ -22,11 +24,12 @@ public class SellerController {
 
     //로그인 프로세스
     @RequestMapping("loginProcess")
-    public String loginProcess(SellerDto sellerDto){
-        SellerDto dto = sellerService.findByIdAndPassword(sellerDto);
-        if(dto == null){
+    public String loginProcess(SellerDto sellerDto, HttpSession session){
+        SellerDto sellerInfo = sellerService.findByIdAndPassword(sellerDto);
+        if(sellerInfo == null){
             return"seller/loginFailPage";
         }
+        session.setAttribute("sellerInfo", sellerInfo);
         return"shop/mainPage";
     }
 
