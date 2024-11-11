@@ -19,20 +19,30 @@
 
     <!-- 소비자 로그인 아이디 비밀번호 확인 -->
     <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
-        SELECT 	sc.consumer_no,
-                sc.consumer_id,
-                sc.password,
-                sc.nickname,
-                sc.gender,
-                sc.created_at
-        <!-- SELECT 	(sc.consumer_no) AS consumerNo,
+        SELECT 	(sc.consumer_no) AS consumerNo,
                 (sc.consumer_id) AS consumerId,
                 (sc.password) AS password,
                 (sc.nickname) AS nickname,
                 (sc.gender) AS gender,
-                (sc.created_at) AS createAt -->
+                (sc.created_at) AS createAt
         FROM 	sp_consumer sc
         WHERE 	sc.consumer_id = #{consumerId}
         AND 	sc.password = #{password}
     </select>
+
+    <!-- 고객 배송지 목록  -->
+    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
+        SELECT  (sca.adress_no) AS adressNo,
+                (sca.consumer_no) AS consumerNo,
+                (sca.consumer_adress) AS consumerAdress
+        FROM    sp_consumer_adress sca
+        WHERE   consumer_no = #{consumerNo}
+    </select>
+
+    <!-- 고객 배송지 목록 삭제 -->
+    <delete id="deleteAdress">
+        DELETE FROM sp_consumer_adress
+        WHERE   adress_no = ${adressNo}
+        AND     consumer_no = ${consumerNo}
+    </delete>
 </mapper>
