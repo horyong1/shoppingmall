@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hr.shoppingmall.shop.mapper.ShopSqlMapper">
+    <!-- 상품 카테고리 전체 목록 -->
+    <select id="categoryFindAll" resultType="com.hr.shoppingmall.shop.dto.ProductCategoryDto">
+        SELECT  (spc.category_no) AS categoryNo,
+                (spc.category_name) AS categoryName,
+                (spc.created_at) AS createdAt
+        FROM    sp_product_category spc
+    </select>
+
+    <!-- 상품 목록 카테고리별로 메인페이지 보여줄 6개만 가져오기 -->
+    <select id="productLimitFindCategoryId" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE   category_no = #{categoryNo}
+        LIMIT   0,6
+    </select>
+    
+    <!-- 상품 목록 카테고리별 리스트 보여주기 -->
+    <select id="productFindCategoryId" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE   category_no = #{categoryNo}
+    </select>
+
+    <!-- 상품 상세 정보  -->
+    <select id="findByProductNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE   sp.product_no = #{productNo} 
+    </select>
+</mapper>
