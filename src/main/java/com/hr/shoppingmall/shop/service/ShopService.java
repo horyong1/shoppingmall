@@ -1,6 +1,5 @@
 package com.hr.shoppingmall.shop.service;
 
-import java.nio.MappedByteBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +9,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hr.shoppingmall.seller.dto.SellerDto;
-import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
@@ -21,9 +18,7 @@ public class ShopService {
 
     @Autowired
     private ShopSqlMapper shopSqlMapper;
-    @Autowired
-    private SellerSqlMapper sellerSqlMapper;
-
+    
     // 카테고리 목록 가져오기
     public Map<String,String> getCategoryList(){
         Map<String,String> map = new HashMap<>();
@@ -58,18 +53,9 @@ public class ShopService {
     }
 
     // 상품 상세정보 가져오기
-    public List<Map<String,Object>> getProductDetail(int productNo){
-        List<Map<String,Object>> list = new ArrayList<>();
-        Map<String,Object> map = new HashMap<>();
-
-        ProductDto productDto = shopSqlMapper.findByProductNo(productNo);
-        SellerDto sellerDto = sellerSqlMapper.findById(productDto.getSellerNo());
-        
-        map.put("productDto", productDto);
-        map.put("sellerDto", sellerDto);
-
-        list.add(map);
-        
-        return list;
+    public ProductDto getProductDetail(int productNo){
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        ProductDto dto = shopSqlMapper.findByProductNo(productNo);
+        return dto;
     }
 }

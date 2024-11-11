@@ -19,4 +19,8 @@ public class SellerService {
     public SellerDto findByIdAndPassword(SellerDto sellerDto){
         return sellerSqlMapper.findByIdAndPassword(sellerDto);
     }
+
+    public SellerDto findById(int sellerNo){
+        return sellerSqlMapper.findById(sellerNo);
+    }
 }

@@ -7,6 +7,6 @@ import com.hr.shoppingmall.seller.dto.SellerDto;
 @Mapper
 public interface SellerSqlMapper {
     void createSeller(SellerDto sellerDto);
-    SellerDto findById(SellerDto sellerDto);
+    SellerDto findById(int sellerNo);
     SellerDto findByIdAndPassword(SellerDto sellerDto);
 }

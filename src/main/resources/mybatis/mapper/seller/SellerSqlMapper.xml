@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hr.shoppingmall.seller.mapper.SellerSqlMapper">
+    <!-- 판매자 회원가입 -->
     <insert id="createSeller">
         INSERT INTO sp_seller (seller_id, password, shop_name)
         VALUES(#{sellerId},#{password},#{shopName}); 
     </insert>
-
-    <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.seller.mapper.SellerSqlMapper">
-        SELECT  *
+    <!-- 판매자 정보 가져오기 -->
+    <select id="findById" resultType="com.hr.shoppingmall.seller.dto.SellerDto">
+        SELECT  (ss.seller_no) AS sellerNo,
+                (ss.seller_id) AS sellerId,
+                (ss.password) AS password,
+                (ss.shop_name) AS shopName,
+                (ss.created_at) AS createdAt
+        FROM    sp_seller ss
+        WHERE   ss.seller_no = #{sellerNo}
+    </select>
+    
+    <!-- 로그인 체크 -->
+    <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.seller.dto.SellerDto">
+        SELECT  (ss.seller_no) AS sellerNo,
+                (ss.seller_id) AS sellerId,
+                (ss.password) AS password,
+                (ss.shop_name) AS shopName,
+                (ss.created_at) AS createdAt
         FROM    sp_seller ss
         WHERE   ss.seller_id = #{sellerId}
         AND     ss.password = #{password}
