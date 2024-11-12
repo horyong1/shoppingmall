@@ -19,15 +19,15 @@
             </div>
         </nav>
         <!-- navbar end -->
-        <main class="row px-3">
+        <main class="row">
             <div class="col">
-                <div class="row pt-5">
+                <div class="row px-3 pt-5">
                     <div class="col text-center fw-bold fs-3">
                         결제가 완료되었습니다.<br>
                         이용해 주셔서 감사합니다.
                     </div>
                 </div>
-                <div class="row py-4">
+                <div class="row py-4 px-3">
                     <div class="col">
                         <a class="d-grid link-dcr-none"href="./mainPage">
                             <button class="btn btn-outline-dark btn-sm">홈으로</button>
@@ -39,27 +39,56 @@
                         </a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col border-black border-bottom py-1">
-                        결제정보
+                <div class="row p-0 py-1 bg-body-secondary rounded-3"></div>
+                <div class="row py-2">
+                    <div class="col border-bottom py-1 fw-bold fs-0-9">
+                        상품정보
                     </div>
                 </div>
                 <div class="row" th:each="list : ${purchaseList}">
-                    <div class="col-auto">
-                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 4em;">
-                    </div>
-                    <div class="col-auto me-auto">
-                        <div class="row">
-                            <div class="col" th:text="${list.productDto.productName}"></div>
+                    <div class="col">
+                        <div class="row py-2">
+                            <div class="col-auto">
+                                <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 4em;">
+                            </div>
+                            <div class="col-auto me-auto">
+                                <div class="row">
+                                    <div class="col fs-0-9" th:text="${list.productDto.productName}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col fs-0-9" th:text="${list.purchaseDto.quantity}+'개'"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col fs-0-9" th:text="${list.totalPrice}+'원'"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col" th:text="${list.totalPrice}+'개'"></div>
+                        <div class="row py-1 bg-body-secondary"></div>
+                        <div class="row py-2">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col fw-bold fs-0-9 border-bottom py-2">
+                                        배송정보 
+                                    </div>
+                                </div>
+                                <div class="row py-2">
+                                    <div class="col-auto fs-0-8 text-secondary">수령인</div>
+                                    <div class="col-auto fs-0-8" th:text="${consumerInfo.nickname}"></div>
+                                </div>
+                                <div class="row pb-2">
+                                    <div class="col-auto fs-0-8 text-secondary">수령지</div>
+                                    <div class="col-auto me-auto fs-0-8 fw-bold" th:text="${list.purchaseDto.shoppingAdress}"></div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="row py-1 bg-body-secondary"></div>
                         <div class="row">
                             <div class="col"></div>
                         </div>
+                        
                     </div>
                 </div>
+
             </div>
         </main>
         <!-- footer start -->

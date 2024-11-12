@@ -79,7 +79,7 @@
                 (spp.consumer_no) AS consumerNo,
                 (spp.product_no) AS productNo,
                 (spp.quantity) AS quantity,
-                (spp.shopping_adress) AS shopping_adress,
+                (spp.shopping_adress) AS shoppingAdress,
                 (spp.purchase_date) AS purchaseDate,
                 (spp.state) AS state
         FROM 	sp_product_purchase spp 
@@ -92,7 +92,7 @@
                 (spp.consumer_no) AS consumerNo,
                 (spp.product_no) AS productNo,
                 (spp.quantity) AS quantity,
-                (spp.shopping_adress) AS shopping_adress,
+                (spp.shopping_adress) AS shoppingAdress,
                 (spp.purchase_date) AS purchaseDate,
                 (spp.state) AS state
         FROM 	sp_product_purchase spp 
