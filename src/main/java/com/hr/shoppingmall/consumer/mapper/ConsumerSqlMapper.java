@@ -17,7 +17,9 @@ public interface ConsumerSqlMapper {
     // 고객 배송지 등록
     void createConsumerAdress(ConsumerAdressDto  consumerAdressDto);
     // 고객 배송지 목록
-    List<ConsumerAdressDto> adressFindByConsumerId(int consumerId);
+    List<ConsumerAdressDto> adresslistFindByConsumerId(int consumerNo);
+    // 고객 배송지 
+    ConsumerAdressDto adressFindByConsumerId(int consumerNo);
     // 고객 배송지 삭제
     void deleteAdress(ConsumerAdressDto adressDto);
 }

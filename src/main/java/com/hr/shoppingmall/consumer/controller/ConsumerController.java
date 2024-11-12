@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
+import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -18,6 +19,8 @@ public class ConsumerController {
 
     @Autowired
     private ConsumerService consumerService;
+    @Autowired
+    private ShopService shopService;
 
     // 소비자 로그인 페이지
     @RequestMapping("loginPage")
@@ -35,17 +38,27 @@ public class ConsumerController {
     @RequestMapping("loginProcess")
     public String loginPageProcess(ConsumerDto consumerDto, HttpSession session){
         ConsumerDto consumerInfo = consumerService.loginCheck(consumerDto);
+        
         if(consumerInfo == null){
             return "consumer/loginFailPage";
         }
         session.setAttribute("consumerInfo", consumerInfo);
+        
         return "redirect:/shop/mainPage";
+    }
+
+    @RequestMapping("logOut")
+    public String logOut(HttpSession session){
+        session.invalidate();
+        
+        return "consumer/consumerLoginPage";
     }
     
     // 회원가입 프로세스
     @RequestMapping("registerConsumerProcess")
     public String registerConsumerProcess(@RequestParam("adress")String adress, ConsumerDto consumerDto){
         consumerService.registerConsumer(consumerDto, adress);
+
         return "consumer/registerSuccessPage";
     } 
 
@@ -65,6 +78,7 @@ public class ConsumerController {
         }
 
         model.addAttribute("adressList", consumerService.getAdressList(consumerInfo.getConsumerNo()));
+
         return "consumer/adressEdit";
     }
     
@@ -72,8 +86,10 @@ public class ConsumerController {
     @RequestMapping("registerAdress")
     public String registerAdress(ConsumerAdressDto adressDto, HttpSession session){
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.registerAdress(adressDto);
+
         return"consumer/adressUpdateSuccess";
     }
 
@@ -81,8 +97,26 @@ public class ConsumerController {
     @RequestMapping("deleteAdress")
     public String deleteAdress(ConsumerAdressDto adressDto, HttpSession session){
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.deleteAdress(adressDto);
+
         return"redirect:./adressEdit";
+    }
+
+    // 주문 내역 리스트
+    @RequestMapping("purchaseList")
+    public String purchaseList(HttpSession session, Model model){
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+        if(consumerInfo == null){
+            return "redirect:./loginPage";
+        }
+
+        int sonsumerNo = consumerInfo.getConsumerNo();
+
+        model.addAttribute("purchaseList", shopService.getPurchaseList(sonsumerNo));
+
+        return "shop/purchaseList";
     }
 }

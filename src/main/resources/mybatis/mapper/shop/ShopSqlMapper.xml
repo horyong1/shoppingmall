@@ -54,4 +54,56 @@
         FROM    sp_product sp
         WHERE   sp.product_no = #{productNo} 
     </select>
+
+    <!-- 상품구매 -->
+    <insert id="createPurchase">
+        <selectKey resultType="int" keyProperty="purchaseNo" order="AFTER">
+            SELECT MAX(spp.purchase_no)
+            FROM sp_product_purchase spp
+            WHERE spp.consumer_no = #{consumerNo} AND spp.state = 1
+        </selectKey>
+        INSERT INTO sp_product_purchase (consumer_no,product_no,quantity,shopping_adress,state)
+        VALUES(#{consumerNo},#{productNo}, #{quantity}, #{shoppingAdress},1)
+    </insert>
+    <!-- 상품 수량 감소 -->
+    <update id="updateTotalQuantity">
+        UPDATE  sp_product 
+        SET     total_quantity = total_quantity - #{quantity}
+        WHERE   product_no = #{productNo}
+
+    </update>
+
+    <!-- 고객 상품구매 목록 -->
+    <select id="purchaseFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
+        SELECT 	(spp.purchase_no) AS purchaseNo,
+                (spp.consumer_no) AS consumerNo,
+                (spp.product_no) AS productNo,
+                (spp.quantity) AS quantity,
+                (spp.shopping_adress) AS shopping_adress,
+                (spp.purchase_date) AS purchaseDate,
+                (spp.state) AS state
+        FROM 	sp_product_purchase spp 
+        WHERE 	spp.consumer_no = #{consumerNo}
+        ORDER BY spp.purchase_date DESC
+    </select>
+    <!-- 고객 상품 구매 상세 목록 -->
+    <select id="purchaseFindByConsumerNoAndPurchaseNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
+        SELECT 	(spp.purchase_no) AS purchaseNo,
+                (spp.consumer_no) AS consumerNo,
+                (spp.product_no) AS productNo,
+                (spp.quantity) AS quantity,
+                (spp.shopping_adress) AS shopping_adress,
+                (spp.purchase_date) AS purchaseDate,
+                (spp.state) AS state
+        FROM 	sp_product_purchase spp 
+        WHERE 	spp.consumer_no = #{consumerNo}
+        AND		spp.purchase_no = #{purchaseNo}
+    </select>
+
+    <!-- 고객 상품 구매 결제완료 번호 가져오기 -->
+    <!-- <select id="maxPurchaseNo" resultType="int">
+        SELECT MAX(spp.purchase_no)
+        FROM sp_product_purchase spp
+        WHERE spp.consumer_no = #{consumerNo}
+    </select> -->
 </mapper>

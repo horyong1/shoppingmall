@@ -31,12 +31,21 @@
     </select>
 
     <!-- 고객 배송지 목록  -->
-    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
+    <select id="adresslistFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
         SELECT  (sca.adress_no) AS adressNo,
                 (sca.consumer_no) AS consumerNo,
                 (sca.consumer_adress) AS consumerAdress
         FROM    sp_consumer_adress sca
         WHERE   consumer_no = #{consumerNo}
+    </select>
+
+    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
+        SELECT  (sca.adress_no) AS adressNo,
+                (sca.consumer_no) AS consumerNo,
+                (sca.consumer_adress) AS consumerAdress
+        FROM    sp_consumer_adress sca
+        WHERE   sca.consumer_no = #{consumerNo}
+        AND     sca.adress_no = 2
     </select>
 
     <!-- 고객 배송지 목록 삭제 -->

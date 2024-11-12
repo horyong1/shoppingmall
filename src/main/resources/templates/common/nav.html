@@ -27,7 +27,8 @@
                         <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="/consumer/loginPage">로그인</a></li>
+                        <li th:if="${session.consumerInfo == null}"><a class="dropdown-item" href="/consumer/loginPage">로그인</a></li>
+                        <li th:unless="${session.consumerInfo == null}"><a class="dropdown-item" href="/consumer/logOut">로그아웃</a></li>
                         </ul>
                     </li>
                     </ul>

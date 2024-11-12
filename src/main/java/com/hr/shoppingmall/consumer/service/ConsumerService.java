@@ -38,7 +38,7 @@ public class ConsumerService {
 
     // 배송지 목록 
     public List<ConsumerAdressDto> getAdressList(int consumerId){
-        return consumerSqlMapper.adressFindByConsumerId(consumerId);
+        return consumerSqlMapper.adresslistFindByConsumerId(consumerId);
     }
 
     public void deleteAdress(ConsumerAdressDto adressDto){

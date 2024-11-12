@@ -53,15 +53,15 @@
                 </div>
                 <div class="row text-dark link-dcr-none" href="">
                   <div class="col-4" th:each="list : ${clothingList}">
-                    <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productNo})}">
+                    <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
                       <div class="col">
                         <div class="row pt-1">
                           <div class="col">
-                            <img class="img-fluid" th:src="${list.mainImageUrl}" alt="">
+                            <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="">
                           </div>
                         </div>
                         <div class="row fs-0-8">
-                          <div class="col-auto" th:text="${list.productName}"></div>
+                          <div class="col-auto" th:text="${list.productDto.productName}"></div>
                         </div>
                         <div class="row fs-0-8">
                           <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
@@ -80,11 +80,11 @@
                   <div class="col-4" th:each="list : ${householdItemsList}">
                     <div class="row">
                       <div class="col">
-                        <img class="img-fluid" th:src="${list.mainImageUrl}" alt="">
+                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="">
                       </div>
                     </div>
                     <div class="row fs-0-8">
-                      <div class="col-auto" th:text="${list.productName}"></div>
+                      <div class="col-auto" th:text="${list.productDto.productName}"></div>
                     </div>
                     <div class="row fs-0-8">
                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
@@ -101,11 +101,11 @@
                   <div class="col-4" th:each="list : ${electronicList}">
                     <div class="row">
                       <div class="col">
-                        <img class="img-fluid" th:src="${list.mainImageUrl}" alt="">
+                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="">
                       </div>
                     </div>
                     <div class="row fs-0-8">
-                      <div class="col-auto" th:text="${list.productName}"></div>
+                      <div class="col-auto" th:text="${list.productDto.productName}"></div>
                     </div>
                     <div class="row fs-0-8">
                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
@@ -122,11 +122,11 @@
                   <div class="col-4" th:each="list : ${foodList}">
                     <div class="row">
                       <div class="col">
-                        <img class="img-fluid" th:src="${list.mainImageUrl}" alt="">
+                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="">
                       </div>
                     </div>
                     <div class="row fs-0-8">
-                      <div class="col-auto" th:text="${list.productName}"></div>
+                      <div class="col-auto" th:text="${list.productDto.productName}"></div>
                     </div>
                     <div class="row fs-0-8">
                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>

@@ -20,36 +20,54 @@
         </nav>
         <!-- navbar end -->
         <main>
-            <div class="row">
+            <form action="./registerPurchaseProcess" method="post" class="row">
                 <div class="col">
                     <div class="row" >
                         <div class="col">
-                            <img class="img-fluid" th:src="${productDto.mainImageUrl}" alt="">
+                            <img class="img-fluid" th:src="${productMap.productDto.mainImageUrl}" alt="">
                         </div>
                     </div>
                     <div class="row py-2 border-bottom border-top">
-                        <div class="col text-secondary fs-0-9" th:text="${sellerDto.shopName}"></div>
+                        <div class="col text-secondary fs-0-9" th:text="${productMap.sellerDto.shopName}"></div>
                         <div class="col-auto ms-auto">별점</div>
                     </div>
                     <div class="row">
-                        <div class="col-auto fw-bold py-2" th:text="${productDto.productName}"></div>
+                        <div class="col-auto fw-bold py-2" th:text="${productMap.productDto.productName}"></div>
                         
                     </div>
                     <div class="row py-2">
-                        <div class="col fw-bold" th:text="${productDto.price}"></div>
+                        <div class="col fw-bold" th:text="${productMap.price}"></div>
                     </div>
-                    <div class="row py-4">
-                        <div class="col" th:text="${productDto.productDescription}"></div>
+                    <div class="row py-2">
+                        <div class="col">
+                            <input type="hidden" name="productNo" th:value="${productMap.productDto.productNo}">
+                            <select class="form-select" name="count">
+                                <option selected>--수량을 선택하세요--</option>
+                                <option value="1">1개</option>
+                                <option value="2">2개</option>
+                                <option value="3">3개</option>
+                                <option value="4">4개</option>
+                                <option value="5">5개</option>
+                              </select>
+                        </div>
                     </div>
                     
                     <div class="row">
                         <div class="col d-grid">
-                            <button th:if="${productDto.totalQuantity != 0}" class="btn btn-dark">구매하기</button>
-                            <button th:unless="${productDto.totalQuantity != 0}" class="btn btn-secondary" disabled="true">품절</button>
+                            <button th:if="${productMap.productDto.totalQuantity != 0}" type="submit" class="btn btn-dark">구매하기</button>
+                            <button th:unless="${productMap.productDto.totalQuantity != 0}" class="btn btn-secondary" disabled="true">품절</button>
                         </div>
                     </div>
+                    <div class="row py-4">
+                        <div class="col">
+                            제품 상세설명
+                        </div>
+                    </div>
+                    <div class="row py-4">
+                        <div class="col" th:text="${productMap.productDto.productDescription}"></div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </main>
         <div class="row py-5"></div>
         <!-- footer start -->

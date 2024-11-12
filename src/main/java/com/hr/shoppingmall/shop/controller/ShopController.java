@@ -1,5 +1,6 @@
 package com.hr.shoppingmall.shop.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ShopService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("shop")
@@ -40,15 +45,38 @@ public class ShopController {
         public String productDetailPage(@RequestParam("productNo")int productNo, Model model){
             
             Map<String,Object> map =  shopService.getProductDetail(productNo);
-            SellerDto sellerDto = sellerService.findById((int)map.get("sellerNo"));
             
-            System.out.println("정보내놔 " + map);
-            System.out.println("정보내놔 " + sellerDto);
-            
-            model.addAttribute("productDto", map);
-            model.addAttribute("sellerDto", sellerDto);
-
+            model.addAttribute("productMap", map);
+        
             return"shop/productDetailPage";
         }
     
+    // 상품 구매 프로세스
+    @RequestMapping("registerPurchaseProcess")
+    public String registerPurchaseProcess(@RequestParam(value="count")String count,
+        ProductDto params, HttpSession session, Model model){
+            ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+            if(consumerInfo == null){
+                return "redirect:/consumer/loginPage";
+            }
+             
+            int consumerNo = consumerInfo.getConsumerNo();
+            int productNo = params.getProductNo();
+            
+            ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
+            purchaseDto.setConsumerNo(consumerNo);
+            purchaseDto.setProductNo(productNo);
+            purchaseDto.setQuantity(Integer.parseInt(count)); 
+            
+            List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto);
+            
+
+            
+            model.addAttribute("purchaseList", list);
+            model.addAttribute("consumerInfo", consumerInfo);
+
+            return "shop/purchaseSuccess";
+    }
+
 }

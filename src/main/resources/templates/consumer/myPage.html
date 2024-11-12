@@ -24,15 +24,17 @@
                 <div class="col fs-0-9">
                     <div class="row py-3">
                         <div class="col" th:if="${session.consumerInfo==null}">
-                            <span><a class="link-dcr-none" href="/consumer/loginPage">로그인</a></span>
+                            <span><a class="link-dcr-none" href="./loginPage">로그인</a></span>
                             후 이용 가능합니다.
                         </div>
-                        <div class="col fs-1-2" th:unless="${session.consumerInfo==null}">
-                            <span th:text="${session.consumerInfo.nickname}"></span>
-                            <span>님 반갑습니다!</span>
+                        <div th:unless="${session.consumerInfo==null}">
+                            <div class="col fs-1-2" >
+                                <span th:text="${session.consumerInfo.nickname}"></span>
+                                <span>님 반갑습니다!</span> <a class="link-dcr-none fs-0-8" href="./logOut"><span class="ms-auto">로그아웃</span></a>
+                            </div>
                         </div>
                     </div>
-                    <a class="row py-2 link-dcr-none text-secondary" href="#">
+                    <a class="row py-2 link-dcr-none text-secondary" href="./purchaseList">
                         <div class="col-auto text-center">
                             <span class="me-auto">주문내역</span>
                         </div>
