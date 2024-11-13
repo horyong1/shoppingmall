@@ -14,6 +14,8 @@ public interface ConsumerSqlMapper {
     void createConsumer(ConsumerDto consumerDto);
     // 고객 로그인 확인
     ConsumerDto findByIdAndPassword(ConsumerDto consumerDto);
+    // 고객 번호 정보 가져오기
+    ConsumerDto findByNo(int consumerNo);
     // 고객 배송지 등록
     void createConsumerAdress(ConsumerAdressDto  consumerAdressDto);
     // 고객 배송지 목록

@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
+import com.hr.shoppingmall.seller.dto.SellerDto;
+import com.hr.shoppingmall.seller.service.SellerService;
+import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +25,8 @@ public class ConsumerController {
     private ConsumerService consumerService;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private SellerService sellerService;
 
     // 소비자 로그인 페이지
     @RequestMapping("loginPage")
@@ -71,6 +77,7 @@ public class ConsumerController {
     // 배송지 등록/수정 page
     @RequestMapping("adressEdit")
     public String adressEditPage(HttpSession session, Model model){
+        sessionCheck(session);
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
         
         if(consumerInfo == null){
@@ -85,6 +92,7 @@ public class ConsumerController {
     // 배송지 등록 프로세스
     @RequestMapping("registerAdress")
     public String registerAdress(ConsumerAdressDto adressDto, HttpSession session){
+        sessionCheck(session);
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
 
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
@@ -96,6 +104,7 @@ public class ConsumerController {
     // 배송지 삭제 
     @RequestMapping("deleteAdress")
     public String deleteAdress(ConsumerAdressDto adressDto, HttpSession session){
+        sessionCheck(session);
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
 
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
@@ -108,9 +117,8 @@ public class ConsumerController {
     @RequestMapping("purchaseList")
     public String purchaseList(HttpSession session, Model model){
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
-
         if(consumerInfo == null){
-            return "redirect:./loginPage";
+            return "redirect:/consumer/loginPage";
         }
 
         int sonsumerNo = consumerInfo.getConsumerNo();
@@ -118,5 +126,31 @@ public class ConsumerController {
         model.addAttribute("purchaseList", shopService.getPurchaseList(sonsumerNo));
 
         return "shop/purchaseList";
+    }
+
+    // 주문 내역 리스트 상세 정보
+    @RequestMapping("purchaseDetail")
+    public String purchaseDetail(
+        @RequestParam("purchaseNo")int purchaseNo,
+        HttpSession session,
+        Model model){
+
+        sessionCheck(session);
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+        model.addAttribute("map",shopService.getPurchaseDetailInfo(purchaseNo,consumerInfo.getConsumerNo()));    
+
+        return"shop/purchaseDetail";
+    }
+    
+    // 세션체크
+    private String sessionCheck(HttpSession session){
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+        if(consumerInfo == null){
+            return "redirect:/consumer/loginPage";
+        }
+
+        return "";
     }
 }

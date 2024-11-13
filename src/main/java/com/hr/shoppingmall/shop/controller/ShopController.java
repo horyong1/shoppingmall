@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
-import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;

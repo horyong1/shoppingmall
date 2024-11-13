@@ -20,7 +20,7 @@ public class SellerService {
         return sellerSqlMapper.findByIdAndPassword(sellerDto);
     }
 
-    public SellerDto findById(int sellerNo){
-        return sellerSqlMapper.findById(sellerNo);
+    public SellerDto findByNo(int sellerNo){
+        return sellerSqlMapper.findByNo(sellerNo);
     }
 }

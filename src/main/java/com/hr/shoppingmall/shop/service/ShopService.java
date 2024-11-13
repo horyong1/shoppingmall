@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
+import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
@@ -27,7 +28,7 @@ public class ShopService {
     private ConsumerSqlMapper consumerSqlMapper;
     @Autowired
     private SellerSqlMapper sellerSqlMapper;
-    
+
     /**
      * 카테고리 전체 목록
      * @return Map
@@ -72,7 +73,7 @@ public class ShopService {
         
         ProductDto dto = shopSqlMapper.findByProductNo(productNo);
         String priceTrans = decimelFormatter(dto.getPrice());
-        SellerDto sellerDto = sellerSqlMapper.findById(dto.getSellerNo());
+        SellerDto sellerDto = sellerSqlMapper.findByNo(dto.getSellerNo());
 
         map.put("productDto", dto);
         map.put("price",priceTrans);
@@ -100,11 +101,12 @@ public class ShopService {
         
         ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
         String totalPrice = decimelFormatter(purchaseDto.getQuantity() * productDto.getPrice());
-
+        SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
         
         map.put("productDto",productDto);
         map.put("totalPrice",totalPrice);
         map.put("purchaseDto",shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto));
+        map.put("sellerDto", sellerDto);
 
         list.add(map);
 
@@ -144,6 +146,25 @@ public class ShopService {
         return list;
     }
 
+    public Map<String,Object> getPurchaseDetailInfo(int purchaseNo, int consumerNo){
+        Map<String,Object> map = new HashMap<>();
+        ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
+        purchaseDto.setPurchaseNo(purchaseNo);
+        purchaseDto.setConsumerNo(consumerNo);
+        
+        purchaseDto = shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
+        ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
+        String totalPrice = decimelFormatter(productDto.getPrice() * purchaseDto.getQuantity());
+        ConsumerDto consumerDto = consumerSqlMapper.findByNo(consumerNo);
+        map.put("purchaseDto", purchaseDto);
+        map.put("productDto", productDto);
+        map.put("totalPrice", totalPrice);
+        map.put("consumerDto", consumerDto);
+        map.put("seller", sellerSqlMapper.findByNo(productDto.getSellerNo()));
+
+        return map;
+    }
+
     /**
      * 고객 상품 구매 상세 정보
      * @param consmerNo
@@ -157,30 +178,34 @@ public class ShopService {
         return shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
     }
 
-    // 가격 #,### 포멧터 
+    /**
+     * 금액 #,### 포멧터
+     * @param price
+     * @return String
+     */ 
     private String decimelFormatter(int price){
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         String resultPrice = decimalFormat.format(price);
         return resultPrice;
     }
 
-    // Map 값 세팅하기
-    private Map<String,Object> productSettingMap(ProductDto dto){
-        Map<String,Object> map = new HashMap<>();
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    // // Map 값 세팅하기
+    // private Map<String,Object> productSettingMap(ProductDto dto){
+    //     Map<String,Object> map = new HashMap<>();
+    //     DecimalFormat decimalFormat = new DecimalFormat("#,###");
         
-        map.put("productNo", dto.getProductNo()); 
-        map.put("categoryNo", dto.getCategoryNo()); 
-        map.put("sellerNo", dto.getSellerNo()); 
-        map.put("productName", dto.getProductName()); 
-        map.put("productDescription", dto.getProductDescription()); 
-        map.put("price", decimalFormat.format(dto.getPrice())); 
-        map.put("mainImageUrl", dto.getMainImageUrl()); 
-        map.put("totalQuantity", dto.getTotalQuantity()); 
-        map.put("createdAt", dto.getCreatedAt());
+    //     map.put("productNo", dto.getProductNo()); 
+    //     map.put("categoryNo", dto.getCategoryNo()); 
+    //     map.put("sellerNo", dto.getSellerNo()); 
+    //     map.put("productName", dto.getProductName()); 
+    //     map.put("productDescription", dto.getProductDescription()); 
+    //     map.put("price", decimalFormat.format(dto.getPrice())); 
+    //     map.put("mainImageUrl", dto.getMainImageUrl()); 
+    //     map.put("totalQuantity", dto.getTotalQuantity()); 
+    //     map.put("createdAt", dto.getCreatedAt());
         
-        return map; 
-    }
+    //     return map; 
+    // }
 
 
 }

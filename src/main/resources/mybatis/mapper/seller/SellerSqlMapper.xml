@@ -7,7 +7,7 @@
         VALUES(#{sellerId},#{password},#{shopName}); 
     </insert>
     <!-- 판매자 정보 가져오기 -->
-    <select id="findById" resultType="com.hr.shoppingmall.seller.dto.SellerDto">
+    <select id="findByNo" resultType="com.hr.shoppingmall.seller.dto.SellerDto">
         SELECT  (ss.seller_no) AS sellerNo,
                 (ss.seller_id) AS sellerId,
                 (ss.password) AS password,
