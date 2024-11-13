@@ -25,12 +25,21 @@
                     <div class="col fw-bold fs-0-8">
                         no.845312458644
                     </div>
-                    <div class="col-auto ms-auto text-secondary fs-0-8" th:text="${#dates.format(map.purchaseDto.purchaseDate,'yyyy-MM-dd')}"></div>
+                    <div class="col-auto ms-auto text-secondary fs-0-8" th:text="${#dates.format(map.purchaseDto.purchaseDate,'yyyy-MM-dd hh:mm:ss')}"></div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="row py-2 border-bottom">
-                            <div class="col fs-0-9" th:text="${map.seller.shopName}"></div>
+                            <div class="col-auto">
+                                <a class="link-dcr-none" href="#">
+                                    <img class="img-fluid rounded-5" src="/public/img/sellerLog.png" alt="" style="width: 2em;">
+                                </a>
+                            </div>
+                            <div class="col p-0 fs-0-8 fw-bold align-self-center" >
+                                <a class="link-dcr-none text-dark" href="#">
+                                    <span th:text="${map.seller.shopName}"></span>
+                                </a>
+                            </div>
                         </div>
                         <div class="row py-3">
                             <div class="col-auto">

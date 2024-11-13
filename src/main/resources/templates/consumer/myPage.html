@@ -19,38 +19,36 @@
             </div>
         </nav>
         <!-- navbar end -->
-        <main>
-            <div class="row">
-                <div class="col fs-0-9">
-                    <div class="row py-3">
-                        <div class="col" th:if="${session.consumerInfo==null}">
-                            <span><a class="link-dcr-none" href="./loginPage">로그인</a></span>
-                            후 이용 가능합니다.
-                        </div>
-                        <div th:unless="${session.consumerInfo==null}">
-                            <div class="col fs-1-2" >
-                                <span th:text="${session.consumerInfo.nickname}"></span>
-                                <span>님 반갑습니다!</span> <a class="link-dcr-none fs-0-8" href="./logOut"><span class="ms-auto">로그아웃</span></a>
-                            </div>
+        <main class="row">
+            <div class="col ">
+                <div class="row py-3 fs-0-9">
+                    <div class="col" th:if="${session.consumerInfo==null}">
+                        <span><a class="link-dcr-none" href="./loginPage">로그인</a></span>
+                        후 이용 가능합니다.
+                    </div>
+                    <div th:unless="${session.consumerInfo==null}">
+                        <div class="col fs-1-2" >
+                            <span th:text="${session.consumerInfo.nickname}"></span>
+                            <span>님 반갑습니다!</span> <a class="link-dcr-none fs-0-8" href="./logOut"><span class="ms-auto">로그아웃</span></a>
                         </div>
                     </div>
-                    <a class="row py-2 link-dcr-none text-secondary" href="./purchaseList">
-                        <div class="col-auto text-center">
-                            <span class="me-auto">주문내역</span>
-                        </div>
-                        <div class="col-auto ms-auto">
-                            <i class="bi bi-chevron-right ms-auto"></i>
-                        </div>
-                    </a>
-                    <a class="row py-2 link-dcr-none text-secondary" href="./adressEdit">
-                        <div class="col-auto text-center">
-                            <span class="me-auto">배송지 등록/수정</span>
-                        </div>
-                        <div class="col-auto ms-auto">
-                            <i class="bi bi-chevron-right ms-auto"></i>
-                        </div>
-                    </a>
                 </div>
+                <a class="row py-2 link-dcr-none text-secondary fs-0-9" href="./purchaseList">
+                    <div class="col-auto text-center">
+                        <span class="me-auto">주문내역</span>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <i class="bi bi-chevron-right ms-auto"></i>
+                    </div>
+                </a>
+                <a class="row py-2 link-dcr-none text-secondary fs-0-9" href="./adressEdit">
+                    <div class="col-auto text-center">
+                        <span class="me-auto">배송지 등록/수정</span>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <i class="bi bi-chevron-right ms-auto"></i>
+                    </div>
+                </a>
             </div>
         </main>
         <!-- footer start -->

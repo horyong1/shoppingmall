@@ -23,20 +23,32 @@
             <form action="./registerPurchaseProcess" method="post" class="row">
                 <div class="col">
                     <div class="row" >
-                        <div class="col">
-                            <img class="img-fluid" th:src="${productMap.productDto.mainImageUrl}" alt="">
+                        <div class="col position-relative">
+                            <img class="img-fluid " th:src="${productMap.productDto.mainImageUrl}" alt="">
+                            <span class="text-danger position-absolute bottom-0 end-0 me-4 mb-3 fw-bold">
+                                <i class="bi bi-heart"></i>
+                            </span>
                         </div>
-                    </div>
-                    <div class="row py-2 border-bottom border-top">
-                        <div class="col text-secondary fs-0-9" th:text="${productMap.sellerDto.shopName}"></div>
-                        <div class="col-auto ms-auto">별점</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto fw-bold py-2" th:text="${productMap.productDto.productName}"></div>
                         
                     </div>
+                    <div class="row py-2 border-bottom">
+                        <div class="col-auto">
+                            <img class="img-fluid rounded-5" src="/public/img/sellerLog.png" alt="" style="width: 2em;">
+                        </div>
+                        <div class="col p-0 fs-0-9 fw-bold align-self-center" th:text="${productMap.sellerDto.shopName}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto fw-bold py-2 fs-0-9" th:text="${productMap.productDto.productName}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto fs-0-7 align-self-center">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <span>4.5</span>
+                            <a class="text-secondary" href="#">후기21개</a>
+                        </div>
+                    </div>
                     <div class="row py-2">
-                        <div class="col fw-bold" th:text="${productMap.price}"></div>
+                        <div class="col fs-0-9 fw-bold" th:text="${productMap.price}+'원'"></div>
                     </div>
                     <div class="row py-2">
                         <div class="col">
@@ -54,8 +66,8 @@
                     
                     <div class="row">
                         <div class="col d-grid">
-                            <button th:if="${productMap.productDto.totalQuantity != 0}" type="submit" class="btn btn-dark">구매하기</button>
-                            <button th:unless="${productMap.productDto.totalQuantity != 0}" class="btn btn-secondary" disabled="true">품절</button>
+                            <input th:if="${productMap.productDto.totalQuantity > 0}" type="submit" class="btn btn-dark fs-0-8" value="구매하기">
+                            <input th:unless="${productMap.productDto.totalQuantity > 0}" type="button" class="btn btn-secondary" disabled="true" value="품절">
                         </div>
                     </div>
                     <div class="row py-4">

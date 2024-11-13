@@ -35,18 +35,21 @@
                                     <a class="text-secondary fs-0-8" th:href="@{./purchaseDetail(purchaseNo=${list.purchaseDto.purchaseNo})}">더보기</a>
                                 </div>
                             </div>
-                            <div class="row py-1">
-                                <div class="col p-0 ms-1 fw-bold fs-0-9 text-end">
-                                    <span class="badge text-bg-success" th:text="${list.stateTrans}"></span>
-                                </div>
-                            </div>
-                            <div class="row pt-1 pb-3 border-bottom">
+                            <div class="row pt-2 pb-3 border-bottom">
                                 <div class="col-auto">
-                                    <img class="img-fluid border border-0 rounded-2" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 5em;">
+                                    <img class="img-fluid border border-0 rounded-2" th:src="${list.productDto.mainImageUrl}" style="width: 5em;">
                                 </div>
-                                <div class="col-auto me-auto align-self-center">
+                                <div class="col me-auto align-self-center">
                                     <div class="row">
-                                        <div class="col fs-0-8 fw-bold" th:text="${list.productDto.productName}"></div>
+                                        <div class="col-auto fs-0-8 fw-bold align-self-center" th:text="${list.productDto.productName}"></div>
+                                        <div class="col-auto p-0 ms-auto fs-0-6 fw-bold text-end">
+                                            <span th:if="${list.purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
+                                            <span th:if="${list.purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
+                                            <span th:if="${list.purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
+                                            <span th:if="${list.purchaseDto.state == '4'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송완료</span>
+                                            <span th:if="${list.purchaseDto.state == '5'}" class="border border-secondary-subtle rounded-5 text-secondary p-1">구매확정</span>
+                                            <!-- <span th:if="${list.purchaseDto.state == '5'}" class="badge text-bg-secondary mb-1">구매확정</span> -->
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col fs-0-8 text-secondary" th:text="${list.purchaseDto.quantity}+'개'"></div>

@@ -4,6 +4,7 @@ body{
     font-family: "Gowun Dodum", sans-serif;
     font-weight: 400;
     font-style: normal;
+    overflow-y: scroll;
   }
 
 .mw{
@@ -12,7 +13,9 @@ body{
     padding: 0;
     
 }
-
+.ht-e-2{
+    height: 1.6em;
+}
 .fs-0-5{
     font-size: 0.5em;
 }
