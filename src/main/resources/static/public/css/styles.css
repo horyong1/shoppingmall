@@ -13,6 +13,10 @@ body{
     padding: 0;
     
 }
+
+.topsize{
+    height: 2.3em;
+}
 .ht-e-2{
     height: 1.6em;
 }

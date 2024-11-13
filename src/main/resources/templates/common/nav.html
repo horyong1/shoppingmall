@@ -1,7 +1,16 @@
-<div th:fragment="topNavi" class="container-fluid p-0 mw bg-white">
-    <div class="row ">
-        <div class="col mx-auto border-bottom p-0">
-            <nav class="navbar navbar-expand-lg ">
+<div th:fragment="topNavi" class="container-fluid p-0 mw bg-white fixed-top">
+    <div class="row px-1 bg-white">
+        <div class="col mx-auto">
+            <div class="row px-2">
+                <div class="col">
+                    <div class="row border border-bottom-0">
+                        <div class="col p-0 p-2">
+                            <a class="link-dcr-none text-dark" href="javascript:history.back()"><i class="bi bi-chevron-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
                     <a class="navbar-brand p-0" href="/shop/mainPage">
                         <img class="img-fluid" src="/public/img/logo.png" alt="" style="width: 30px;">
@@ -34,7 +43,7 @@
                     </ul>
                 </div>
                 </div>
-            </nav>
+            </nav> -->
         </div>
     </div>
 </div>
