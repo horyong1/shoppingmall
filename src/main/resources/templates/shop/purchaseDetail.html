@@ -48,8 +48,12 @@
                             <div class="col me-auto text-secondary align-self-center">
                                 <div class="row">
                                     <div class="col-auto fs-0-8" th:text="${map.productDto.productName}"></div>
-                                    <div class="col-auto ms-auto fs-0-8 text-green" th:if="${map.purchaseDto.state == '1'}">
-                                        <span class="badge text-bg-success">결제완료</span>
+                                    <div class="col-auto ms-auto fs-0-8 text-green">
+                                        <span th:if="${map.purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
+                                        <span th:if="${map.purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
+                                        <span th:if="${map.purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
+                                        <span th:if="${map.purchaseDto.state == '4'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송완료</span>
+                                        <span th:if="${map.purchaseDto.state == '5'}" class="border border-secondary-subtle rounded-5 text-secondary p-1">구매확정</span>
                                     </div>
                                 </div>
                                 <div class="row">

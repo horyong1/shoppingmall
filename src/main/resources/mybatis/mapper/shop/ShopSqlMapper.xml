@@ -60,12 +60,13 @@
     <!-- 상품구매 -->
     <insert id="createPurchase">
         <selectKey resultType="int" keyProperty="purchaseNo" order="AFTER">
-            SELECT MAX(spp.purchase_no)
-            FROM sp_product_purchase spp
-            WHERE spp.consumer_no = #{consumerNo} AND spp.state = 1
+            SELECT  MAX(spp.purchase_no)
+            FROM    sp_product_purchase spp
+            WHERE   spp.consumer_no = #{consumerNo} AND spp.state = 1
         </selectKey>
-        INSERT INTO sp_product_purchase (consumer_no,product_no,quantity,shopping_adress,state)
-        VALUES(#{consumerNo},#{productNo}, #{quantity}, #{shoppingAdress},1)
+        INSERT 
+        INTO    sp_product_purchase (consumer_no,product_no,quantity,shopping_adress,state)
+        VALUES  (#{consumerNo},#{productNo}, #{quantity}, #{shoppingAdress},1)
     </insert>
     <!-- 상품 수량 감소 -->
     <update id="updateTotalQuantity">
@@ -102,5 +103,46 @@
         AND		spp.purchase_no = #{purchaseNo}
     </select>
 
-    
+    <!-- 상품 찜 추가-->
+    <insert id="addToWishlist">
+        INSERT 
+        INTO    sp_product_wishlist (consumer_no, product_no)
+        VALUES  (#{consumerNo}, #{productNo})
+    </insert>
+
+    <!-- 상품 찜 삭제 -->
+    <delete id="removeFromWishlist">
+        DELETE 
+        FROM    sp_product_wishlist
+        WHERE   consumer_no = #{consumerNo}
+        AND     product_no = #{productNo}
+    </delete>
+
+    <!-- 상품 찜 리스트 -->
+    <select id="wishlistFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.ProductWishlistDto">
+        SELECT  (spw.product_wishlist_no) AS productWishlistNo,
+	            (spw.consumer_no) AS consumerNo,
+	            (spw.product_no) AS productNo,
+	            (spw.created_at) AS createdAt
+        FROM    sp_product_wishlist spw
+        WHERE   spw.consumer_no = #{consumerNo}
+    </select>
+
+    <!-- 상품 찜 검색 -->
+    <select id="wishlistFindByConsumerNoAndProductNo" resultType="com.hr.shoppingmall.shop.dto.ProductWishlistDto">
+        SELECT  (spw.product_wishlist_no) AS productWishlistNo,
+	            (spw.consumer_no) AS consumerNo,
+	            (spw.product_no) AS productNo,
+	            (spw.created_at) AS createdAt
+        FROM    sp_product_wishlist spw
+        WHERE   spw.consumer_no = #{consumerNo}
+        AND     spw.product_no = #{productNo}
+    </select>
+
+    <!-- 상품 찜 개수  -->
+    <select id="wishlistCount" resultType="int">
+        SELECT  COUNT(*) 
+        FROM    sp_product_wishlist spw
+        WHERE   product_no = #{productNo};
+    </select>
 </mapper>

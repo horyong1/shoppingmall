@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 
 @Mapper
@@ -34,5 +35,19 @@ public interface ShopSqlMapper {
     
     // 고객 상품 구매 상세 
     ShoppingPurchaseDto purchaseFindByConsumerNoAndPurchaseNo(ShoppingPurchaseDto purchaseDto);
+
+    // 좋아요 추가
+    void addToWishlist(ProductWishlistDto wishlistDto);
+
+    // 좋아요 삭제
+    void removeFromWishlist(ProductWishlistDto wishlistDto);
+
+    // 좋아요 검색 리스트
+    List<ProductWishlistDto> wishlistFindByConsumerNo(int consumerNo);
+
+    // 좋아요 상품 검색 
+    ProductWishlistDto wishlistFindByConsumerNoAndProductNo(ProductWishlistDto wishlistDto);
     
+    // 좋아요 개수
+    int wishlistCount(int productNo);
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ShopService;
 
@@ -43,8 +44,16 @@ public class ShopController {
     
     // 상품 상세정보 페이지
     @RequestMapping("productDetailPage")
-        public String productDetailPage(@RequestParam("productNo")int productNo, Model model){
+        public String productDetailPage(@RequestParam("productNo")int productNo,HttpSession session, Model model){
+            ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+            ProductWishlistDto wishlistDto = new ProductWishlistDto();
             
+            if(consumerInfo != null){
+                wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
+                wishlistDto.setProductNo(productNo);
+                wishlistDto = shopService.getWishlistPruduct(wishlistDto);
+                model.addAttribute("wishlistDto", wishlistDto);
+            }
             Map<String,Object> map =  shopService.getProductDetail(productNo);
             
             model.addAttribute("productMap", map);
@@ -86,6 +95,30 @@ public class ShopController {
         return "shop/searchProduct";
     }
 
+    // 상품 찜 등록
+    @RequestMapping("toggleWishlist")
+    public String toggleWishlist(@RequestParam("productNo")int productNo, HttpSession session, Model model){
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+        if(consumerInfo == null){
+            return "redirect:/consumer/loginPage";
+        }
+        ProductWishlistDto wishlistDto = new ProductWishlistDto();
+        wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
+        wishlistDto.setProductNo(productNo);
+
+        shopService.toggleWishlist(wishlistDto);
+
+        wishlistDto = shopService.getWishlistPruduct(wishlistDto);
+        
+        Map<String,Object> map =  shopService.getProductDetail(productNo);
+        
+        model.addAttribute("productMap", map);
+        model.addAttribute("wishlistDto", wishlistDto);
+    
+        
+        return "shop/productDetailPage";
+    }
     
     
 }

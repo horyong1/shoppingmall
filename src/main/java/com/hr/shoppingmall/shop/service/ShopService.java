@@ -16,6 +16,7 @@ import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
 
@@ -78,7 +79,6 @@ public class ShopService {
         map.put("productDto", dto);
         map.put("price",priceTrans);
         map.put("sellerDto",sellerDto);
-        
         return map;
     }
 
@@ -87,6 +87,7 @@ public class ShopService {
      * @param consumerNo
      * @param productNo
      * @param quantity
+     * @return List<Map<String,Object>>
      */
     public List<Map<String,Object>> registerPurchase(ShoppingPurchaseDto purchaseDto){
         List<Map<String,Object>> list = new ArrayList<>();
@@ -116,7 +117,7 @@ public class ShopService {
     /**
      * 고객 상품 구매 목록 리스트 
      * @param consumerNo
-     * @return List
+     * @return List<Map<String,Object>>
      */
     public List<Map<String,Object>> getPurchaseList(int consumerNo){
         List<Map<String,Object>> list = new ArrayList<>();
@@ -131,33 +132,21 @@ public class ShopService {
 
             String resultPrice = decimalFormat.format(productDto.getPrice()*purchaseDto.getQuantity());
 
-            String stateTrans = "";
-            if(purchaseDto.getState().equals("1")){
-                stateTrans = "결제완료";
-            }
-            // if(purchaseDto.getState().equals("2")){
-            //     stateTrans = "배송준비중";
-            // }
-            // if(purchaseDto.getState().equals("3")){
-            //     stateTrans = "배송중";
-            // }
-            // if(purchaseDto.getState().equals("4")){
-            //     stateTrans = "배송완료";
-            // }
-            // if(purchaseDto.getState().equals("5")){
-            //     stateTrans = "구매확정";
-            // }
-
             map.put("productDto", productDto);
             map.put("purchaseDto", purchaseDto);
             map.put("totalPrice",resultPrice);
-            map.put("stateTrans",stateTrans);
             
             list.add(map);
         }
         return list;
     }
 
+    /**
+     * 주문 내역 리스트 상세 정보
+     * @param purchaseNo
+     * @param consumerNo
+     * @return Map<String,Object>
+     */
     public Map<String,Object> getPurchaseDetailInfo(int purchaseNo, int consumerNo){
         Map<String,Object> map = new HashMap<>();
         ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
@@ -188,6 +177,57 @@ public class ShopService {
         purchaseDto.setConsumerNo(consmerNo);
         purchaseDto.setProductNo(productNo);
         return shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
+    }
+
+    /**
+     * 찜 목록 리스트
+     * @param consumerNo
+     * @return
+     */
+    public List<Map<String, Object>> getWishlist(int consumerNo){
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        for(ProductWishlistDto wishlistDto : shopSqlMapper.wishlistFindByConsumerNo(consumerNo)){
+            Map<String, Object> map = new HashMap<>();
+            ProductDto productDto = shopSqlMapper.findByProductNo(wishlistDto.getProductNo());
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+            String priceTans = decimelFormatter(productDto.getPrice());
+            int wishlistCount = shopSqlMapper.wishlistCount(productDto.getProductNo());
+            
+            map.put("wishlistCount",wishlistCount);
+            map.put("priceTans", priceTans);
+            map.put("sellerDto",sellerDto);
+            map.put("productDto", productDto);
+            map.put("wishlistDto", wishlistDto);
+
+            list.add(map);
+
+        }
+        return list;
+    }
+
+    /** 
+     * 찜목록 중 특정 상품 확인
+     * @param wishlistDto
+     * @return
+    */
+    public ProductWishlistDto getWishlistPruduct(ProductWishlistDto wishlistDto){
+        return shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
+    }
+
+    /**
+     * 상품 찜 추가, 삭제
+     * @param wishlistDto
+     */
+    public void toggleWishlist(ProductWishlistDto wishlistDto){
+        ProductWishlistDto dto = new ProductWishlistDto();
+        dto = shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
+    
+        if(dto == null){
+            shopSqlMapper.addToWishlist(wishlistDto);
+        }else{
+            shopSqlMapper.removeFromWishlist(wishlistDto);
+        }
     }
 
     /**

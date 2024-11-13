@@ -53,6 +53,7 @@ public class ConsumerController {
         return "redirect:/shop/mainPage";
     }
 
+    // 로그아웃 
     @RequestMapping("logOut")
     public String logOut(HttpSession session){
         session.invalidate();
@@ -98,7 +99,7 @@ public class ConsumerController {
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.registerAdress(adressDto);
 
-        return"consumer/adressUpdateSuccess";
+        return "consumer/adressUpdateSuccess";
     }
 
     // 배송지 삭제 
@@ -110,7 +111,7 @@ public class ConsumerController {
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.deleteAdress(adressDto);
 
-        return"redirect:./adressEdit";
+        return "redirect:./adressEdit";
     }
 
     // 주문 내역 리스트
@@ -140,7 +141,17 @@ public class ConsumerController {
 
         model.addAttribute("map",shopService.getPurchaseDetailInfo(purchaseNo,consumerInfo.getConsumerNo()));    
 
-        return"shop/purchaseDetail";
+        return "shop/purchaseDetail";
+    }
+
+    // 찜 목록
+    @RequestMapping("wishlist")
+    public String wishlist(HttpSession session, Model model){
+        sessionCheck(session);
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+
+        model.addAttribute("list",  shopService.getWishlist(consumerInfo.getConsumerNo()));
+        return "consumer/wishlist";
     }
     
     // 세션체크
