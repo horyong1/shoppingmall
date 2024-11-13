@@ -16,6 +16,8 @@ import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 
 @Controller
 @RequestMapping("shop")
@@ -78,4 +80,12 @@ public class ShopController {
             return "shop/purchaseSuccess";
     }
 
+    // 검색화면
+    @RequestMapping("searchProduct")
+    public String searchProduct() {
+        return "shop/searchProduct";
+    }
+
+    
+    
 }

@@ -51,7 +51,7 @@ public class ShopService {
      */
     public List<Map<String,Object>> getProductShow(int no){
         List<Map<String,Object>> list = new ArrayList<>();
-        for(ProductDto dto : shopSqlMapper.productLimitFindCategoryId(no)){
+        for(ProductDto dto : shopSqlMapper.productLimitFindCategoryId(no,6)){
 
             String price = decimelFormatter(dto.getPrice());
             Map<String,Object> map = new HashMap<>();
@@ -135,6 +135,18 @@ public class ShopService {
             if(purchaseDto.getState().equals("1")){
                 stateTrans = "결제완료";
             }
+            // if(purchaseDto.getState().equals("2")){
+            //     stateTrans = "배송준비중";
+            // }
+            // if(purchaseDto.getState().equals("3")){
+            //     stateTrans = "배송중";
+            // }
+            // if(purchaseDto.getState().equals("4")){
+            //     stateTrans = "배송완료";
+            // }
+            // if(purchaseDto.getState().equals("5")){
+            //     stateTrans = "구매확정";
+            // }
 
             map.put("productDto", productDto);
             map.put("purchaseDto", purchaseDto);

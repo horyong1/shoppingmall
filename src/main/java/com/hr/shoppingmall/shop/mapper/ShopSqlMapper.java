@@ -3,6 +3,7 @@ package com.hr.shoppingmall.shop.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
@@ -17,7 +18,7 @@ public interface ShopSqlMapper {
     List<ProductDto> productFindCategoryId(int categoryNo);
     
     // 상품 목록 6개만 가져오기 카테고리별
-    List<ProductDto> productLimitFindCategoryId(int categoryNo);
+    List<ProductDto> productLimitFindCategoryId(@Param("categoryNo")int categoryNo, @Param("limit")int limit);
     
     // 상품 상세 정보
     ProductDto findByProductNo(int productNo);

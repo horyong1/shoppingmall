@@ -22,7 +22,9 @@
                 (sp.created_at) AS createdAt
         FROM    sp_product sp
         WHERE   category_no = #{categoryNo}
-        LIMIT   0,6
+        <if test="limit > 0">
+            LIMIT #{limit}
+        </if>
     </select>
     
     <!-- 상품 목록 카테고리별 리스트 보여주기 -->
@@ -100,10 +102,5 @@
         AND		spp.purchase_no = #{purchaseNo}
     </select>
 
-    <!-- 고객 상품 구매 결제완료 번호 가져오기 -->
-    <!-- <select id="maxPurchaseNo" resultType="int">
-        SELECT MAX(spp.purchase_no)
-        FROM sp_product_purchase spp
-        WHERE spp.consumer_no = #{consumerNo}
-    </select> -->
+    
 </mapper>
