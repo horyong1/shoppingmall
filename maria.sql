@@ -43,8 +43,8 @@ CREATE TABLE  sp_product  (
 DROP TABLE sp_product_category;
 CREATE TABLE  sp_product_category  (
 	 category_no 	INT PRIMARY KEY AUTO_INCREMENT,
-	 category_name 	VARCHAR(50)	 ,
-	 crated_at 	DATETIME DEFAULT NOW()		 
+	 category_name 	VARCHAR(50),
+	 created_at 	DATETIME DEFAULT NOW()		 
 );
 
 #상품구매
@@ -53,10 +53,10 @@ CREATE TABLE  sp_product_purchase  (
 	 purchase_no  INT PRIMARY KEY AUTO_INCREMENT,
 	 consumer_no  INT,
 	 product_no  INT,
-	 quantity  INT	 ,
-	 shipping_address  VARCHAR(400),
+	 quantity  INT,
+	 shopping_adress  VARCHAR(400),
 	 purchase_date  DATETIME DEFAULT NOW(),
-	 Field2  VARCHAR(10)	 
+	 state  VARCHAR(10)	 
 );
 
 #판매자
@@ -86,9 +86,9 @@ CREATE TABLE  sp_product_review  (
 	 consumer_no  INT,
 	 review_content  VARCHAR(4000),
 	 rating  INT,
-	 created_at  DATETIME,
+	 created_at  DATETIME DEFAULT NOW(),
 	 seller_reply  VARCHAR(4000),
-	 reply_date  DATETIME DEFAULT NOW()		 
+	 reply_date  DATETIME 		 
 );
 
 #상품상세이미지
