@@ -152,4 +152,6 @@
         INTO    sp_seller_wishlist (seller_wishlis_no, consumer_no, product_no)
         VALUES  (#{sellerWishlisNo}, #{consumerNo}, #{productNo}) 
     </insert>
+
+    
 </mapper>

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
+import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
@@ -120,5 +122,16 @@ public class ShopController {
         return "shop/productDetailPage";
     }
     
+    
+
+    // 세션 로그인 체크
+    private boolean isSellerLoggedIn(HttpSession session) {
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        return consumerInfo != null;
+    }
+    // 세션 sellerDto 값 세팅
+    private ConsumerDto getSellerInfo(HttpSession session){
+        return (ConsumerDto)session.getAttribute("sellerInfo");
+    }
     
 }

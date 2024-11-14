@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
@@ -50,4 +51,7 @@ public interface ShopSqlMapper {
     
     // 좋아요 개수
     int wishlistCount(int productNo);
+
+   
+
 }

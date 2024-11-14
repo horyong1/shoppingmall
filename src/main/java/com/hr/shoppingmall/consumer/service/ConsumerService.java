@@ -40,8 +40,10 @@ public class ConsumerService {
     public List<ConsumerAdressDto> getAdressList(int consumerId){
         return consumerSqlMapper.adresslistFindByConsumerId(consumerId);
     }
-
+    
+    // 배송지 삭제
     public void deleteAdress(ConsumerAdressDto adressDto){
         consumerSqlMapper.deleteAdress(adressDto);
     }
+
 }

@@ -1,5 +1,7 @@
 package com.hr.shoppingmall.consumer.controller;
 
+import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
@@ -78,8 +81,10 @@ public class ConsumerController {
     // 배송지 등록/수정 page
     @RequestMapping("adressEdit")
     public String adressEditPage(HttpSession session, Model model){
-        sessionCheck(session);
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getSellerInfo(session);
         
         if(consumerInfo == null){
             return "redirect:./loginPage";
@@ -93,8 +98,10 @@ public class ConsumerController {
     // 배송지 등록 프로세스
     @RequestMapping("registerAdress")
     public String registerAdress(ConsumerAdressDto adressDto, HttpSession session){
-        sessionCheck(session);
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getSellerInfo(session);
 
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.registerAdress(adressDto);
@@ -105,8 +112,10 @@ public class ConsumerController {
     // 배송지 삭제 
     @RequestMapping("deleteAdress")
     public String deleteAdress(ConsumerAdressDto adressDto, HttpSession session){
-        sessionCheck(session);
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getSellerInfo(session);
 
         adressDto.setConsumerNo(consumerInfo.getConsumerNo());
         consumerService.deleteAdress(adressDto);
@@ -117,11 +126,10 @@ public class ConsumerController {
     // 주문 내역 리스트
     @RequestMapping("purchaseList")
     public String purchaseList(HttpSession session, Model model){
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
-        if(consumerInfo == null){
+        if(!isSellerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
-
+        ConsumerDto consumerInfo = getSellerInfo(session);
         int sonsumerNo = consumerInfo.getConsumerNo();
 
         model.addAttribute("purchaseList", shopService.getPurchaseList(sonsumerNo));
@@ -136,8 +144,10 @@ public class ConsumerController {
         HttpSession session,
         Model model){
 
-        sessionCheck(session);
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getSellerInfo(session);
 
         model.addAttribute("map",shopService.getPurchaseDetailInfo(purchaseNo,consumerInfo.getConsumerNo()));    
 
@@ -147,21 +157,25 @@ public class ConsumerController {
     // 찜 목록
     @RequestMapping("wishlist")
     public String wishlist(HttpSession session, Model model){
-        sessionCheck(session);
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
 
         model.addAttribute("list",  shopService.getWishlist(consumerInfo.getConsumerNo()));
         return "consumer/wishlist";
     }
-    
-    // 세션체크
-    private String sessionCheck(HttpSession session){
+
+
+    // 세션 로그인 체크
+    private boolean isSellerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
-
-        if(consumerInfo == null){
-            return "redirect:/consumer/loginPage";
-        }
-
-        return "";
+        return consumerInfo != null;
     }
+    // 세션 sellerDto 값 세팅
+    private ConsumerDto getSellerInfo(HttpSession session){
+        return (ConsumerDto)session.getAttribute("consumerInfo");
+    }
+    
+   
 }

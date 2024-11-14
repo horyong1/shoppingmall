@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 
 @Mapper
 public interface ConsumerSqlMapper {
@@ -24,4 +25,9 @@ public interface ConsumerSqlMapper {
     ConsumerAdressDto adressFindByConsumerId(int consumerNo);
     // 고객 배송지 삭제
     void deleteAdress(ConsumerAdressDto adressDto);
+
+   
+    
+
+
 }

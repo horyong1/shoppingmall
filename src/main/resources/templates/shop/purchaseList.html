@@ -58,6 +58,15 @@
                                         <div class="col fs-0-8 fw-bold" th:text="${list.totalPrice}+'원'"></div>
                                     </div>
                                 </div>
+                                <div class="row mx-auto">
+                                    <div class="col">
+                                        <a class="d-grid link-dcr-none" th:href="@{/review/reviewEdit(productNo=${list.purchaseDto.productNo})}">
+                                            <button class="btn btn-outline-dark btn-sm">
+                                                <span class="fs-0-9">리뷰작성</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -67,4 +67,6 @@
         WHERE   adress_no = ${adressNo}
         AND     consumer_no = ${consumerNo}
     </delete>
+
+    
 </mapper>
