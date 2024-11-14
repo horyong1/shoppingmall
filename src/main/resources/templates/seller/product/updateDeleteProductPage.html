@@ -11,33 +11,43 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-8 mx-auto">
+            <div th:replace="~{common/sidebar::sidebar-left}"></div>
+            <div class="col-2"></div>
+            <div class="col-10 mx-auto">
                 <div class="row">
                     <div class="col">
                         <div class="row">
                             <div class="col fs-1 text-center py-3">
-                                상품 수정/삭제                                
+                                상품 관리                                
                             </div>
                         </div>
                         <div class="row" th:each="list : ${productList}">
                             <div class="col">
                                 <div class="row py-2 border-bottom fs-0-9">
                                     <div class="col-auto">
-                                        <img class="img-fluid" th:src="${list.mainImageUrl}" alt="" style="width: 6em;">
+                                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 6em;">
                                     </div>
                                     <div class="col align-self-center">
                                         <div class="row">
-                                            <div class="col" th:text="${list.productName}"></div>
+                                            <div class="col" th:text="${list.productDto.productName}"></div>
                                             <div class="col-auto">
-                                                <a class="link-dcr-none fw-bold" th:href="@{./updateProductPage(productNo=${list.productNo})}">수정</a>
-                                                <a class="link-dcr-none text-danger fw-bold" th:href="@{./deleteProductProcess(productNo=${list.productNo})}">삭제</a>
+                                                <a class="link-dcr-none fw-bold" th:href="@{./updateProductPage(productNo=${list.productDto.productNo})}">수정</a>
+                                                <a class="link-dcr-none text-danger fw-bold" th:href="@{./deleteProductProcess(productNo=${list.productDto.productNo})}">삭제</a>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col" th:text="${list.totalQuantity}+'개'"></div>
+                                            <div class="col" th:text="${list.productDto.totalQuantity}+'개'"></div>
                                         </div>
                                         <div class="row">
-                                            <div class="col" th:text="${list.price}+'원'"></div>
+                                            <div class="col" th:text="${list.productDto.price}+'원'"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a class="link-dcr-none text-black" th:href="@{./productReviewList(productNo=(${list.productDto.productNo}))}">
+                                                    <i class="bi bi-star-fill text-warning fs-0-8"></i>
+                                                    <span class="fs-0-8" th:text="${list.reviewCount}"></span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -51,4 +51,8 @@ public class ReviewService {
 
         return list;
     }
+
+    public int reviewConut(int productNo){
+        return reviewSqlMapper.reviewConut(productNo);
+    }
 }

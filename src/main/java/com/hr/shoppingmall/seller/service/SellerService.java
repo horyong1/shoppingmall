@@ -1,19 +1,26 @@
 package com.hr.shoppingmall.seller.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
 
 @Service
 public class SellerService {
 
     @Autowired
     private SellerSqlMapper sellerSqlMapper;
+    @Autowired
+    private ReviewSqlMapper reviewSqlMapper;
 
     public void registerSeller(SellerDto sellerDto){
         sellerSqlMapper.createSeller(sellerDto);
@@ -63,6 +70,20 @@ public class SellerService {
      */
     public ProductDto getProductInfo(int productNo){
         return sellerSqlMapper.productFindBySellerNoAndProductNo(productNo);
+    }
+
+    public List<Map<String,Object>> getProuctList(int sellerNo){
+        List<Map<String,Object>> list = new ArrayList<>();
+        for(ProductDto productDto : sellerSqlMapper.productFindBySellerNo(sellerNo)){
+            Map<String,Object> map = new HashMap<>();
+
+            map.put("reviewCount", reviewSqlMapper.reviewConut(productDto.getProductNo()));
+            map.put("productDto",productDto);
+
+            list.add(map);
+        }
+
+        return list;
     }
 
 }

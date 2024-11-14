@@ -16,6 +16,7 @@ import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
+import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,7 +30,7 @@ public class ConsumerController {
     @Autowired
     private ShopService shopService;
     @Autowired
-    private SellerService sellerService;
+    private ReviewService reviewService;
 
     // 소비자 로그인 페이지
     @RequestMapping("loginPage")
@@ -163,6 +164,7 @@ public class ConsumerController {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
 
         model.addAttribute("list",  shopService.getWishlist(consumerInfo.getConsumerNo()));
+        
         return "consumer/wishlist";
     }
 

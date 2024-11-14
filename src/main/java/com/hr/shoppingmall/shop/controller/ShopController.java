@@ -16,6 +16,7 @@ import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
+import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +31,8 @@ public class ShopController {
     private ShopService shopService;
     @Autowired 
     private SellerService sellerService;
+    @Autowired
+    private ReviewService reviewService;
 
     // 메인 페이지
     @RequestMapping("mainPage")
@@ -59,7 +62,6 @@ public class ShopController {
             Map<String,Object> map =  shopService.getProductDetail(productNo);
             
             model.addAttribute("productMap", map);
-        
             return"shop/productDetailPage";
         }
     
@@ -100,11 +102,12 @@ public class ShopController {
     // 상품 찜 등록
     @RequestMapping("toggleWishlist")
     public String toggleWishlist(@RequestParam("productNo")int productNo, HttpSession session, Model model){
-        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
-
-        if(consumerInfo == null){
+        
+        if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+
         ProductWishlistDto wishlistDto = new ProductWishlistDto();
         wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
         wishlistDto.setProductNo(productNo);
@@ -125,13 +128,13 @@ public class ShopController {
     
 
     // 세션 로그인 체크
-    private boolean isSellerLoggedIn(HttpSession session) {
+    private boolean isConsumerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
         return consumerInfo != null;
     }
     // 세션 sellerDto 값 세팅
-    private ConsumerDto getSellerInfo(HttpSession session){
-        return (ConsumerDto)session.getAttribute("sellerInfo");
+    private ConsumerDto getConsumerInfo(HttpSession session){
+        return (ConsumerDto)session.getAttribute("consumerInfo");
     }
     
 }

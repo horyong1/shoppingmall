@@ -18,6 +18,7 @@ import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
+import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
 
 @Service
@@ -29,6 +30,8 @@ public class ShopService {
     private ConsumerSqlMapper consumerSqlMapper;
     @Autowired
     private SellerSqlMapper sellerSqlMapper;
+    @Autowired
+    private ReviewSqlMapper reviewSqlMapper;
 
     /**
      * 카테고리 전체 목록
@@ -75,7 +78,9 @@ public class ShopService {
         ProductDto dto = shopSqlMapper.findByProductNo(productNo);
         String priceTrans = decimelFormatter(dto.getPrice());
         SellerDto sellerDto = sellerSqlMapper.findByNo(dto.getSellerNo());
+        int reviewCount = reviewSqlMapper.reviewConut(productNo);
 
+        map.put("reviewCount", reviewCount);
         map.put("productDto", dto);
         map.put("price",priceTrans);
         map.put("sellerDto",sellerDto);
@@ -193,7 +198,9 @@ public class ShopService {
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             String priceTans = decimelFormatter(productDto.getPrice());
             int wishlistCount = shopSqlMapper.wishlistCount(productDto.getProductNo());
-            
+            int reviewCount = reviewSqlMapper.reviewConut(productDto.getProductNo());
+
+            map.put("reviewCount", reviewCount);
             map.put("wishlistCount",wishlistCount);
             map.put("priceTans", priceTans);
             map.put("sellerDto",sellerDto);

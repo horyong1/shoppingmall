@@ -18,4 +18,6 @@ public interface ReviewSqlMapper {
     List<ProductReviewDto> reviewFindByProductNo(int productNo);
     // 특정 제품 리뷰 가져오기
     ProductReviewDto reviewFindByProductNoAndConsumerNoAndReviewNo(ProductReviewDto reviewDto);
+    // 특정 제품 리뷰 개수
+    int reviewConut(int productNo);
 }

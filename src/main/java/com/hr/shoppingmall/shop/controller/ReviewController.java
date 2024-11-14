@@ -27,45 +27,52 @@ public class ReviewController {
         System.out.println(">>>>>>>>" + reviewService.getReviewList(productNo));
         model.addAttribute("reviewList", reviewService.getReviewList(productNo));
 
-        return "shop/productReviewList";
+        return "shop/review/productReviewList";
     }
     // 리뷰 작성 페이지
     @RequestMapping("reviewEdit")
     public String reviewEdit(HttpSession session, @RequestParam("productNo")int productNo, Model model){
-        if(!isSellerLoggedIn(session)){
+        if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
 
         model.addAttribute("map",shopService.getProductDetail(productNo));
-        return "shop/reviewEdit";
+        return "shop/review/reviewEdit";
     }
 
     // 리뷰 작성 프로세스
     @RequestMapping("registerReviewProcess")
     public String registerReviewProcess(HttpSession session, ProductReviewDto reviewDto){
-        if(!isSellerLoggedIn(session)){
+        if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
-        ConsumerDto consumerInfo = getSellerInfo(session);
+        ConsumerDto consumerInfo = getConsumerInfo(session);
         reviewDto.setConsumerNo(consumerInfo.getConsumerNo());
         System.out.println(">>>>>>>>> " + reviewDto);
         reviewService.registerReview(reviewDto);
 
-        return "shop/reviewSuccess";
+        return "shop/review/reviewSuccess";
     }
 
-
+    // 내 리뷰 목록 가져오기
+    @RequestMapping("myReviewList")
+    public String myReviewList(HttpSession session){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        return "shop/review/myReviewList";
+    }
 
 
 
 
     // 세션 로그인 체크
-    private boolean isSellerLoggedIn(HttpSession session) {
+    private boolean isConsumerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
         return consumerInfo != null;
     }
     // 세션 sellerDto 값 세팅
-    private ConsumerDto getSellerInfo(HttpSession session){
+    private ConsumerDto getConsumerInfo(HttpSession session){
         return (ConsumerDto)session.getAttribute("consumerInfo");
     }
 }

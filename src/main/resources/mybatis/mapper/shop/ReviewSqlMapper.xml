@@ -61,5 +61,13 @@
         FROM 	sp_product_review spr
         WHERE 	spr.product_no = #{productNo}
         AND     consumer_no = #{consumerNo}
-    </select>  
+    </select>
+
+    
+    <!-- 특정 제품 리뷰 개수 -->
+    <select id="reviewConut" resultType="int">
+        SELECT  COUNT(*)
+        FROM 	sp_product_review spr
+        WHERE 	spr.product_no = #{productNo}
+    </select>
 </mapper>

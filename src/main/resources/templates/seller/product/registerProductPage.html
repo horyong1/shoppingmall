@@ -11,7 +11,9 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-8 mx-auto">
+            <div th:replace="~{common/sidebar::sidebar-left}"></div>
+            <div class="col-2"></div>
+            <div class="col-10 mx-auto">
                 <div class="row">
                     <div class="col">
                         <div class="row">
@@ -57,16 +59,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-auto">
-                                    <a href="./mainPage">
-                                        <button class="btn btn-secondary">뒤로가기</button>
-                                    </a>
-                                </div>
-                                <div class="col-auto ms-auto">
-                                    <a href="./registerProductPage">
+                            <div class="row p-0">
+                                <div class="col text-end">
+                                    
                                         <input class="btn btn-primary" type="submit" value="등록">
-                                    </a>
+                                    
                                 </div>
                             </div>
                         </form>

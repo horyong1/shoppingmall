@@ -61,8 +61,11 @@ public class SellerController {
 
     // 판매자 상품 등록 페이지
     @RequestMapping("registerProductPage")
-    public String registerProductPage(){
-        return "seller/registerProductPage";
+    public String registerProductPage(HttpSession session){
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+        return "seller/product/registerProductPage";
     }
 
     // 상품 등록 프로세스
@@ -76,13 +79,12 @@ public class SellerController {
 
         params.setSellerNo(sellerInfo.getSellerNo());
         params.setMainImageUrl("/public/img/패딩.png");
-        System.out.println("정보 >>>>> "+params);
         sellerService.registerProduct(params);
 
-        return "seller/registerProductSuccess";
+        return "seller/product/registerProductSuccess";
     }
 
-    // 등록 상품 수정/삭제 페이지
+    // 등록 상품 관리 페이지
     @RequestMapping("updateDeleteProductPage")
     public String updateDeleteProductPage(HttpSession session, Model model){
         
@@ -91,9 +93,9 @@ public class SellerController {
         }
 
         SellerDto sellerDto = getSellerInfo(session);
-        model.addAttribute("productList", sellerService.sellerProductList(sellerDto.getSellerNo()));
+        model.addAttribute("productList", sellerService.getProuctList(sellerDto.getSellerNo()));
 
-        return"seller/updateDeleteProductPage";
+        return"seller/product/updateDeleteProductPage";
     }
 
     // 상품 삭제 프로세스
@@ -104,7 +106,7 @@ public class SellerController {
         }
 
         sellerService.deleteProduct(productNo);
-        return "seller/deleteProductSuccess";
+        return "seller/product/deleteProductSuccess";
     }
 
     // 상품 수정 페이지
@@ -115,7 +117,7 @@ public class SellerController {
         }
         
         model.addAttribute("productDto", sellerService.getProductInfo(productNo));
-        return "seller/updateProductPage";
+        return "seller/product//updateProductPage";
     }
 
     //  상품 수정 프로세스
@@ -127,7 +129,7 @@ public class SellerController {
 
         sellerService.updateProduct(productDto);
 
-        return "seller/updateProductSuccess";
+        return "seller/product/updateProductSuccess";
     }
 
 

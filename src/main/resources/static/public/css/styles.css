@@ -13,7 +13,16 @@ body{
     padding: 0;
     
 }
-
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* 사이드바 너비 설정 */
+    height: 100%; /* 전체 높이 */
+    background-color: #f8f9fa; /* 배경색 */
+    padding: 15px; /* 내부 여백 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
 .topsize{
     height: 2.3em;
 }
