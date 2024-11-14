@@ -28,4 +28,64 @@
         WHERE   ss.seller_id = #{sellerId}
         AND     ss.password = #{password}
     </select>
+
+    <!-- 판매자 제품 등록 -->
+    <insert id="createProduct">
+        INSERT INTO sp_product (category_no,seller_no,product_name,product_description,price,main_image_url,total_quantity)
+        VALUES (#{categoryNo}, #{sellerNo}, #{productName}, #{productDescription}, #{price}, #{mainImageUrl}, #{totalQuantity})
+    </insert>
+
+    <!-- 판매자 제품 삭제 -->
+    <delete id="removeProduct">
+        DELETE FROM sp_product
+        WHERE   product_no = #{productNo}
+    </delete>
+
+    <!-- 판매자 제품 수정 -->
+    <update id="updateProduct">
+        UPDATE  sp_product 
+        SET     product_name = #{productName},
+                category_no = #{categoryNo},
+                product_description = #{productDescription},
+                price = #{price},
+                total_quantity = #{totalQuantity}
+        WHERE   product_no = #{productNo}
+         
+    </update>
+
+    <!-- 판매자 등록 상품 리스트  -->
+    <select id="productFindBySellerNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE   sp.seller_no = #{selleNo} 
+    </select>
+    
+    <!-- 판매자 등록 상품 리스트  -->
+    <select id="productFindBySellerNoAndProductNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE   sp.product_no = #{productNo}
+    </select>
+
+    <!-- 판매자 상태별 배송 목록 -->
+    <!-- <select id="findBySellerIdAndState">
+        
+    </select> -->
+    
 </mapper>

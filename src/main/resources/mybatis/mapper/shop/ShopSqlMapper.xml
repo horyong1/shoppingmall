@@ -145,4 +145,11 @@
         FROM    sp_product_wishlist spw
         WHERE   product_no = #{productNo};
     </select>
+
+    <!-- 판매자 찜 추가 -->
+    <insert id="addToSeller">
+        INSERT 
+        INTO    sp_seller_wishlist (seller_wishlis_no, consumer_no, product_no)
+        VALUES  (#{sellerWishlisNo}, #{consumerNo}, #{productNo}) 
+    </insert>
 </mapper>

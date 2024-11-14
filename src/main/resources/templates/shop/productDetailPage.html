@@ -24,8 +24,8 @@
             <form action="./registerPurchaseProcess" method="post" class="row">
                 <div class="col">
                     <div class="row" >
-                        <div class="col position-relative">
-                            <img class="img-fluid " th:src="${productMap.productDto.mainImageUrl}" alt="">
+                        <div class="col p-0 position-relative">
+                            <img class="img-fluid border border-top-0 " th:src="${productMap.productDto.mainImageUrl}" alt="">
                             
                             <span class="position-absolute bottom-0 end-0 me-4 mb-2 fw-bold">
                                <a class="text-danger" th:href="@{./toggleWishlist(productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart" th:if="${wishlistDto == null}"></i></a>
@@ -39,6 +39,12 @@
                             <img class="img-fluid rounded-5" src="/public/img/sellerLog.png" alt="" style="width: 2em;">
                         </div>
                         <div class="col p-0 fs-0-9 fw-bold align-self-center" th:text="${productMap.sellerDto.shopName}"></div>
+                        <div class="col-auto align-self-center">
+                            <a class="link-dcr-none border px-1 rounded-2 fs-0-9" href="#">
+                                <i class="bi bi-heart text-danger"></i>
+                                <span></span>
+                            </a>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-auto fw-bold py-2 fs-0-9" th:text="${productMap.productDto.productName}"></div>
@@ -63,7 +69,7 @@
                                 <option value="3">3개</option>
                                 <option value="4">4개</option>
                                 <option value="5">5개</option>
-                              </select>
+                            </select>
                         </div>
                     </div>
                     

@@ -49,7 +49,7 @@
                             <div class="col me-auto text-secondary align-self-center">
                                 <div class="row">
                                     <div class="col-auto fs-0-8" th:text="${map.productDto.productName}"></div>
-                                    <div class="col-auto ms-auto fs-0-8 text-green">
+                                    <div class="col-auto ms-auto fw-bold fs-0-6 text-green">
                                         <span th:if="${map.purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
                                         <span th:if="${map.purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
                                         <span th:if="${map.purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
