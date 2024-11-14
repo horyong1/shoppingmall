@@ -1,10 +1,16 @@
 package com.hr.shoppingmall.seller.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
@@ -70,15 +76,47 @@ public class SellerController {
 
     // 상품 등록 프로세스
     @RequestMapping("registerProductProcess")
-    public String registerProductProcess(ProductDto params, HttpSession session){
+    public String registerProductProcess(ProductDto params, HttpSession session, MultipartFile mainImgeUrl){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
         
         SellerDto sellerInfo = getSellerInfo(session);
+       
+        if(mainImgeUrl != null){
+            String rootPath = "C:/uploadfiles/";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+            String todayPath = sdf.format(new Date());
+            File todayFolderForCreate = new File(rootPath+todayPath);
+
+            if(!todayFolderForCreate.exists()){
+                todayFolderForCreate.mkdirs();
+            }
+
+            String originalFilename = mainImgeUrl.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+            long currentTime = System.currentTimeMillis();
+
+            String fileName = uuid + "_" + currentTime;
+
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            fileName += ext;
+
+            try {
+                mainImgeUrl.transferTo(new File(rootPath+todayPath+fileName));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String url = todayPath + fileName;
+            System.out.println("url >>>  "+ url);
+            params.setMainImageUrl(url);
+        }
+
+
+
+        
 
         params.setSellerNo(sellerInfo.getSellerNo());
-        params.setMainImageUrl("/public/img/패딩.png");
         sellerService.registerProduct(params);
 
         return "seller/product/registerProductSuccess";

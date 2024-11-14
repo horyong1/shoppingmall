@@ -25,7 +25,7 @@
                             <div class="col">
                                 <div class="row py-2 border-bottom fs-0-9">
                                     <div class="col-auto">
-                                        <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 6em;">
+                                        <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 6em;">
                                     </div>
                                     <div class="col align-self-center">
                                         <div class="row">

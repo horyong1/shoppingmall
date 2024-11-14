@@ -58,7 +58,7 @@
                 (sca.consumer_adress) AS consumerAdress
         FROM    sp_consumer_adress sca
         WHERE   sca.consumer_no = #{consumerNo}
-        AND     sca.adress_no = 2
+        AND     sca.adress_no = 1
     </select>
 
     <!-- 고객 배송지 목록 삭제 -->

@@ -50,7 +50,7 @@
                     <div class="col">
                         <div class="row py-2">
                             <div class="col-auto">
-                                <img class="img-fluid" th:src="${list.productDto.mainImageUrl}" alt="" style="width: 4em;">
+                                <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 4em;">
                             </div>
                             <div class="col-auto me-auto">
                                 <div class="row">

@@ -21,7 +21,7 @@
                                 상품 등록                                
                             </div>
                         </div>
-                        <form class="row" action="./registerProductProcess" method="post">
+                        <form class="row" action="./registerProductProcess" method="post" enctype="multipart/form-data" >
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <input  type="file" class="form-control">
+                                        <input name="mainImgeUrl"  type="file" class="form-control" accept="image/*">
                                     </div>
                                 </div>
                                 <div class="row">

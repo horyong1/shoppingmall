@@ -98,7 +98,7 @@ public class ShopService {
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String,Object> map = new HashMap<>();
         ConsumerAdressDto adress = consumerSqlMapper.adressFindByConsumerId(purchaseDto.getConsumerNo());
-        
+        System.out.println("주소 " + purchaseDto);
         
         purchaseDto.setShoppingAdress(adress.getConsumerAdress());
 

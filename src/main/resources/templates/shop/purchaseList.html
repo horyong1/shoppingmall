@@ -38,7 +38,7 @@
                             </div>
                             <div class="row pt-2 pb-3 border-bottom">
                                 <div class="col-auto">
-                                    <img class="img-fluid border border-0 rounded-2" th:src="${list.productDto.mainImageUrl}" style="width: 5em;">
+                                    <img class="img-fluid border border-0 rounded-2" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" style="width: 5em;">
                                 </div>
                                 <div class="col me-auto align-self-center">
                                     <div class="row">
