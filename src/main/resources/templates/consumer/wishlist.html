@@ -35,14 +35,14 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <img class="img-fluid" th:src="${data.productDto.mainImageUrl}" alt="" style="width: 5em; height:5em;">
+                                                <img class="img-fluid" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row pt-1">
                                             <div class="col fs-0-7" th:text="${data.sellerDto.shopName}"></div>
                                         </div>
                                         <div class="row">
-                                            <div class="col fs-0-7" th:text="${data.productDto.productName}"></div>
+                                            <div class="col fs-0-7 text-truncate" th:text="${data.productDto.productName}"></div>
                                         </div>
                                         <div class="row">
                                             <div class="col fs-0-7 fw-bold" th:text="${data.priceTans}+'원'"></div>

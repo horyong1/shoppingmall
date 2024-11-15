@@ -11,5 +11,6 @@ public class ConsumerDto {
     private String password;
     private String nickname;
     private String gender;
+    private String adress;
     private Date createdAt;
 }

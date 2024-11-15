@@ -36,6 +36,11 @@ public class ConsumerService {
         consumerSqlMapper.createConsumerAdress(adressDto);
     }
 
+    // 기본 배송지 
+    public ConsumerDto getDefaulteAdress(int consumerNo){
+        return consumerSqlMapper.adressFindByConsumerId(consumerNo);
+    }
+
     // 배송지 목록 
     public List<ConsumerAdressDto> getAdressList(int consumerId){
         return consumerSqlMapper.adresslistFindByConsumerId(consumerId);

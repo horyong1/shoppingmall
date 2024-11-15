@@ -97,10 +97,10 @@ public class ShopService {
     public List<Map<String,Object>> registerPurchase(ShoppingPurchaseDto purchaseDto){
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String,Object> map = new HashMap<>();
-        ConsumerAdressDto adress = consumerSqlMapper.adressFindByConsumerId(purchaseDto.getConsumerNo());
+        ConsumerDto consumerDto = consumerSqlMapper.adressFindByConsumerId(purchaseDto.getConsumerNo());
         System.out.println("주소 " + purchaseDto);
         
-        purchaseDto.setShoppingAdress(adress.getConsumerAdress());
+        purchaseDto.setShoppingAdress(consumerDto.getAdress());
 
         shopSqlMapper.createPurchase(purchaseDto);
         shopSqlMapper.updateTotalQuantity(purchaseDto);

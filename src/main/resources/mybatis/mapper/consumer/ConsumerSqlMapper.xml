@@ -7,15 +7,22 @@
             SELECT  MAX(sc.consumer_no)
             FROM    sp_consumer sc
         </selectKey>
-        INSERT INTO sp_consumer (consumer_id, password, nickname, gender)
-        VALUES(#{consumerId},#{password},#{nickname},#{gender})
+        INSERT INTO sp_consumer (consumer_id, password, nickname, gender, adress)
+        VALUES(#{consumerId},#{password},#{nickname},#{gender}, #{adress})
     </insert>
 
-    <!-- 소비자 배송주소 -->
+    <!-- 소비자 배송주소 목록 추가 -->
     <insert id="createConsumerAdress">
         INSERT INTO sp_consumer_adress (consumer_no, consumer_adress)
         VALUES(#{consumerNo}, #{consumerAdress});
     </insert>
+
+    <!-- 소비자 기본 배송지 수정 -->
+    <update id="updateDefaulteAdress">
+        UPDATE  sp_consumer 
+        SET     adress = #{adress}
+        WHERE   consumerNo = #{consumerNo}
+    </update>
 
     <!-- 소비자 로그인 아이디 비밀번호 확인 -->
     <select id="findByIdAndPassword" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
@@ -43,6 +50,18 @@
         WHERE 	sc.consumer_no = #{consumerNo}
     </select>
 
+    <!-- 고객 기본 배송지 -->
+    <select id="adressFindByconsumerNo" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
+        SELECT 	(sc.consumer_no) AS consumerNo,
+                (sc.consumer_id) AS consumerId,
+                (sc.password) AS password,
+                (sc.nickname) AS nickname,
+                (sc.gender) AS gender,
+                (sc.created_at) AS createAt
+        FROM 	sp_consumer sc
+        WHERE 	sc.consumer_no = #{consumerNo}
+    </select>
+
     <!-- 고객 배송지 목록  -->
     <select id="adresslistFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
         SELECT  (sca.adress_no) AS adressNo,
@@ -52,13 +71,17 @@
         WHERE   consumer_no = #{consumerNo}
     </select>
 
-    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
-        SELECT  (sca.adress_no) AS adressNo,
-                (sca.consumer_no) AS consumerNo,
-                (sca.consumer_adress) AS consumerAdress
-        FROM    sp_consumer_adress sca
-        WHERE   sca.consumer_no = #{consumerNo}
-        AND     sca.adress_no = 1
+    
+    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
+        SELECT 	(sc.consumer_no) AS consumerNo,
+                (sc.consumer_id) AS consumerId,
+                (sc.password) AS password,
+                (sc.nickname) AS nickname,
+                (sc.gender) AS gender,
+                (sc.adress) AS adress,
+                (sc.created_at) AS createAt
+        FROM 	sp_consumer sc
+        WHERE 	sc.consumer_no = #{consumerNo}
     </select>
 
     <!-- 고객 배송지 목록 삭제 -->

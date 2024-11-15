@@ -23,13 +23,18 @@
         <main>
             <div class="row">
                 <div class="col">
-                    <div class="row">
+                    <div class="row py-3">
                         <div class="col">
-                            리뷰목록
+                            최근 리뷰
                         </div>
                     </div>
                     <div class="row">
                         <div class="col" th:text="${reviewList.size()}+'개'"></div>
+                    </div>
+                    <div class="row py-3" th:if="${reviewList.size() == 0}">
+                        <div class="col">
+                            상품 리뷰가 없습니다. 상품을 구매하여 리뷰 작성해주세요
+                        </div>
                     </div>
                     <div class="row py-3 border-bottom" th:each="list : ${reviewList}">
                         <div class="col">

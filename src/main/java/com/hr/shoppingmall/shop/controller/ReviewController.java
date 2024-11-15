@@ -56,10 +56,13 @@ public class ReviewController {
 
     // 내 리뷰 목록 가져오기
     @RequestMapping("myReviewList")
-    public String myReviewList(HttpSession session){
+    public String myReviewList(HttpSession session, Model model){
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+
+        model.addAttribute("reviewList", reviewService.getMyReviewList(consumerInfo.getConsumerNo()));
         return "shop/review/myReviewList";
     }
 

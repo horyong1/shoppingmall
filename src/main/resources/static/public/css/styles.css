@@ -67,3 +67,28 @@ body{
 .link-dcr-none {
     text-decoration: none; /* 밑줄 제거 */
 }
+
+
+.imgaa{
+    width: 100%; /* 부모 요소의 너비에 맞춤 */
+    max-width: 200px; /* 최대 너비 설정 */
+    height: auto; /* 비율 유지 */
+    max-height: 240px; /* 최대 높이 설정 */
+    object-fit: cover; /* 비율을 유지하면서 잘리도록 설정 */
+}
+
+.test{
+    max-width: 100%; /* 부모 요소의 너비에 맞춤 */
+    width: 100%; /* 너비 100% 설정 */
+    height: auto; /* 비율 유지 */
+    position: absolute; /* 부모 요소에 대해 절대 위치 */
+    top: 0; /* 상단 정렬 */
+    left: 0; /* 왼쪽 정렬 */
+    z-index: 0; /* 쌓임 순서 */
+    object-fit: cover; /* 비율 유지하면서 영역을 채우도록 설정 */
+    margin: auto; /* 중앙 정렬 */
+    inset: 0; /* 모든 방향에서 0 간격 */
+}
+
+
+    

@@ -76,14 +76,15 @@ public class SellerController {
 
     // 상품 등록 프로세스
     @RequestMapping("registerProductProcess")
-    public String registerProductProcess(ProductDto params, HttpSession session, MultipartFile mainImgeUrl){
+    public String registerProductProcess(ProductDto params, HttpSession session,
+    @RequestParam("mainImgUrl") MultipartFile mainImgUrl){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
         
         SellerDto sellerInfo = getSellerInfo(session);
        
-        if(mainImgeUrl != null){
+        if(mainImgUrl != null){
             String rootPath = "C:/uploadfiles/";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
             String todayPath = sdf.format(new Date());
@@ -92,8 +93,8 @@ public class SellerController {
             if(!todayFolderForCreate.exists()){
                 todayFolderForCreate.mkdirs();
             }
-
-            String originalFilename = mainImgeUrl.getOriginalFilename();
+ 
+            String originalFilename = mainImgUrl.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
             long currentTime = System.currentTimeMillis();
 
@@ -103,7 +104,7 @@ public class SellerController {
             fileName += ext;
 
             try {
-                mainImgeUrl.transferTo(new File(rootPath+todayPath+fileName));
+                mainImgUrl.transferTo(new File(rootPath+todayPath+fileName));
             } catch (Exception e) {
                 e.printStackTrace();
             }

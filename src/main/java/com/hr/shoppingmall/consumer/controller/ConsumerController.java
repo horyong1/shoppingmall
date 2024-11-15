@@ -1,7 +1,5 @@
 package com.hr.shoppingmall.consumer.controller;
 
-import java.util.function.Consumer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
-import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
-import com.hr.shoppingmall.seller.dto.SellerDto;
-import com.hr.shoppingmall.seller.service.SellerService;
-import com.hr.shoppingmall.shop.dto.ProductDto;
-import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
@@ -79,7 +72,7 @@ public class ConsumerController {
         return "consumer/myPage";
     }
 
-    // 배송지 등록/수정 page
+    // 배송지 관리 page
     @RequestMapping("adressEdit")
     public String adressEditPage(HttpSession session, Model model){
         if(!isSellerLoggedIn(session)){
@@ -90,7 +83,8 @@ public class ConsumerController {
         if(consumerInfo == null){
             return "redirect:./loginPage";
         }
-
+        System.out.println("주소내놔  >>> " + consumerService.getDefaulteAdress(consumerInfo.getConsumerNo()) );
+        model.addAttribute("defaulteAdress", consumerService.getDefaulteAdress(consumerInfo.getConsumerNo()));
         model.addAttribute("adressList", consumerService.getAdressList(consumerInfo.getConsumerNo()));
 
         return "consumer/adressEdit";
@@ -122,6 +116,17 @@ public class ConsumerController {
         consumerService.deleteAdress(adressDto);
 
         return "redirect:./adressEdit";
+    }
+
+    // 기본배송지 수정
+    @RequestMapping("updateDefaulteAdress")
+    public String updateDefaulteAdress(HttpSession session){
+        if(!isSellerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getSellerInfo(session);
+        
+        return "redirect:/consumer/adressEdit";
     }
 
     // 주문 내역 리스트

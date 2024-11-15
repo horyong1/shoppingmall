@@ -21,12 +21,12 @@ public interface ConsumerSqlMapper {
     void createConsumerAdress(ConsumerAdressDto  consumerAdressDto);
     // 고객 배송지 목록
     List<ConsumerAdressDto> adresslistFindByConsumerId(int consumerNo);
-    // 고객 배송지 
-    ConsumerAdressDto adressFindByConsumerId(int consumerNo);
+    // 고객 기본 배송지 
+    ConsumerDto adressFindByConsumerId(int consumerNo);
     // 고객 배송지 삭제
     void deleteAdress(ConsumerAdressDto adressDto);
-
-   
+    
+    void updateDefaulteAdress(ConsumerDto consumerDto);
     
 
 

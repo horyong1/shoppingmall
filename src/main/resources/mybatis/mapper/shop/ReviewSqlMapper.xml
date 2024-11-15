@@ -70,4 +70,18 @@
         FROM 	sp_product_review spr
         WHERE 	spr.product_no = #{productNo}
     </select>
+
+    <!-- 내 리뷰 목록 -->
+    <select id="reviewFindByConsumerNo" resultType="com.hr.shoppingmall.consumer.dto.ProductReviewDto">
+        SELECT  (spr.review_no) AS reviewNo,
+                (spr.product_no) AS productNo,
+                (spr.consumer_no) AS consumerNo,
+                (spr.review_content) AS reviewContent,
+                (spr.rating) AS rating,
+                (spr.created_at) AS createdAt,
+                (spr.seller_reply) AS sellerReply,
+                (spr.reply_date) AS replyDate
+        FROM 	sp_product_review spr
+        WHERE 	consumer_no = #{consumerNo}
+    </select>
 </mapper>

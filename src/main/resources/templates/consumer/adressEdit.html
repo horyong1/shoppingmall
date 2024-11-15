@@ -24,42 +24,72 @@
             <div class="col fs-0-9">
                 <div class="row py-3 fs-3">
                     <div class="col text-center">
-                        배송지 등록 / 수정 
+                        배송지 관리
                     </div>
                 </div>
-                <div class="row pb-4 text-secondary">
+                <div class="row pb-4">
                     <div class="col">
-                        <div class="row border border-1 rounded-2 py-3 my-2" th:each="list : ${adressList}">
-                            <div class="col-auto align-self-center">
-                                <span th:text="${list.consumerAdress}"></span>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <a th:href="@{./deleteAdress(adressNo=${list.adressNo})}">
-                                    <button class="btn btn-danger btn-sm">삭제</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row pt-4">
-                    <div class="col">
-                        신규 배송지 입력
-                    </div>
-                </div>
-                <form action="./registerAdress" class="row" method="post">
-                    <div class="col p-0">
-                        <div class="row py-2">
-                            <div class="col">
-                                <input class="form-control" name="consumerAdress" type="text" placeholder="새로운 주소 입력">
-                            </div>
-                        </div>
                         <div class="row">
-                            <div class="col d-grid">
-                                <input class="btn btn-primary btn-sm" type="submit" value="등록">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col fw-bold">
+                                        기본 배송지
+                                    </div>
+                                </div>
+                                <div class="row border border-1 rounded-2 py-3 my-2">
+                                    <div class="col" th:text="${defaulteAdress.adress}">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-5">
+                            <div class="col fw-bold">
+                                신규 배송지 입력
+                            </div>
+                        </div>
+                        <form action="./registerAdress" class="row " method="post">
+                            <div class="col p-0">
+                                <div class="row py-2">
+                                    <div class="col">
+                                        <input class="form-control" name="consumerAdress" type="text" placeholder="새로운 주소 입력">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col d-grid">
+                                        <input class="btn btn-primary btn-sm" type="submit" value="등록">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row pt-5">
+                            <div class="col fw-bold">
+                                배송지 목록
+                            </div>
+                        </div>
+                        <div class="row border border-1 rounded-2 py-3 my-2" th:each="list : ${adressList}">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-auto align-self-center">
+                                        <span th:text="${list.consumerAdress}"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col ms-auto">
+                                        <a class="d-grid link-dcr-none" th:href="@{./updateDefaulteAdress(adressNo=${list.adressNo})}">
+                                            <button class="btn btn-secondary btn-sm">기본배송지 변경</button>
+                                        </a>
+                                    </div>
+                                    <div class="col ms-auto">
+                                        <a class="d-grid link-dcr-none" th:href="@{./deleteAdress(adressNo=${list.adressNo})}">
+                                            <button class="btn btn-danger btn-sm">삭제</button>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </main>
         <!-- footer start -->
