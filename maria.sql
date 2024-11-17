@@ -13,6 +13,7 @@ CREATE TABLE  sp_consumer  (
 	 password VARCHAR(160),
 	 nickname VARCHAR(30),
 	 gender VARCHAR(1),
+	 adress VARCHAR(400),
 	 created_at DATETIME DEFAULT NOW()	
 );
 
@@ -107,4 +108,14 @@ CREATE TABLE  sp_product_wishlist  (
 	 consumer_no  INT,
 	 product_no  INT,
 	 created_at  DATETIME DEFAULT NOW()		 
+);
+
+#장바구니
+DROP TABLE sp_cart;
+CREATE TABLE sp_cart (
+	cart_no INT PRIMARY KEY AUTO_INCREMENT,
+	consumer_no	INT,
+	product_no INT,
+	quantity INT,
+	created_at DATETIME DEFAULT NOW()
 );
