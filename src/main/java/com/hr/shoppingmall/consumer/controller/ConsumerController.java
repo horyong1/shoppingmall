@@ -83,7 +83,6 @@ public class ConsumerController {
         if(consumerInfo == null){
             return "redirect:./loginPage";
         }
-        System.out.println("주소내놔  >>> " + consumerService.getDefaulteAdress(consumerInfo.getConsumerNo()) );
         model.addAttribute("defaulteAdress", consumerService.getDefaulteAdress(consumerInfo.getConsumerNo()));
         model.addAttribute("adressList", consumerService.getAdressList(consumerInfo.getConsumerNo()));
 
@@ -120,12 +119,12 @@ public class ConsumerController {
 
     // 기본배송지 수정
     @RequestMapping("updateDefaulteAdress")
-    public String updateDefaulteAdress(HttpSession session){
+    public String updateDefaulteAdress(HttpSession session, @RequestParam("adressNo")int adressNo){
         if(!isSellerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
         ConsumerDto consumerInfo = getSellerInfo(session);
-        
+        consumerService.updateDefaulteAdress(consumerInfo.getConsumerNo(),adressNo);
         return "redirect:/consumer/adressEdit";
     }
 

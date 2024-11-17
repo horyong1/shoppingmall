@@ -21,7 +21,7 @@
     <update id="updateDefaulteAdress">
         UPDATE  sp_consumer 
         SET     adress = #{adress}
-        WHERE   consumerNo = #{consumerNo}
+        WHERE   consumer_no = #{consumerNo}
     </update>
 
     <!-- 소비자 로그인 아이디 비밀번호 확인 -->
@@ -37,7 +37,6 @@
         AND 	sc.password = #{password}
     </select>
 
-
     <!-- 소비자 번호로 정보 조회 -->
     <select id="findByNo" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
         SELECT 	(sc.consumer_no) AS consumerNo,
@@ -45,6 +44,7 @@
                 (sc.password) AS password,
                 (sc.nickname) AS nickname,
                 (sc.gender) AS gender,
+                (sc.adress) AS adress,
                 (sc.created_at) AS createAt
         FROM 	sp_consumer sc
         WHERE 	sc.consumer_no = #{consumerNo}
@@ -71,18 +71,6 @@
         WHERE   consumer_no = #{consumerNo}
     </select>
 
-    
-    <select id="adressFindByConsumerId" resultType="com.hr.shoppingmall.consumer.dto.ConsumerDto">
-        SELECT 	(sc.consumer_no) AS consumerNo,
-                (sc.consumer_id) AS consumerId,
-                (sc.password) AS password,
-                (sc.nickname) AS nickname,
-                (sc.gender) AS gender,
-                (sc.adress) AS adress,
-                (sc.created_at) AS createAt
-        FROM 	sp_consumer sc
-        WHERE 	sc.consumer_no = #{consumerNo}
-    </select>
 
     <!-- 고객 배송지 목록 삭제 -->
     <delete id="deleteAdress">
@@ -90,6 +78,16 @@
         WHERE   adress_no = ${adressNo}
         AND     consumer_no = ${consumerNo}
     </delete>
+
+    <!-- 배송지 목록 중 기본 배송지 변경 할 주소 가져오기 -->
+    <select id="adressListFindByConsumerIdAndAdressNo" resultType="com.hr.shoppingmall.consumer.dto.ConsumerAdressDto">
+        SELECT  (sca.adress_no) AS adressNo,
+                (sca.consumer_no) AS consumerNo,
+                (sca.consumer_adress) AS consumerAdress
+        FROM    sp_consumer_adress sca
+        WHERE   consumer_no = #{consumerNo}
+        AND     adress_no = #{adressNo}
+    </select>
 
     
 </mapper>

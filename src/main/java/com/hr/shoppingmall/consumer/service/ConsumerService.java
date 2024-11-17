@@ -38,9 +38,10 @@ public class ConsumerService {
 
     // 기본 배송지 
     public ConsumerDto getDefaulteAdress(int consumerNo){
-        return consumerSqlMapper.adressFindByConsumerId(consumerNo);
+        return consumerSqlMapper.findByNo(consumerNo);
     }
 
+    
     // 배송지 목록 
     public List<ConsumerAdressDto> getAdressList(int consumerId){
         return consumerSqlMapper.adresslistFindByConsumerId(consumerId);
@@ -50,5 +51,18 @@ public class ConsumerService {
     public void deleteAdress(ConsumerAdressDto adressDto){
         consumerSqlMapper.deleteAdress(adressDto);
     }
+    
+    // 
+    public void updateDefaulteAdress(int consumerNo,int adressNo){
+        ConsumerAdressDto adressDto = new ConsumerAdressDto();
+        adressDto.setAdressNo(adressNo);
+        adressDto.setConsumerNo(consumerNo);
+        adressDto = consumerSqlMapper.adressListFindByConsumerIdAndAdressNo(adressDto);
 
+        ConsumerDto consumerDto = new ConsumerDto();
+        consumerDto.setConsumerNo(consumerNo);
+        consumerDto.setAdress(adressDto.getConsumerAdress());
+        consumerSqlMapper.updateDefaulteAdress(consumerDto);
+
+    }
 }

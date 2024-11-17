@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
-import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 
 @Mapper
 public interface ConsumerSqlMapper {
@@ -21,13 +20,11 @@ public interface ConsumerSqlMapper {
     void createConsumerAdress(ConsumerAdressDto  consumerAdressDto);
     // 고객 배송지 목록
     List<ConsumerAdressDto> adresslistFindByConsumerId(int consumerNo);
-    // 고객 기본 배송지 
-    ConsumerDto adressFindByConsumerId(int consumerNo);
     // 고객 배송지 삭제
     void deleteAdress(ConsumerAdressDto adressDto);
-    
+    // 고객 기본 배송지 수정
     void updateDefaulteAdress(ConsumerDto consumerDto);
-    
-
+    // 기본배송지 수정을 위한 데이터 1개 가져오기
+    ConsumerAdressDto adressListFindByConsumerIdAndAdressNo(ConsumerAdressDto adressDto);
 
 }
