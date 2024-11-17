@@ -121,6 +121,13 @@ public class ShopController {
         
         return "shop/productDetailPage";
     }
+
+
+    // 장바구니 
+    @RequestMapping("cartPage")
+    public String cartPage(){
+        return "shop/cartPage";
+    }
     
     
 
