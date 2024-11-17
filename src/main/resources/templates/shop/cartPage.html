@@ -13,7 +13,7 @@
         <!-- navbar start -->
         <nav>
             <div class="row">
-                <div class="col-6 mx-auto">
+                <div class="col">
                     <div th:replace="~{common/nav::topNavi}"></div>
                 </div>
             </div>
@@ -25,9 +25,48 @@
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <div class="row">
+                            <div class="row py-2">
+                                <div class="col fs-0-8" th:text="'전체'+${cartList.size()}">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
                                 <div class="col">
-                                    <input type="checkbox" class="form-check-input">
+                                    <div class="row py-3 border-bottom" th:each="list : ${cartList}">
+                                        <div class="col-1 p-0 ms-3">
+                                            <input type="checkbox" class="form-check-input" checked>
+                                        </div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col-auto p-0">
+                                                    <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 6em; height: 6.5em;" >
+                                                </div>
+                                                <div class="col-auto me-auto fs-0-8 align-self-center">
+                                                    <div class="row">
+                                                        <div class="col" th:text="${list.sellerDto.shopName}"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col" th:text="${list.productDto.productName}"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col" th:text="${list.cartDto.quantity}+'개'"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col" th:text="${list.resultPrice}+'원'"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-2">
+                                                <div class="col d-grid p-0 me-2">
+                                                    <button class="btn btn-outline-dark btn-sm">옵션변경</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-3">
+                                <div class="col d-grid">
+                                    <input type="submit" class="btn btn-dark btn-sm" value="구매하기">
                                 </div>
                             </div>
                         </div>

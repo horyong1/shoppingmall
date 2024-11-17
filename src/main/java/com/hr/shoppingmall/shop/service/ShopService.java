@@ -14,6 +14,7 @@ import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
+import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
@@ -235,6 +236,28 @@ public class ShopService {
         }else{
             shopSqlMapper.removeFromWishlist(wishlistDto);
         }
+    }
+
+
+    public List<Map<String,Object>> getConsumerCartList(int consumerNo){
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        for(CartDto cartDto : shopSqlMapper.cartFindByConsumerNo(consumerNo)){
+            Map<String,Object> map = new HashMap<>();
+            ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+
+            String resultPrice = decimelFormatter(productDto.getPrice() * cartDto.getQuantity());
+
+            map.put("cartDto", cartDto);
+            map.put("productDto", productDto);
+            map.put("sellerDto", sellerDto);
+            map.put("resultPrice", resultPrice);
+
+            list.add(map);
+        }
+
+        return list;
     }
 
     /**

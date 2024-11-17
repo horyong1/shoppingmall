@@ -125,9 +125,16 @@ public class ShopController {
 
     // 장바구니 
     @RequestMapping("cartPage")
-    public String cartPage(){
+    public String cartPage(HttpSession session, Model model){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        System.out.println("정보 내놔 >>>>>  " + shopService.getConsumerCartList(consumerInfo.getConsumerNo()));
+        model.addAttribute("cartList", shopService.getConsumerCartList(consumerInfo.getConsumerNo()));
         return "shop/cartPage";
     }
+
     
     
 
