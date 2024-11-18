@@ -55,7 +55,7 @@
                             </div>
                             <div class="row pb-3" th:unless="${cartList.size() == 0}">
                                 <div class="col">
-                                    <div class="row py-3 border-bottom" th:each="list : ${cartList}">
+                                    <div class="row py-3 border-bottom" th:each="list,iterStat : ${cartList}">
                                         <div class="col-1 p-0 ms-3">
                                             <input type="checkbox" class="form-check-input" checked>
                                         </div>
@@ -86,8 +86,8 @@
                                             </div>
                                             <div class="row pt-2">
                                                 <form class="col d-grid p-0 me-2" action="./updateCart" method="get">
-                                                    <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">옵션변경</button>
-                                                    <div class="offcanvas offcanvas-bottom mw px-2" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="max-width: 600px;">
+                                                    <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="offcanvas" th:data-bs-target="'#offcanvasBottom' + ${iterStat.index}" aria-controls="offcanvasBottom">옵션변경</button>
+                                                    <div class="offcanvas offcanvas-bottom mw px-2" tabindex="-1" th:id="'offcanvasBottom'+${iterStat.index}" aria-labelledby="offcanvasBottomLabel" style="max-width: 600px;">
                                                         <div class="offcanvas-header">
                                                             <h5 class="offcanvas-title" id="offcanvasBottomLabel">옵션변경</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>

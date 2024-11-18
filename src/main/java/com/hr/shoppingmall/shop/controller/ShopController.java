@@ -169,6 +169,7 @@ public class ShopController {
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
+        System.out.println("옵션변경" + params);
         shopService.updateCart(params);
         return "redirect:/shop/cartPage";
     }
