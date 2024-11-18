@@ -281,6 +281,15 @@ public class ShopService {
     }
 
     /**
+     * 
+     * @param price
+     * @return
+     */
+    public void updateCart(CartDto cartDto){
+        shopSqlMapper.updateCart(cartDto);
+    }
+
+    /**
      * 금액 #,### 포멧터
      * @param price
      * @return String

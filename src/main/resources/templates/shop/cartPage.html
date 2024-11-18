@@ -59,7 +59,12 @@
                                         <div class="col-1 p-0 ms-3">
                                             <input type="checkbox" class="form-check-input" checked>
                                         </div>
-                                        <div class="col">
+                                        <div class="col position-relative">
+                                            <span class="position-absolute top-0 end-0 me-2">
+                                                <a th:href="@{/shop/deleteCart(cartNo=${list.cartDto.cartNo})}">
+                                                    <i class="bi bi-x-lg fs-0-8 text-secondary"></i>
+                                                </a>
+                                            </span>
                                             <div class="row">
                                                 <div class="col-auto p-0">
                                                     <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 6em; height: 6.5em;" >
@@ -80,9 +85,26 @@
                                                 </div>
                                             </div>
                                             <div class="row pt-2">
-                                                <div class="col d-grid p-0 me-2">
-                                                    <button class="btn btn-outline-dark btn-sm">옵션변경</button>
-                                                </div>
+                                                <form class="col d-grid p-0 me-2" action="./updateCart" method="get">
+                                                    <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">옵션변경</button>
+                                                    <div class="offcanvas offcanvas-bottom mw px-2" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="max-width: 600px;">
+                                                        <div class="offcanvas-header">
+                                                            <h5 class="offcanvas-title" id="offcanvasBottomLabel">옵션변경</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="offcanvas-body small">
+                                                            <input type="hidden" name="cartNo" th:value="${list.cartDto.cartNo}">
+                                                            <select class="form-select form-select-sm" name="quantity">
+                                                                <option value="1" selected>1개</option>
+                                                                <option value="2">2개</option>
+                                                                <option value="3">3개</option>
+                                                                <option value="4">4개</option>
+                                                                <option value="5">5개</option>
+                                                            </select>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-outline-dark btn-sm mx-3 mb-2">옵션변경</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

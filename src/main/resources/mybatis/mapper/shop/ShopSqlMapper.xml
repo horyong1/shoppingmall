@@ -160,11 +160,19 @@
         VALUES  (#{consumerNo}, #{productNo}, #{quantity})
     </select>
 
+    <!-- 장바구니 삭제 -->
     <delete id="deleteCart">
         DELETE 
         FROM    sp_cart
         WHERE   cart_no = #{cartNo}
     </delete>
+
+    <!-- 장바구니 옵션 변경 -->
+    <update id="updateCart">
+        UPDATE  sp_cart
+        SET     quantity = #{quantity}
+        WHERE   cart_no = #{cartNo}
+    </update>
 
     <!-- 장바구니 리스트 -->
     <select id="cartFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.CartDto">

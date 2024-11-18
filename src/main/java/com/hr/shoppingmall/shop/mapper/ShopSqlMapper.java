@@ -58,6 +58,9 @@ public interface ShopSqlMapper {
     // 장바구니 삭제
     void deleteCart(int cartNo);
 
+    // 장바구니 옵션변경
+    void updateCart(CartDto cartDto);
+
     // 장바구니 리스트
     List<CartDto> cartFindByConsumerNo(int consumerNo);
 

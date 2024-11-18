@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -152,12 +153,23 @@ public class ShopController {
         return "redirect:/shop/cartPage";
     }
 
+    // 장바구니 삭제
     @RequestMapping("deleteCart")
     public String deleteCart(@RequestParam("cartNo") int cartNo,HttpSession session){
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
         shopService.deleteCart(cartNo);
+        return "redirect:/shop/cartPage";
+    }
+
+    // 장바구니 옵션변경
+    @RequestMapping("updateCart")
+    public String updateCart(HttpSession session,@ModelAttribute CartDto params ){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        shopService.updateCart(params);
         return "redirect:/shop/cartPage";
     }
 
