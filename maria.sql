@@ -40,7 +40,7 @@ CREATE TABLE  sp_product  (
 	 created_at  DATETIME DEFAULT NOW()		 
 );
 
-#상품카테고리
+#상품 카테고리
 DROP TABLE sp_product_category;
 CREATE TABLE  sp_product_category  (
 	 category_no 	INT PRIMARY KEY AUTO_INCREMENT,
@@ -53,11 +53,20 @@ DROP TABLE sp_product_purchase;
 CREATE TABLE  sp_product_purchase  (
 	 purchase_no  INT PRIMARY KEY AUTO_INCREMENT,
 	 consumer_no  INT,
-	 product_no  INT,
-	 quantity  INT,
 	 shopping_adress  VARCHAR(400),
 	 purchase_date  DATETIME DEFAULT NOW(),
 	 state  VARCHAR(10)	 
+);
+
+#상품 구매 리스트
+DROP TABLE sp_product_purchase_list;
+CREATE TABLE  sp_product_purchase_list  (
+	 purchase_list_no INT PRIMARY KEY AUTO_INCREMENT,
+	 purchase_no INT,
+	 product_no INT,
+	 quantity INT,
+	 payment_price INT,
+	 created_at DATETIME DEFAULT now()
 );
 
 #판매자
