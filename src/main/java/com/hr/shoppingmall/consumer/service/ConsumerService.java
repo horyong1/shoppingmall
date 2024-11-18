@@ -31,6 +31,11 @@ public class ConsumerService {
         return consumerSqlMapper.findByIdAndPassword(consumerDto);
     }
 
+    // 번호로 고객 조회
+    public ConsumerDto getConsumer(int consumerNo){
+        return consumerSqlMapper.findByNo(consumerNo);
+    }
+
     // 배송지 등록
     public void registerAdress(ConsumerAdressDto adressDto){
         consumerSqlMapper.createConsumerAdress(adressDto);
@@ -52,7 +57,7 @@ public class ConsumerService {
         consumerSqlMapper.deleteAdress(adressDto);
     }
     
-    // 
+    // 기본 배송지 수정
     public void updateDefaulteAdress(int consumerNo,int adressNo){
         ConsumerAdressDto adressDto = new ConsumerAdressDto();
         adressDto.setAdressNo(adressNo);

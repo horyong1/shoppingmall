@@ -53,11 +53,12 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="row pb-3" th:unless="${cartList.size() == 0}">
                                 <div class="col">
                                     <div class="row py-3 border-bottom" th:each="list,iterStat : ${cartList}">
                                         <div class="col-1 p-0 ms-3">
-                                            <input type="checkbox" class="form-check-input" checked>
+                                            <input name="cartNos" th:value="${list.cartDto.cartNo}" type="checkbox" class="form-check-input" checked>
                                         </div>
                                         <div class="col position-relative">
                                             <span class="position-absolute top-0 end-0 me-3">
@@ -108,20 +109,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row py-3">
+                                </div>
+                            </div>
+                            <form class="row py-3" action="./paymentPage" method="post"> <!-- action URL 및 method 추가 -->
+                                <div class="col">
+                                    <div class="row" th:each="data : ${cartList}">
+                                        <div class="col" >
+                                            <input type="hidden" name="cartNos" th:value="${data.cartDto.cartNo}"> <!-- name 속성을 추가 -->
+                                        </div>
+                                    </div>
+                                    <div class="row" th:if="${cartList.size() > 0}">
                                         <div class="col d-grid">
-                                            <input type="submit" class="btn btn-dark btn-sm" value="구매하기">
+                                            <button type="submit" class="btn btn-dark btn-sm">구매하기</button> <!-- 버튼 -->
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
         <!-- footer start -->
-        <div class="row py-5"></div> 
+        <div class="row py-5"></div>  
         <footer>
             <div class="row">
                 <div class="col">

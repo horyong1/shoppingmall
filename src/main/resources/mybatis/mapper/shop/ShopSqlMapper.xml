@@ -89,6 +89,7 @@
         WHERE 	spp.consumer_no = #{consumerNo}
         ORDER BY spp.purchase_date DESC
     </select>
+    
     <!-- 고객 상품 구매 상세 목록 -->
     <select id="purchaseFindByConsumerNoAndPurchaseNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
         SELECT 	(spp.purchase_no) AS purchaseNo,
@@ -103,6 +104,8 @@
         AND		spp.purchase_no = #{purchaseNo}
     </select>
 
+    
+    
     <!-- 상품 찜 추가-->
     <insert id="addToWishlist">
         INSERT 
@@ -184,5 +187,15 @@
         FROM    sp_cart sc
         WHERE   sc.consumer_no = #{consumerNo}
     </select>
-    
+
+    <!-- 결제 창으로 데이터 넘기기 -->
+     <select id="cartFindByCartNo" resultType="com.hr.shoppingmall.shop.dto.CartDto">
+        SELECT  (sc.cart_no) AS cartNo,
+                (sc.consumer_no) AS consumerNo,
+                (sc.product_no) AS productNo,
+                (sc.quantity) AS quantity,
+                (sc.created_at) AS createdAt
+        FROM    sp_cart sc
+        WHERE   sc.cart_no = #{cartNo}
+    </select>
 </mapper>

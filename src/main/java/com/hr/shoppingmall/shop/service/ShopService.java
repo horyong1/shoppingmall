@@ -18,7 +18,9 @@ import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
+import com.hr.shoppingmall.shop.dto.PurchaseListDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
+import com.hr.shoppingmall.shop.mapper.PurchaseListSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
 
@@ -33,6 +35,8 @@ public class ShopService {
     private SellerSqlMapper sellerSqlMapper;
     @Autowired
     private ReviewSqlMapper reviewSqlMapper;
+    @Autowired
+    private PurchaseListSqlMapper purchaseListSqlMapper;
 
     /**
      * 카테고리 전체 목록
@@ -95,57 +99,50 @@ public class ShopService {
      * @param quantity
      * @return List<Map<String,Object>>
      */
-    public List<Map<String,Object>> registerPurchase(ShoppingPurchaseDto purchaseDto){
-        List<Map<String,Object>> list = new ArrayList<>();
-        Map<String,Object> map = new HashMap<>();
+    public List<Map<String,Object>> registerPurchase(ShoppingPurchaseDto purchaseDto, int[] cartNos){
         ConsumerDto consumerDto = consumerSqlMapper.findByNo(purchaseDto.getConsumerNo());
-        System.out.println("주소 " + purchaseDto);
-        
         purchaseDto.setShoppingAdress(consumerDto.getAdress());
-
-        shopSqlMapper.createPurchase(purchaseDto);
-        shopSqlMapper.updateTotalQuantity(purchaseDto);
+        purchaseListSqlMapper.createPurchase(purchaseDto);
         
-        ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
-        String totalPrice = decimelFormatter(purchaseDto.getQuantity() * productDto.getPrice());
-        SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+
+        for(int cartNo : cartNos){
+            PurchaseListDto purchaseListDto = new PurchaseListDto();
+            CartDto cartDto = shopSqlMapper.cartFindByCartNo(cartNo);
+            purchaseListDto.setPurchaseNo(purchaseDto.getPurchaseNo());
+            purchaseListDto.setProductNo(cartDto.getProductNo());
+            purchaseListDto.setQuantity(cartDto.getQuantity());
+
+            ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
+            purchaseListDto.setPaymentPrice(cartDto.getQuantity() * productDto.getPrice());
+
+            purchaseListSqlMapper.createPurchaseList(purchaseListDto);
+            shopSqlMapper.deleteCart(cartNo);
+
+        }
+        return getPurchaseList(purchaseDto.getPurchaseNo());
         
-        map.put("productDto",productDto);
-        map.put("totalPrice",totalPrice);
-        map.put("purchaseDto",shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto));
-        map.put("sellerDto", sellerDto);
+        
 
-        list.add(map);
-
-        return list;
     }
-
-    /**
-     * 고객 상품 구매 목록 리스트 
-     * @param consumerNo
-     * @return List<Map<String,Object>>
-     */
-    public List<Map<String,Object>> getPurchaseList(int consumerNo){
+    // 구매 번호로 찾기 
+    public List<Map<String,Object>> getPurchaseList(int purchaseListNo){
         List<Map<String,Object>> list = new ArrayList<>();
-        List<ShoppingPurchaseDto> purchaseList = shopSqlMapper.purchaseFindByConsumerNo(consumerNo);
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        List<PurchaseListDto> purchaseListDtos = purchaseListSqlMapper.purchaseListFindByPurchaseNo(purchaseListNo);
 
-        for(ShoppingPurchaseDto purchaseDto : purchaseList){
-            Map<String, Object> map = new HashMap<>();
-            
-            int productNo = purchaseDto.getProductNo();
-            ProductDto productDto =  shopSqlMapper.findByProductNo(productNo);
-
-            String resultPrice = decimalFormat.format(productDto.getPrice()*purchaseDto.getQuantity());
-
+        for(PurchaseListDto purchaseListDto : purchaseListDtos){
+            Map<String,Object> map = new HashMap<>();
+            ProductDto productDto = shopSqlMapper.findByProductNo(purchaseListDto.getProductNo());
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             map.put("productDto", productDto);
-            map.put("purchaseDto", purchaseDto);
-            map.put("totalPrice",resultPrice);
-            
+            map.put("purchaseListDto",purchaseListDto);
+            map.put("sellerDto",sellerDto);
+
             list.add(map);
         }
         return list;
     }
+
+    
 
     /**
      * 주문 내역 리스트 상세 정보
@@ -281,12 +278,75 @@ public class ShopService {
     }
 
     /**
-     * 
+     * 장바구니 옵션 수정
      * @param price
      * @return
      */
     public void updateCart(CartDto cartDto){
         shopSqlMapper.updateCart(cartDto);
+    }
+
+    /**
+     * 장바구니 총 결제금액 가져오기
+     * @param params
+     * @return
+     */
+    public String getTotalPrice(int[] params){
+        int sumPrice = 0;
+        for(int cartNo : params){
+            CartDto cartDto = shopSqlMapper.cartFindByCartNo(cartNo);
+            ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
+            sumPrice += productDto.getPrice() * cartDto.getQuantity();
+        }
+        String totalPrice = decimelFormatter(sumPrice);
+        return totalPrice;
+    }
+
+    /**
+     * 결제창 리스트 가져오기
+     * @param params
+     * @return List
+     */
+    public List<Map<String,Object>> getPaymentList(int[] params){
+        List<Map<String,Object>> list = new ArrayList<>();
+        
+        int sumPrice = 0;
+        for(int cartNo : params){
+
+            Map<String,Object> map = new HashMap<>();
+            CartDto cartDto = shopSqlMapper.cartFindByCartNo(cartNo);
+            ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+            
+            String resultPrice = decimelFormatter(cartDto.getQuantity() * productDto.getPrice());
+            sumPrice += productDto.getPrice() * cartDto.getQuantity();
+            System.out.println("sumPrice" + sumPrice);
+            map.put("cartDto", cartDto);
+            map.put("productDto", productDto);
+            map.put("sellerDto", sellerDto);
+            map.put("resultPrice", resultPrice);
+            // map.put("totalPrice", totalPrice);
+            
+            list.add(map);
+        }
+        
+        return list;
+    }
+
+    /**
+     * 총 결제금액 가져오기
+     * @param params
+     * @return
+     */
+    public String getPurchaseTotalPrice(int purchaseNo){
+        List<PurchaseListDto> list = purchaseListSqlMapper.purchaseListFindByPurchaseNo(purchaseNo);
+        int sumPrice =0;
+        for(PurchaseListDto dto : list){
+            ProductDto productDto = shopSqlMapper.findByProductNo(dto.getProductNo());
+            sumPrice += dto.getQuantity() * productDto.getPrice();
+        }
+        String totalPrice = decimelFormatter(sumPrice);
+        return totalPrice;
     }
 
     /**

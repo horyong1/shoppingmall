@@ -64,4 +64,7 @@ public interface ShopSqlMapper {
     // 장바구니 리스트
     List<CartDto> cartFindByConsumerNo(int consumerNo);
 
+    // 장바구니에서 결제창으로 데이터 보내기
+    CartDto cartFindByCartNo(int cartNo);
+
 }

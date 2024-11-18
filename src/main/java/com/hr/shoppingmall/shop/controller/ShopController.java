@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.consumer.service.ConsumerService;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
@@ -32,6 +33,8 @@ public class ShopController {
     private SellerService sellerService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ConsumerService consumerService;
 
     // 메인 페이지
     @RequestMapping("mainPage")
@@ -82,14 +85,30 @@ public class ShopController {
             purchaseDto.setProductNo(productNo);
             purchaseDto.setQuantity(Integer.parseInt(count)); 
             
-            List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto);
+            // List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto);
             
 
             
-            model.addAttribute("purchaseList", list);
+            // model.addAttribute("purchaseList", list);
             model.addAttribute("consumerInfo", consumerInfo);
 
             return "shop/purchaseSuccess";
+    }
+
+    // 결제진행 프로세스
+    @RequestMapping("purchaseProcess")
+    public String purchaseProcess(HttpSession session, Model model, 
+        @RequestParam("cartNos")int[] cartNos){
+            if(!isConsumerLoggedIn(session)){
+                return "redirect:/consumer/loginPage";
+            }
+            ConsumerDto consumerInfo = getConsumerInfo(session);
+            ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
+            purchaseDto.setConsumerNo(consumerInfo.getConsumerNo());
+           
+            List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto,cartNos); 
+            model.addAttribute("paymentList",  list);
+        return"shop/purchaseSuccess";
     }
 
     // 검색화면
@@ -169,9 +188,21 @@ public class ShopController {
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
-        System.out.println("옵션변경" + params);
         shopService.updateCart(params);
         return "redirect:/shop/cartPage";
+    }
+
+    // 구매 버튼 클릭 후 결제 페이지 넘어가기
+    @RequestMapping("paymentPage")
+    public String paymentPage(HttpSession session, Model model, @RequestParam("cartNos") int[] params){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        model.addAttribute("consumerDto", consumerService.getConsumer(consumerInfo.getConsumerNo()));
+        model.addAttribute("paymentList", shopService.getPaymentList(params));
+        model.addAttribute("totalPrice", shopService.getTotalPrice(params));
+        return "shop/paymentPage";
     }
 
     // 세션 로그인 체크
