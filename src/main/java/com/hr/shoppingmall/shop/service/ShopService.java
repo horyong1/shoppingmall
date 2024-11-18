@@ -238,7 +238,11 @@ public class ShopService {
         }
     }
 
-
+    /**
+     * 장바구니 리스트
+     * @param consumerNo
+     * @return List
+     */
     public List<Map<String,Object>> getConsumerCartList(int consumerNo){
         List<Map<String,Object>> list = new ArrayList<>();
 
@@ -258,6 +262,22 @@ public class ShopService {
         }
 
         return list;
+    }
+
+    /**
+     * 장바구니 추가
+     * @param cartDto
+     */
+    public void registerCart(CartDto cartDto){
+        shopSqlMapper.addCart(cartDto);
+    }
+
+    /**
+     * 장바구니 삭제
+     * @param cartNo
+     */
+    public void deleteCart(int cartNo){
+        shopSqlMapper.deleteCart(cartNo);
     }
 
     /**

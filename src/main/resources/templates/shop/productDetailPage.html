@@ -61,9 +61,9 @@
                         <div class="col fs-0-9 fw-bold" th:text="${productMap.price}+'원'"></div>
                     </div>
                     <div class="row py-2">
-                        <div class="col">
+                        <div class="col p-0 px-2">
                             <input type="hidden" name="productNo" th:value="${productMap.productDto.productNo}">
-                            <select class="form-select" name="count">
+                            <select class="form-select form-select-sm" name="count">
                                 <option selected>--수량을 선택하세요--</option>
                                 <option value="1">1개</option>
                                 <option value="2">2개</option>
@@ -75,9 +75,18 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col d-grid">
-                            <input th:if="${productMap.productDto.totalQuantity > 0}" type="submit" class="btn btn-dark fs-0-8" value="구매하기">
-                            <input th:unless="${productMap.productDto.totalQuantity > 0}" type="button" class="btn btn-secondary" disabled="true" value="품절">
+                        <div class="col d-grid" th:if="${productMap.productDto.totalQuantity > 0}">
+                            <div class="row">
+                                <div class="col d-grid p-0 ps-2">
+                                    <input type="submit" formaction="/shop/registerCart" class="btn btn-outline-dark btn-sm fs-0-8" value="장바구니">
+                                </div>
+                                <div class="col d-grid p-0 px-2">
+                                    <input type="submit" class="btn btn-dark btn-sm fs-0-8" value="구매하기">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-grid" th:unless="${productMap.productDto.totalQuantity > 0}">
+                            <input type="button" class="btn btn-secondary" disabled="true" value="품절">
                         </div>
                     </div>
                     <div class="row py-4">

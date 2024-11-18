@@ -29,7 +29,31 @@
                                 <div class="col fs-0-8" th:text="'전체'+${cartList.size()}">
                                 </div>
                             </div>
-                            <div class="row pb-3">
+                            <div class="row text-center pt-5" th:if="${cartList.size() == 0}">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <span class="fw-bold fs-0-9">장바구니에 담은 상품이 없어요</span><br>
+                                            <span class="text-secondary fs-0-8">상품을 추가해보세요</span>
+                                        </div>
+                                    </div>
+                                    <div class="row py-2">
+                                        <div class="col">
+                                            <a class="link-dcr-none border border-1 rounded-2 p-1 fs-0-7 text-dark" href="/consumer/wishlist">
+                                                찜한 상품 보러가기
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-5">
+                                        <div class="col ">
+                                            <a class="link-dcr-none d-grid" href="/shop/mainPage">
+                                                <button class="btn btn-dark btn-sm">쇼핑 계속하기</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-3" th:unless="${cartList.size() == 0}">
                                 <div class="col">
                                     <div class="row py-3 border-bottom" th:each="list : ${cartList}">
                                         <div class="col-1 p-0 ms-3">
@@ -62,11 +86,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row py-3">
-                                <div class="col d-grid">
-                                    <input type="submit" class="btn btn-dark btn-sm" value="구매하기">
+                                    <div class="row py-3">
+                                        <div class="col d-grid">
+                                            <input type="submit" class="btn btn-dark btn-sm" value="구매하기">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

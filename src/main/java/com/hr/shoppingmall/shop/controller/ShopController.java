@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
+import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
@@ -123,20 +124,42 @@ public class ShopController {
     }
 
 
-    // 장바구니 
+    // 장바구니 페이지
     @RequestMapping("cartPage")
     public String cartPage(HttpSession session, Model model){
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
         ConsumerDto consumerInfo = getConsumerInfo(session);
-        System.out.println("정보 내놔 >>>>>  " + shopService.getConsumerCartList(consumerInfo.getConsumerNo()));
         model.addAttribute("cartList", shopService.getConsumerCartList(consumerInfo.getConsumerNo()));
         return "shop/cartPage";
     }
 
     
-    
+    // 장바구니 추가
+    @RequestMapping("registerCart")
+    public String registerCart(HttpSession session,CartDto params,
+    @RequestParam(value="count")String count){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        params.setQuantity(Integer.parseInt(count));
+        params.setConsumerNo(consumerInfo.getConsumerNo());
+
+        shopService.registerCart(params);
+
+        return "redirect:/shop/cartPage";
+    }
+
+    @RequestMapping("deleteCart")
+    public String deleteCart(@RequestParam("cartNo") int cartNo,HttpSession session){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        shopService.deleteCart(cartNo);
+        return "redirect:/shop/cartPage";
+    }
 
     // 세션 로그인 체크
     private boolean isConsumerLoggedIn(HttpSession session) {

@@ -52,6 +52,12 @@ public interface ShopSqlMapper {
     // 좋아요 개수
     int wishlistCount(int productNo);
 
+    // 장바구니 추가
+    void addCart(CartDto cartDto);
+
+    // 장바구니 삭제
+    void deleteCart(int cartNo);
+
     // 장바구니 리스트
     List<CartDto> cartFindByConsumerNo(int consumerNo);
 
