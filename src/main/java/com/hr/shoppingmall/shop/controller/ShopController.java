@@ -107,6 +107,7 @@ public class ShopController {
             purchaseDto.setConsumerNo(consumerInfo.getConsumerNo());
            
             List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto,cartNos); 
+            System.out.println("리스트 내놔라 >>>>>>>>>>>>  " + list);
             model.addAttribute("paymentList",  list);
         return"shop/purchaseSuccess";
     }

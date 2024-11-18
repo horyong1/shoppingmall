@@ -48,19 +48,22 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="row py-2">
+                        <div class="row py-2" th:each="list : ${paymentList}">
                             <div class="col-auto">
-                                <img class="img-fluid" alt="" style="width: 4em;">
+                                <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" style="width: 4em; height: 5em;">
                             </div>
                             <div class="col-auto me-auto">
                                 <div class="row">
-                                    <div class="col fs-0-9" ></div>
+                                    <div class="col fs-0-9" th:text="${list.sellerDto.shopName}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col fs-0-9"></div>
+                                    <div class="col fs-0-9" th:text="${list.productDto.productName}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col fs-0-9"></div>
+                                    <div class="col fs-0-9"  th:text="${list.purchaseListDto.quantity}+'개'"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col fs-0-9"  th:text="${list.purchaseListDto.paymentPrice}+'원'"></div>
                                 </div>
                             </div>
                         </div>

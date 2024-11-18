@@ -111,9 +111,18 @@ public class ShopService {
             purchaseListDto.setPurchaseNo(purchaseDto.getPurchaseNo());
             purchaseListDto.setProductNo(cartDto.getProductNo());
             purchaseListDto.setQuantity(cartDto.getQuantity());
+            // System.out.println("장바구니 DTO :::: " + cartDto);
+            // System.out.println("수량 :::::: " +  cartDto.getQuantity());
 
             ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
-            purchaseListDto.setPaymentPrice(cartDto.getQuantity() * productDto.getPrice());
+            // System.out.println("제품 DTO :::::::: " + productDto);
+            int quantity = cartDto.getQuantity();
+            int price = productDto.getPrice();
+            int totalPrice = price * quantity;
+
+            System.out.println("금액 확인 ::::: " + quantity+" "+price+" " +totalPrice);
+            purchaseListDto.setPaymentPrice(totalPrice);
+            System.out.println( "셋팅금액  :::: " + purchaseListDto.getPaymentPrice());
 
             purchaseListSqlMapper.createPurchaseList(purchaseListDto);
             shopSqlMapper.deleteCart(cartNo);
