@@ -28,22 +28,22 @@
                     </div>
                 </div>
                 <div th:if="${!purchaseList.isEmpty()}">
-                    <div class="row py-2" th:each="list : ${purchaseList}">
+                    <div class="row py-2 border-bottom " th:each="list : ${purchaseList}">
                         <div class="col">
                             <div class="row" th:if="${list.purchaseDto != null}">
                                 <div class="col-auto p-0 fs-0-9 fw-bold ms-1" th:text="${#dates.format(list.purchaseDto.purchaseDate,'yyyy-MM-dd')}"></div>
-                                <div class="col-auto p-0 ms-auto me-1">
+                                <div class="col-auto p-0 ms-auto">
                                     <a class="text-secondary fs-0-8" th:href="@{./purchaseDetail(purchaseNo=${list.purchaseDto.purchaseNo})}">더보기</a>
                                 </div>
                             </div>
-                            <div class="row pt-2 pb-3 border-bottom">
+                            <div class="row pt-2 position-relative">
                                 <div class="col-auto">
-                                    <img class="img-fluid border border-0 rounded-2" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" style="width: 5em;">
+                                    <img class="img-fluid border border-0 rounded-2" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" style="width: 5em; height: 6em;">
                                 </div>
                                 <div class="col me-auto align-self-center">
                                     <div class="row">
                                         <div class="col-auto fs-0-8 fw-bold align-self-center" th:text="${list.productDto.productName}"></div>
-                                        <div class="col-auto p-0 ms-auto fs-0-6 fw-bold text-end">
+                                        <div class="col-auto p-0 ms-auto fs-0-5 fw-bold text-end position-absolute top-0 end-0 mt-1">
                                             <span th:if="${list.purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
                                             <span th:if="${list.purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
                                             <span th:if="${list.purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
@@ -58,14 +58,14 @@
                                         <div class="col fs-0-8 fw-bold" th:text="${list.totalPrice}+'원'"></div>
                                     </div>
                                 </div>
-                                <div class="row mx-auto">
-                                    <div class="col">
-                                        <a class="d-grid link-dcr-none" th:href="@{/review/reviewEdit(productNo=${list.purchaseDto.productNo})}">
-                                            <button class="btn btn-outline-dark btn-sm">
-                                                <span class="fs-0-9">리뷰작성</span>
-                                            </button>
-                                        </a>
-                                    </div>
+                            </div>
+                            <div class="row py-3">
+                                <div class="col p-0">
+                                    <a class="d-grid link-dcr-none" th:href="@{/review/reviewEdit(productNo=${list.purchaseDto.productNo})}">
+                                        <button class="btn btn-outline-dark btn-sm">
+                                            <span class="fs-0-9">리뷰작성</span>
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
