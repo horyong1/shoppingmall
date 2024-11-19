@@ -52,18 +52,18 @@
                             <div class="col-auto">
                                 <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" style="width: 4em; height: 5em;">
                             </div>
-                            <div class="col-auto me-auto">
+                            <div class="col-auto me-auto align-self-center">
                                 <div class="row">
-                                    <div class="col fs-0-9" th:text="${list.sellerDto.shopName}"></div>
+                                    <div class="col fs-0-8" th:text="${list.sellerDto.shopName}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col fs-0-9" th:text="${list.productDto.productName}"></div>
+                                    <div class="col fs-0-8" th:text="${list.productDto.productName}"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col fs-0-9"  th:text="${list.purchaseListDto.quantity}+'개'"></div>
+                                    <div class="col fs-0-8"  th:text="${list.purchaseListDto.quantity}+'개'"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col fs-0-9"  th:text="${list.purchaseListDto.paymentPrice}+'원'"></div>
+                                    <div class="col fs-0-8 fw-bold"  th:text="${list.purchaseListDto.paymentPrice}+'원'"></div>
                                 </div>
                             </div>
                         </div>
@@ -77,11 +77,11 @@
                                 </div>
                                 <div class="row py-2">
                                     <div class="col-auto fs-0-8 text-secondary">수령인</div>
-                                    <div class="col-auto fs-0-8" ></div>
+                                    <div class="col-auto fs-0-8 fw-bold" th:text="${consumerDto.nickname}"></div>
                                 </div>
                                 <div class="row pb-2">
                                     <div class="col-auto fs-0-8 text-secondary">수령지</div>
-                                    <div class="col-auto me-auto fs-0-8 fw-bold"></div>
+                                    <div class="col-auto me-auto fs-0-8 fw-bold" th:text="${purchaseDto.shoppingAdress}"></div>
                                 </div>
                             </div>
                         </div>
@@ -97,13 +97,19 @@
                                     <div class="col-auto fs-0-8 text-secondary">
                                         총 상품 금액 
                                     </div>
-                                    <div class="col-auto ms-auto fs-0-8 fw-bold" ></div>
+                                    <div class="col-auto ms-auto fs-0-8 fw-bold" th:text="${totalPrice}"></div>
                                 </div> 
+                                <div class="row pb-2">
+                                    <div class="col-auto fs-0-8 text-secondary">
+                                        할인 금액
+                                    </div>
+                                    <div class="col-auto ms-auto text-secondary fs-0-8">0원</div>
+                                </div>
                                 <div class="row border-top py-2">
                                     <div class="col-auto fs-0-9 fw-bold">
                                         최종 결제 금액
                                     </div>
-                                    <div class="col-auto ms-auto fs-0-9 fw-bold"></div>
+                                    <div class="col-auto ms-auto fs-0-9 fw-bold" th:text="${totalPrice}"></div>
                                 </div>                       
                             </div>
                         </div>

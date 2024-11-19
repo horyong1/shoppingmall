@@ -82,8 +82,8 @@ public class ShopController {
             
             ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
             purchaseDto.setConsumerNo(consumerNo);
-            purchaseDto.setProductNo(productNo);
-            purchaseDto.setQuantity(Integer.parseInt(count)); 
+            // purchaseDto.setProductNo(productNo);
+            // purchaseDto.setQuantity(Integer.parseInt(count)); 
             
             // List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto);
             
@@ -103,12 +103,19 @@ public class ShopController {
                 return "redirect:/consumer/loginPage";
             }
             ConsumerDto consumerInfo = getConsumerInfo(session);
+
             ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
             purchaseDto.setConsumerNo(consumerInfo.getConsumerNo());
            
-            List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto,cartNos); 
-            System.out.println("리스트 내놔라 >>>>>>>>>>>>  " + list);
-            model.addAttribute("paymentList",  list);
+            purchaseDto = shopService.registerPurchase(purchaseDto,cartNos);
+            System.out.println(purchaseDto);
+            if(purchaseDto.getPurchaseNo() == 0){
+                return "redirect:/shop/mainPage";
+            } 
+            model.addAttribute("paymentList",  shopService.getPurchaseList(purchaseDto.getPurchaseNo()));
+            model.addAttribute("consumerDto", consumerService.getConsumer(purchaseDto.getConsumerNo()));
+            model.addAttribute("totalPrice", shopService.getPurchaseTotalPrice(purchaseDto.getPurchaseNo()));
+            model.addAttribute("purchaseDto", purchaseDto);
         return"shop/purchaseSuccess";
     }
 

@@ -15,6 +15,4 @@ public interface PurchaseListSqlMapper {
     void createPurchase(ShoppingPurchaseDto purchaseDto);
     // 상품 구매 리스트 생성
     void createPurchaseList(PurchaseListDto purchaseListDto);
-    // 주문번호 맥스값 가져오기
-    int purchaseNoMaxFindByConsumerNo(int counsumerNo);
 }

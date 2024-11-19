@@ -135,9 +135,9 @@ public class ConsumerController {
             return "redirect:/consumer/loginPage";
         }
         ConsumerDto consumerInfo = getSellerInfo(session);
-        int sonsumerNo = consumerInfo.getConsumerNo();
+        int consumerNo = consumerInfo.getConsumerNo();
 
-        model.addAttribute("purchaseList", shopService.getPurchaseList(sonsumerNo));
+        model.addAttribute("purchaseList", shopService.getPurchaseListConsumerNo(consumerNo));
 
         return "shop/purchaseList";
     }

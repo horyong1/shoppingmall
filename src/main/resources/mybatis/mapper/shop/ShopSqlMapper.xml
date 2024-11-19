@@ -80,9 +80,6 @@
     <select id="purchaseFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
         SELECT 	(spp.purchase_no) AS purchaseNo,
                 (spp.consumer_no) AS consumerNo,
-                (spp.product_no) AS productNo,
-                (spp.quantity) AS quantity,
-                (spp.shopping_adress) AS shoppingAdress,
                 (spp.purchase_date) AS purchaseDate,
                 (spp.state) AS state
         FROM 	sp_product_purchase spp 

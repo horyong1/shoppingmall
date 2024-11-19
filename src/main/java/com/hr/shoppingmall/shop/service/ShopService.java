@@ -9,7 +9,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
 import com.hr.shoppingmall.seller.dto.SellerDto;
@@ -99,7 +98,7 @@ public class ShopService {
      * @param quantity
      * @return List<Map<String,Object>>
      */
-    public List<Map<String,Object>> registerPurchase(ShoppingPurchaseDto purchaseDto, int[] cartNos){
+    public ShoppingPurchaseDto registerPurchase(ShoppingPurchaseDto purchaseDto, int[] cartNos){
         ConsumerDto consumerDto = consumerSqlMapper.findByNo(purchaseDto.getConsumerNo());
         purchaseDto.setShoppingAdress(consumerDto.getAdress());
         purchaseListSqlMapper.createPurchase(purchaseDto);
@@ -108,32 +107,34 @@ public class ShopService {
         for(int cartNo : cartNos){
             PurchaseListDto purchaseListDto = new PurchaseListDto();
             CartDto cartDto = shopSqlMapper.cartFindByCartNo(cartNo);
+            if (cartDto == null) {
+                return new ShoppingPurchaseDto();
+            }
             purchaseListDto.setPurchaseNo(purchaseDto.getPurchaseNo());
             purchaseListDto.setProductNo(cartDto.getProductNo());
             purchaseListDto.setQuantity(cartDto.getQuantity());
-            // System.out.println("장바구니 DTO :::: " + cartDto);
-            // System.out.println("수량 :::::: " +  cartDto.getQuantity());
 
             ProductDto productDto = shopSqlMapper.findByProductNo(cartDto.getProductNo());
-            // System.out.println("제품 DTO :::::::: " + productDto);
             int quantity = cartDto.getQuantity();
             int price = productDto.getPrice();
             int totalPrice = price * quantity;
 
-            System.out.println("금액 확인 ::::: " + quantity+" "+price+" " +totalPrice);
             purchaseListDto.setPaymentPrice(totalPrice);
-            System.out.println( "셋팅금액  :::: " + purchaseListDto.getPaymentPrice());
 
             purchaseListSqlMapper.createPurchaseList(purchaseListDto);
             shopSqlMapper.deleteCart(cartNo);
 
         }
-        return getPurchaseList(purchaseDto.getPurchaseNo());
+        return purchaseDto;
         
         
 
     }
-    // 구매 번호로 찾기 
+    /**
+     * 구매번호로 리스트 가져오기
+     * @param purchaseListNo
+     * @return
+     */
     public List<Map<String,Object>> getPurchaseList(int purchaseListNo){
         List<Map<String,Object>> list = new ArrayList<>();
         List<PurchaseListDto> purchaseListDtos = purchaseListSqlMapper.purchaseListFindByPurchaseNo(purchaseListNo);
@@ -151,6 +152,46 @@ public class ShopService {
         return list;
     }
 
+    /**
+     * 고객 아이디로 구매 리스트 가져오기
+     * @param consumerNo
+     * @return
+     */
+    public List<Map<String,Object>> getPurchaseListConsumerNo(int consumerNo){
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<ShoppingPurchaseDto> purchaseDtoList = shopSqlMapper.purchaseFindByConsumerNo(consumerNo);
+
+        for(ShoppingPurchaseDto purchaseDto : purchaseDtoList ){
+            List<PurchaseListDto> purchaseListDtoList = purchaseListSqlMapper.purchaseListFindByPurchaseNo(purchaseDto.getPurchaseNo());
+
+            List<Map<String, Object>> purchaseDetails = new ArrayList<>();
+            for(PurchaseListDto purchaseListDto : purchaseListDtoList){
+                Map<String,Object> purchaseDetail  = new HashMap<>();
+                
+                ProductDto productDto = shopSqlMapper.findByProductNo(purchaseListDto.getProductNo());
+                SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+                String price = decimelFormatter(purchaseListDto.getPaymentPrice());
+                
+
+                purchaseDetail.put("purchaseListDto", purchaseListDto);
+                purchaseDetail.put("productDto", productDto);
+                purchaseDetail.put("sellerDto", sellerDto);
+                purchaseDetail.put("price", price);
+
+                purchaseDetails.add(purchaseDetail);
+            }
+
+            Map<String,Object> map = new HashMap<>();
+
+            map.put("purchaseDto", purchaseDto);
+            map.put("purchaseDetails",purchaseDetails);
+
+            list.add(map);
+        }
+        
+        return list;
+    }
+
     
 
     /**
@@ -165,15 +206,15 @@ public class ShopService {
         purchaseDto.setPurchaseNo(purchaseNo);
         purchaseDto.setConsumerNo(consumerNo);
         
-        purchaseDto = shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
-        ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
-        String totalPrice = decimelFormatter(productDto.getPrice() * purchaseDto.getQuantity());
-        ConsumerDto consumerDto = consumerSqlMapper.findByNo(consumerNo);
-        map.put("purchaseDto", purchaseDto);
-        map.put("productDto", productDto);
-        map.put("totalPrice", totalPrice);
-        map.put("consumerDto", consumerDto);
-        map.put("seller", sellerSqlMapper.findByNo(productDto.getSellerNo()));
+        // purchaseDto = shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
+        // // ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
+        // // String totalPrice = decimelFormatter(productDto.getPrice() * purchaseDto.getQuantity());
+        // ConsumerDto consumerDto = consumerSqlMapper.findByNo(consumerNo);
+        // map.put("purchaseDto", purchaseDto);
+        // map.put("productDto", productDto);
+        // map.put("totalPrice", totalPrice);
+        // map.put("consumerDto", consumerDto);
+        // map.put("seller", sellerSqlMapper.findByNo(productDto.getSellerNo()));
 
         return map;
     }
@@ -187,7 +228,7 @@ public class ShopService {
     public ShoppingPurchaseDto getPurchaseInfo(int consmerNo, int productNo){
         ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
         purchaseDto.setConsumerNo(consmerNo);
-        purchaseDto.setProductNo(productNo);
+        // purchaseDto.setProductNo(productNo);
         return shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
     }
 

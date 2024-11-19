@@ -19,8 +19,6 @@
         VALUES  (#{purchaseNo}, #{productNo}, #{quantity}, #{paymentPrice})
     </insert>
 
-    
-
 
     <!-- 주문번호 기준 구매 상품 상세 정보 -->
     <select id="purchaseListFindByPurchaseNo" resultType="com.hr.shoppingmall.shop.dto.PurchaseListDto">
@@ -32,36 +30,7 @@
                 (sppl.created_at) AS createdAt
         FROM    sp_product_purchase_list sppl
         WHERE   sppl.purchase_no = #{purchaseNo}
+        ORDER BY sppl.created_at DESC
     </select>
 
-    <!-- 고객 상품구매 목록 -->
-    <select id="purchaseNoMaxFindByConsumerNo" resultType="int">
-        SELECT 	MAX(spp.purchase_no)
-        FROM 	sp_product_purchase spp 
-        WHERE 	spp.consumer_no = #{consumerNo}
-        AND     spp.state = 1
-    </select>
-
-     <!-- 고객 상품구매 목록 -->
-    <select id="purchaseFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
-        SELECT 	(spp.purchase_no) AS purchaseNo,
-                (spp.consumer_no) AS consumerNo,
-                (spp.shopping_adress) AS shoppingAdress,
-                (spp.purchase_date) AS purchaseDate,
-                (spp.state) AS state
-        FROM 	sp_product_purchase spp 
-        WHERE 	spp.consumer_no = #{consumerNo}
-    </select>
-
-    <!-- 고객 상품 구매 상세 목록 -->
-    <select id="purchaseFindByConsumerNoAndPurchaseNo" resultType="com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto">
-        SELECT 	(spp.purchase_no) AS purchaseNo,
-                (spp.consumer_no) AS consumerNo,
-                (spp.shopping_adress) AS shoppingAdress,
-                (spp.purchase_date) AS purchaseDate,
-                (spp.state) AS state
-        FROM 	sp_product_purchase spp 
-        WHERE 	spp.consumer_no = #{consumerNo}
-        AND		spp.purchase_no = #{purchaseNo}
-    </select>
-</mapper>
+  </mapper>

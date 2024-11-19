@@ -8,8 +8,6 @@ import lombok.Data;
 public class ShoppingPurchaseDto {
     private int purchaseNo;
     private int consumerNo;
-    private int productNo;
-    private int quantity;
     private String shoppingAdress;
     private Date purchaseDate;
     private String state;
