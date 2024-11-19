@@ -67,4 +67,7 @@ public interface ShopSqlMapper {
     // 장바구니에서 결제창으로 데이터 보내기
     CartDto cartFindByCartNo(int cartNo);
 
+    // 장바구니 
+    int cartNoMax(int consumerNo);
+
 }

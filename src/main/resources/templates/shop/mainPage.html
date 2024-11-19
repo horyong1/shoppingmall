@@ -54,20 +54,20 @@
                  <a class="text-secondary fs-0-8" href="">더보기</a>
                </div>
              </div>
-             <div class="row">
-               <div class="col-4" th:each="list : ${clothingList}">
+             <div class="row px-2">
+               <div class="col-3" th:each="list : ${clothingList}">
                  <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}" >
                    <div class="col">
                      <div class="row pt-1">
-                       <div class="col d-flex d-flex align-items-stretch">
-                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" >
+                       <div class="col p-0">
+                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 6em; height: 7em;">
                        </div>
                      </div>
-                     <div class="row fs-0-8">
-                       <div class="col" th:text="${list.productDto.productName}"></div>
+                     <div class="row fs-0-7">
+                       <div class="col p-0 ps-1" th:text="${list.productDto.productName}"></div>
                      </div>
-                     <div class="row fs-0-8">
-                       <div class="col fw-bold" th:text="${list.price} + '원'"></div>
+                     <div class="row fs-0-7">
+                       <div class="col fw-bold p-0 ps-1" th:text="${list.price} + '원'"></div>
                      </div>
                    </div>
                  </a>

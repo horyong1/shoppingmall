@@ -181,6 +181,7 @@
                 (sc.created_at) AS createdAt
         FROM    sp_cart sc
         WHERE   sc.consumer_no = #{consumerNo}
+        ORDER BY sc.created_at DESC
     </select>
 
     <!-- 결제 창으로 데이터 넘기기 -->
@@ -192,5 +193,12 @@
                 (sc.created_at) AS createdAt
         FROM    sp_cart sc
         WHERE   sc.cart_no = #{cartNo}
+    </select>
+
+    <!-- 장바구니 마지막 넣은 cart 가져오기 -->
+    <select id="cartNoMax" resultType="int">
+        SELECT  MAX(sc.cart_no)
+        FROM    sp_cart sc
+        WHERE   sc.consumer_no = #{consumerNo}
     </select>
 </mapper>

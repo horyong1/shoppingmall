@@ -195,33 +195,6 @@ public class ShopService {
         return list;
     }
 
-    
-
-    /**
-     * 주문 내역 리스트 상세 정보
-     * @param purchaseNo
-     * @param consumerNo
-     * @return Map<String,Object>
-     */
-    public Map<String,Object> getPurchaseDetailInfo(int purchaseNo, int consumerNo){
-        Map<String,Object> map = new HashMap<>();
-        ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
-        purchaseDto.setPurchaseNo(purchaseNo);
-        purchaseDto.setConsumerNo(consumerNo);
-        
-        // purchaseDto = shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
-        // // ProductDto productDto = shopSqlMapper.findByProductNo(purchaseDto.getProductNo());
-        // // String totalPrice = decimelFormatter(productDto.getPrice() * purchaseDto.getQuantity());
-        // ConsumerDto consumerDto = consumerSqlMapper.findByNo(consumerNo);
-        // map.put("purchaseDto", purchaseDto);
-        // map.put("productDto", productDto);
-        // map.put("totalPrice", totalPrice);
-        // map.put("consumerDto", consumerDto);
-        // map.put("seller", sellerSqlMapper.findByNo(productDto.getSellerNo()));
-
-        return map;
-    }
-
     /**
      * 고객 상품 구매 정보
      * @param consmerNo
@@ -326,6 +299,17 @@ public class ShopService {
     public void deleteCart(int cartNo){
         shopSqlMapper.deleteCart(cartNo);
     }
+    
+    /**
+     * 장바구니 최신 제품 번호 가져오기
+     * @param consumerNo
+     * @return
+     */
+    public int[] getCartNoMax(int consumerNo){
+        int[] arr = new int[1];
+        arr[0] = shopSqlMapper.cartNoMax(consumerNo);
+        return arr;
+    }
 
     /**
      * 장바구니 옵션 수정
@@ -409,24 +393,5 @@ public class ShopService {
         String resultPrice = decimalFormat.format(price);
         return resultPrice;
     }
-
-    // // Map 값 세팅하기
-    // private Map<String,Object> productSettingMap(ProductDto dto){
-    //     Map<String,Object> map = new HashMap<>();
-    //     DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        
-    //     map.put("productNo", dto.getProductNo()); 
-    //     map.put("categoryNo", dto.getCategoryNo()); 
-    //     map.put("sellerNo", dto.getSellerNo()); 
-    //     map.put("productName", dto.getProductName()); 
-    //     map.put("productDescription", dto.getProductDescription()); 
-    //     map.put("price", decimalFormat.format(dto.getPrice())); 
-    //     map.put("mainImageUrl", dto.getMainImageUrl()); 
-    //     map.put("totalQuantity", dto.getTotalQuantity()); 
-    //     map.put("createdAt", dto.getCreatedAt());
-        
-    //     return map; 
-    // }
-
 
 }

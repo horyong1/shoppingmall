@@ -67,32 +67,31 @@ public class ShopController {
             return"shop/productDetailPage";
         }
     
-    // 상품 구매 프로세스
+    // 상품 디테일 페이지에서 구매 버튼 클릭 후 결제화면으로 넘어가기
     @RequestMapping("registerPurchaseProcess")
     public String registerPurchaseProcess(@RequestParam(value="count")String count,
-        ProductDto params, HttpSession session, Model model){
-            ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
-
-            if(consumerInfo == null){
+        CartDto params, HttpSession session, Model model){
+            if(!isConsumerLoggedIn(session)){
                 return "redirect:/consumer/loginPage";
             }
+            ConsumerDto consumerInfo = getConsumerInfo(session);
              
             int consumerNo = consumerInfo.getConsumerNo();
-            int productNo = params.getProductNo();
-            
-            ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
-            purchaseDto.setConsumerNo(consumerNo);
-            // purchaseDto.setProductNo(productNo);
-            // purchaseDto.setQuantity(Integer.parseInt(count)); 
-            
-            // List<Map<String,Object>> list = shopService.registerPurchase(purchaseDto);
-            
+            params.setConsumerNo(consumerNo);
+            params.setQuantity(Integer.parseInt(count));
+            shopService.registerCart(params);
 
-            
-            // model.addAttribute("purchaseList", list);
-            model.addAttribute("consumerInfo", consumerInfo);
+            int[] cartMax = shopService.getCartNoMax(consumerNo);
 
-            return "shop/purchaseSuccess";
+            model.addAttribute("consumerDto", consumerService.getConsumer(consumerInfo.getConsumerNo()));
+            model.addAttribute("paymentList", shopService.getPaymentList(cartMax));
+            model.addAttribute("totalPrice", shopService.getTotalPrice(cartMax));                       
+
+            // model.addAttribute("consumerDto", consumerService.getConsumer(consumerInfo.getConsumerNo()));
+            // model.addAttribute("paymentList", shopService.getPaymentList(params));
+            // model.addAttribute("totalPrice", shopService.getTotalPrice(params));
+
+            return "shop/paymentPage";
     }
 
     // 결제진행 프로세스
