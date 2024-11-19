@@ -143,9 +143,12 @@ public class ShopService {
             Map<String,Object> map = new HashMap<>();
             ProductDto productDto = shopSqlMapper.findByProductNo(purchaseListDto.getProductNo());
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+
+            String price = decimelFormatter(purchaseListDto.getPaymentPrice());
             map.put("productDto", productDto);
             map.put("purchaseListDto",purchaseListDto);
             map.put("sellerDto",sellerDto);
+            map.put("price", price);
 
             list.add(map);
         }
@@ -220,15 +223,12 @@ public class ShopService {
     }
 
     /**
-     * 고객 상품 구매 상세 정보
+     * 고객 상품 구매 정보
      * @param consmerNo
      * @param productNo
      * @return ShoppingPurchaseDto
      */
-    public ShoppingPurchaseDto getPurchaseInfo(int consmerNo, int productNo){
-        ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
-        purchaseDto.setConsumerNo(consmerNo);
-        // purchaseDto.setProductNo(productNo);
+    public ShoppingPurchaseDto getPurchaseInfo(ShoppingPurchaseDto purchaseDto){
         return shopSqlMapper.purchaseFindByConsumerNoAndPurchaseNo(purchaseDto);
     }
 

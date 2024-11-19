@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hr.shoppingmall.consumer.dto.ConsumerAdressDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
+import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
@@ -152,9 +153,16 @@ public class ConsumerController {
         if(!isSellerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
-        ConsumerDto consumerInfo = getSellerInfo(session);
 
-        model.addAttribute("map",shopService.getPurchaseDetailInfo(purchaseNo,consumerInfo.getConsumerNo()));    
+        ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
+        
+        ShoppingPurchaseDto purchaseDto = new ShoppingPurchaseDto();
+        purchaseDto.setConsumerNo(consumerInfo.getConsumerNo());
+        purchaseDto.setPurchaseNo(purchaseNo);
+
+        model.addAttribute("purchaseDto", shopService.getPurchaseInfo(purchaseDto));
+        model.addAttribute("purcahseList",shopService.getPurchaseList(purchaseNo));
+        model.addAttribute("totalPrice", shopService.getPurchaseTotalPrice(purchaseNo));    
 
         return "shop/purchaseDetail";
     }

@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-auto p-0 fs-0-8 fw-bold ms-1" th:text="${#dates.format(list.purchaseDto.purchaseDate, 'yyyy-MM-dd')}"></div>
                                 <div class="col-auto p-0 ms-auto">
-                                    <a class="text-secondary fs-0-7" href="#">더보기</a>
+                                    <a class="text-secondary fs-0-7" th:href="@{/consumer/purchaseDetail(purchaseNo=${list.purchaseDto.purchaseNo})}">더보기</a>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -52,13 +52,13 @@
                                 <div class="col">
                                     <div class="row pt-2">
                                         <div class="col-auto">
-                                            <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${detail.productDto.productNo})}">
+                                            <a class="row text-dark link-dcr-none" th:href="@{/shop/productDetailPage(productNo=${detail.productDto.productNo})}">
                                                 <img class="img-fluid border border-0 rounded-2 p-0" th:src="|/uploadfiles/${detail.productDto.mainImageUrl}|" style="width: 5em; height: 6em;">
                                             </a>
                                         </div>
                                         <div class="col me-auto align-self-center">
                                             <div class="row">
-                                                <div class="col fs-0-8" th:text="${detail.sellerDto.shopName}"></div>
+                                                <div class="col fs-0-8 fw-bold" th:text="${detail.sellerDto.shopName}"></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-auto fs-0-8 align-self-center" th:text="${detail.productDto.productName}"></div>
@@ -68,7 +68,7 @@
                                                 <div class="col fs-0-8" th:text="${detail.purchaseListDto.quantity} + '개'"></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col fs-0-8" th:text="${detail.price} + '원'"></div>
+                                                <div class="col fs-0-8 fw-bold" th:text="${detail.price} + '원'"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                 </div>
             </div>
         </main>
-        <div class="row pb-5 pt-3"></div>
+        <div class="row py-5"></div>
         <!-- footer start -->
         <footer>
             <div class="row">

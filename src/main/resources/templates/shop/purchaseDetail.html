@@ -22,47 +22,42 @@
         <div class="row topsize"></div>
         <main class="row">
             <div class="col">
-                <div class="row py-2">
-                    <div class="col fw-bold fs-0-8">
-                        no.845312458644
-                    </div>
-                    <div class="col-auto ms-auto text-secondary fs-0-8" th:text="${#dates.format(map.purchaseDto.purchaseDate,'yyyy-MM-dd hh:mm:ss')}"></div>
+                <div class="row pt-4 pb-3">
+                    <div class="col fw-bold fs-0-9" th:text="'no.' + ${purchaseDto.purchaseNo}"></div>
+                    <div class="col-auto ms-auto fw-bold fs-0-9" th:text="${#dates.format(purchaseDto.purchaseDate,'yyyy-MM-dd hh:mm:ss')}"></div>
                 </div>
+                <div class="row py-1 bg-body-secondary"></div>
                 <div class="row">
                     <div class="col">
-                        <div class="row py-2 border-bottom">
-                            <div class="col-auto">
-                                <a class="link-dcr-none" href="#">
-                                    <img class="img-fluid rounded-5" src="/public/img/sellerLog.png" alt="" style="width: 2em;">
-                                </a>
-                            </div>
-                            <div class="col p-0 fs-0-8 fw-bold align-self-center" >
-                                <a class="link-dcr-none text-dark" href="#">
-                                    <span th:text="${map.seller.shopName}"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row py-3">
-                            <div class="col-auto">
-                                <img class="img-fluid" th:src="|/uploadfiles/${map.productDto.mainImageUrl}|" alt="" style="width: 4em;">
-                            </div>
-                            <div class="col me-auto text-secondary align-self-center">
-                                <div class="row">
-                                    <div class="col-auto fs-0-8" th:text="${map.productDto.productName}"></div>
-                                    <div class="col-auto ms-auto fw-bold fs-0-6 text-green">
-                                        <span th:if="${map.purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
-                                        <span th:if="${map.purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
-                                        <span th:if="${map.purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
-                                        <span th:if="${map.purchaseDto.state == '4'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송완료</span>
-                                        <span th:if="${map.purchaseDto.state == '5'}" class="border border-secondary-subtle rounded-5 text-secondary p-1">구매확정</span>
+                        <div class="row" th:each="list : ${purcahseList}">
+                            <div class="col">
+                                <div class="row py-3">
+                                    <div class="col-auto">
+                                        <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 5em; height: 5.5em;">
+                                    </div>
+                                    <div class="col me-auto align-self-center">
+                                        <div class="row">
+                                            <div class="col-auto fs-0-8" th:text="${list.sellerDto.shopName}"></div>
+                                            <div class="col-auto ms-auto fw-bold fs-0-6 text-green">
+                                                <span th:if="${purchaseDto.state == '1'}" class="border border-success-subtle rounded-5 text-success p-1">결제완료</span>
+                                                <span th:if="${purchaseDto.state == '2'}" class="border border-success-subtle rounded-5 text-success p-1">배송준비중</span>
+                                                <span th:if="${purchaseDto.state == '3'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송중</span>
+                                                <span th:if="${purchaseDto.state == '4'}" class="border border-primary-subtle rounded-5 text-primary p-1">배송완료</span>
+                                                <span th:if="${purchaseDto.state == '5'}" class="border border-secondary-subtle rounded-5 text-secondary p-1">구매확정</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto fs-0-8" th:text="${list.productDto.productName}"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col fs-0-8" th:text="${list.purchaseListDto.quantity}+'개'"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col fs-0-8" th:text="${list.price}+'원'"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col fs-0-8" th:text="${map.purchaseDto.quantity}+'개'"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col fs-0-8" th:text="${map.totalPrice}+'원'"></div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="row py-1 bg-body-secondary"></div>
@@ -74,12 +69,12 @@
                                     </div>
                                 </div>
                                 <div class="row py-2">
-                                    <div class="col-auto fs-0-8 text-secondary">수령인</div>
-                                    <div class="col-auto fs-0-8 fw-bold" th:text="${map.consumerDto.nickname}"></div>
+                                    <div class="col-auto fs-0-8">수령인</div>
+                                    <div class="col-auto fs-0-8 fw-bold" th:text="${session.consumerInfo.nickname}"></div>
                                 </div>
                                 <div class="row pb-2">
-                                    <div class="col-auto fs-0-8 text-secondary">수령지</div>
-                                    <div class="col-auto me-auto fs-0-8 fw-bold" th:text="${map.purchaseDto.shoppingAdress}"></div>
+                                    <div class="col-auto fs-0-8">수령지</div>
+                                    <div class="col-auto me-auto fs-0-8 fw-bold" th:text="${purchaseDto.shoppingAdress}"></div>
                                 </div>
                             </div>
                         </div>
@@ -92,16 +87,22 @@
                         <div class="row">
                             <div class="col">
                                 <div class="row py-2">
-                                    <div class="col-auto fs-0-8 text-secondary">
+                                    <div class="col-auto fs-0-8">
                                         총 상품 금액 
                                     </div>
-                                    <div class="col-auto ms-auto fs-0-8 fw-bold" th:text="${map.totalPrice}+'원'"></div>
+                                    <div class="col-auto ms-auto fs-0-8" th:text="${totalPrice}+'원'"></div>
+                                </div> 
+                                <div class="row py-2">
+                                    <div class="col-auto fs-0-8">
+                                        할인 금액
+                                    </div>
+                                    <div class="col-auto ms-auto fs-0-8">0원</div>
                                 </div> 
                                 <div class="row border-top py-2">
                                     <div class="col-auto fs-0-9 fw-bold">
                                         최종 결제 금액
                                     </div>
-                                    <div class="col-auto ms-auto fs-0-9 fw-bold" th:text="${map.totalPrice} + '원'"></div>
+                                    <div class="col-auto ms-auto fs-0-9 fw-bold" th:text="${totalPrice} + '원'"></div>
                                 </div>                       
                             </div>
                         </div>
