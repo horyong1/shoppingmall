@@ -137,7 +137,6 @@ public class ConsumerController {
         }
         ConsumerDto consumerInfo = getSellerInfo(session);
         int consumerNo = consumerInfo.getConsumerNo();
-
         model.addAttribute("purchaseList", shopService.getPurchaseListConsumerNo(consumerNo));
 
         return "shop/purchaseList";

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
+import com.hr.shoppingmall.shop.dto.PurchaseListDto;
 import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
@@ -24,19 +25,25 @@ public class ReviewController {
     // 제품 리뷰 페이지
     @RequestMapping("productReviewList")
     public String productReviewList(@RequestParam("productNo")int productNo, Model model){
-        System.out.println(">>>>>>>>" + reviewService.getReviewList(productNo));
         model.addAttribute("reviewList", reviewService.getReviewList(productNo));
 
         return "shop/review/productReviewList";
     }
+
     // 리뷰 작성 페이지
     @RequestMapping("reviewEdit")
-    public String reviewEdit(HttpSession session, @RequestParam("productNo")int productNo, Model model){
+    public String reviewEdit(HttpSession session,
+    @RequestParam("purchaseNo")int purchaseNo, @RequestParam("productNo")int productNo , Model model){
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
+        PurchaseListDto purchaseListDto = new PurchaseListDto();
+        purchaseListDto.setPurchaseNo(purchaseNo);
+        purchaseListDto.setProductNo(productNo);
+        
 
-        model.addAttribute("map",shopService.getProductDetail(productNo));
+
+        model.addAttribute("map",reviewService.getReviewitem(purchaseListDto));
         return "shop/review/reviewEdit";
     }
 
@@ -48,7 +55,6 @@ public class ReviewController {
         }
         ConsumerDto consumerInfo = getConsumerInfo(session);
         reviewDto.setConsumerNo(consumerInfo.getConsumerNo());
-        System.out.println(">>>>>>>>> " + reviewDto);
         reviewService.registerReview(reviewDto);
 
         return "shop/review/reviewSuccess";

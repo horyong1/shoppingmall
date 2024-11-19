@@ -23,32 +23,42 @@
         <main>
             <div class="row">
                 <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            리뷰목록
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" th:text="${reviewList.size()}+'개'"></div>
+                    <div class="row py-4">
+                        <div class="col fs-0-8 fw-bold" th:text="'전체 '+${reviewList.size()}+'개'"></div>
                     </div>
                     <div class="row py-3 border-bottom" th:each="list : ${reviewList}">
                         <div class="col">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-auto">
                                     <img class="img-fluid rounded-5" src="/public/img/user.png" alt="" style="width: 2em;">
                                 </div>
-                                <div class="col-auto align-self-center fs-0-8" th:text="${list.consumerDto.nickname}">
-
+                                <div class="col-auto align-self-center fs-0-8" th:text="${list.consumerDto.nickname}"></div>
+                            </div> -->
+                            <div class="row pb-2">
+                                <div class="col-auto fs-0-8 align-self-center" th:text="${#dates.format(list.reviewDto.createdAt,'yyyy-MM-dd')}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <img class="img-fluid rounded-1" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 4em;">
+                                </div>
+                                <div class="col-auto p-0 ms-1 align-self-center">
+                                    <div class="row">
+                                        <div class="col fs-0-8" th:text="${list.sellerDto.shopName}"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col fs-0-8" th:text="${list.productDto.productName}"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="fs-0-8" th:text="${list.reviewDto.rating}"></span>
+                                <div class="col-auto">
+                                    <i class="bi bi-star-fill text-warning fs-0-8"></i>
+                                    <span class="fs-0-8 align-self-center" th:text="${list.reviewDto.rating}"></span>
                                 </div>
+                                
                             </div>
                             <div class="row">
-                                <div class="col" th:text="${list.reviewDto.reviewContent}"></div>
+                                <div class="col fs-0-8" th:text="${list.reviewDto.reviewContent}"></div>
                             </div>
                         </div>
                     </div>

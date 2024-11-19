@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
+import com.hr.shoppingmall.seller.dto.SellerDto;
+import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.dto.PurchaseListDto;
+import com.hr.shoppingmall.shop.mapper.PurchaseListSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
 
@@ -23,6 +27,10 @@ public class ReviewService {
     private ConsumerSqlMapper consumerSqlMapper;
     @Autowired
     private ShopSqlMapper shopSqlMapper;
+    @Autowired
+    private PurchaseListSqlMapper purchaseListSqlMapper;
+    @Autowired
+    private SellerSqlMapper sellerSqlMapper;
 
     /**
      * 리뷰 등록
@@ -79,15 +87,34 @@ public class ReviewService {
             
             ConsumerDto consumerDto = consumerSqlMapper.findByNo(reviewDto.getConsumerNo());
             ProductDto productDto = shopSqlMapper.findByProductNo(reviewDto.getProductNo());
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             
             map.put("consumerDto", consumerDto);
             map.put("reviewDto", reviewDto);
             map.put("productDto", productDto);
+            map.put("sellerDto", sellerDto);
 
             list.add(map);
         }
 
         return list;
+    }
+    
+    /**
+     * 주문번호 기분 리뷰 작성 할 제품 
+     * @param params
+     * @return
+     */
+    public Map<String,Object> getReviewitem(PurchaseListDto params){
+        Map<String,Object> map = new HashMap<>();
+
+        PurchaseListDto purchaseListDto = purchaseListSqlMapper.purchaseListFindByPurchaseNoAndProductNo(params);
+        ProductDto productDto = shopSqlMapper.findByProductNo(purchaseListDto.getProductNo());
+
+        map.put("purchaseListDto", purchaseListDto);
+        map.put("productDto",productDto);
+
+        return map;
     }
 
 }

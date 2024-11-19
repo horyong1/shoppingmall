@@ -9,6 +9,7 @@ public class ProductReviewDto {
     private int reviewNo;
     private int productNo;
     private int consumerNo;
+    private int purchaseNo;
     private String reviewContent;
     private int rating;
     private Date createdAt;

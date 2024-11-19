@@ -22,4 +22,6 @@ public interface ReviewSqlMapper {
     int reviewConut(int productNo);
     // 내 리뷰 목록 
     List<ProductReviewDto> reviewFindByConsumerNo(int consumerNo);
+    // 리뷰 작성 유무 확인
+    ProductReviewDto reviewFindByPurchaseNoAndProductNo(ProductReviewDto reviewDto);
 }

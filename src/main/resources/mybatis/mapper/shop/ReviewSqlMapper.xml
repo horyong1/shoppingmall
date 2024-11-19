@@ -4,8 +4,8 @@
 
     <!-- 리뷰 생성 -->
     <insert id="createReview">
-        INSERT INTO sp_product_review (product_no,consumer_no,review_content,rating)
-        VALUES(#{productNo}, #{consumerNo}, #{reviewContent}, #{rating})
+        INSERT INTO sp_product_review (product_no,consumer_no,purchase_no,review_content,rating)
+        VALUES(#{productNo}, #{consumerNo}, #{purchaseNo}, #{reviewContent}, #{rating})
     </insert>
 
     <!-- 리뷰 수정 -->
@@ -23,6 +23,7 @@
         SELECT  (spr.review_no) AS reviewNo,
                 (spr.product_no) AS productNo,
                 (spr.consumer_no) AS consumerNo,
+                (spr.purchase_no) AS purchaseNo,
                 (spr.review_content) AS reviewContent,
                 (spr.rating) AS rating,
                 (spr.created_at) AS createdAt,
@@ -37,6 +38,7 @@
         SELECT  (spr.review_no) AS reviewNo,
                 (spr.product_no) AS productNo,
                 (spr.consumer_no) AS consumerNo,
+                (spr.purchase_no) AS purchaseNo,
                 (spr.review_content) AS reviewContent,
                 (spr.rating) AS rating,
                 (spr.created_at) AS createdAt,
@@ -53,6 +55,7 @@
         SELECT  (spr.review_no) AS reviewNo,
                 (spr.product_no) AS productNo,
                 (spr.consumer_no) AS consumerNo,
+                (spr.purchase_no) AS purchaseNo,
                 (spr.review_content) AS reviewContent,
                 (spr.rating) AS rating,
                 (spr.created_at) AS createdAt,
@@ -76,6 +79,7 @@
         SELECT  (spr.review_no) AS reviewNo,
                 (spr.product_no) AS productNo,
                 (spr.consumer_no) AS consumerNo,
+                (spr.purchase_no) AS purchaseNo,
                 (spr.review_content) AS reviewContent,
                 (spr.rating) AS rating,
                 (spr.created_at) AS createdAt,
@@ -83,5 +87,21 @@
                 (spr.reply_date) AS replyDate
         FROM 	sp_product_review spr
         WHERE 	consumer_no = #{consumerNo}
+    </select>
+
+    <!-- 주문번호 제품 리뷰 확인 -->
+    <select id="reviewFindByPurchaseNoAndProductNo" resultType="com.hr.shoppingmall.consumer.dto.ProductReviewDto">
+        SELECT  (spr.review_no) AS reviewNo,
+                (spr.product_no) AS productNo,
+                (spr.consumer_no) AS consumerNo,
+                (spr.purchase_no) AS purchaseNo,
+                (spr.review_content) AS reviewContent,
+                (spr.rating) AS rating,
+                (spr.created_at) AS createdAt,
+                (spr.seller_reply) AS sellerReply,
+                (spr.reply_date) AS replyDate
+        FROM 	sp_product_review spr
+        WHERE 	spr.purchase_no = #{purchaseNo}
+        AND     spr.product_no = #{productNo}
     </select>
 </mapper>

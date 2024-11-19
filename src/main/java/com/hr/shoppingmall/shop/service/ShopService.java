@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
@@ -143,12 +144,19 @@ public class ShopService {
             Map<String,Object> map = new HashMap<>();
             ProductDto productDto = shopSqlMapper.findByProductNo(purchaseListDto.getProductNo());
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+            
+            ProductReviewDto reviewDto = new ProductReviewDto();
+            reviewDto.setPurchaseNo(purchaseListDto.getPurchaseNo());
+            reviewDto.setProductNo(productDto.getProductNo());
+            reviewDto = reviewSqlMapper.reviewFindByPurchaseNoAndProductNo(reviewDto);
 
             String price = decimelFormatter(purchaseListDto.getPaymentPrice());
             map.put("productDto", productDto);
             map.put("purchaseListDto",purchaseListDto);
             map.put("sellerDto",sellerDto);
+            map.put("reviewDto", reviewDto);
             map.put("price", price);
+
 
             list.add(map);
         }
@@ -175,10 +183,15 @@ public class ShopService {
                 SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
                 String price = decimelFormatter(purchaseListDto.getPaymentPrice());
                 
+                ProductReviewDto productReviewDto = new ProductReviewDto();
+                productReviewDto.setPurchaseNo(purchaseListDto.getPurchaseNo());
+                productReviewDto.setProductNo(productDto.getProductNo());
+                productReviewDto = reviewSqlMapper.reviewFindByPurchaseNoAndProductNo(productReviewDto);
 
                 purchaseDetail.put("purchaseListDto", purchaseListDto);
                 purchaseDetail.put("productDto", productDto);
                 purchaseDetail.put("sellerDto", sellerDto);
+                purchaseDetail.put("productReviewDto", productReviewDto);
                 purchaseDetail.put("price", price);
 
                 purchaseDetails.add(purchaseDetail);
@@ -365,6 +378,11 @@ public class ShopService {
         }
         
         return list;
+    }
+
+
+    public PurchaseListDto getPurchaseDetail(PurchaseListDto params){
+        return purchaseListSqlMapper.purchaseListFindByPurchaseNoAndProductNo(params);
     }
 
     /**
