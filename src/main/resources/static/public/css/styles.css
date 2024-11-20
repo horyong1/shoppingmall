@@ -23,6 +23,21 @@ body{
     padding: 15px; /* 내부 여백 */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
+
+.nav-link {
+    background-color: transparent !important; /* 기본 배경색 */
+    color: black !important; /* 기본 텍스트 색상 */
+}
+
+.nav-link.active {
+    background-color: gray  !important;/* 활성화된 버튼 배경색 */
+    color: white !important; /* 활성화된 버튼 텍스트 색상 */
+}
+
+.nav-link:hover {
+    background-color: white; /* 호버 시 배경색 */
+    color: black; /* 호버 시 텍스트 색상 */
+}
 .topsize{
     height: 2.3em;
 }

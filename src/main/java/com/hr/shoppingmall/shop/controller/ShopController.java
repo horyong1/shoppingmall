@@ -203,6 +203,12 @@ public class ShopController {
         return "shop/paymentPage";
     }
 
+    // 카테고리 페이지
+    @RequestMapping("categoryPage")
+    public String categoryPage(Model model){
+        model.addAttribute("categoryList",shopService.getCategoryList());
+        return "shop/categoryPage";
+    }
     // 세션 로그인 체크
     private boolean isConsumerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");

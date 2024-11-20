@@ -16,6 +16,7 @@ import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
+import com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto;
 import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
@@ -39,20 +40,30 @@ public class ShopService {
     @Autowired
     private PurchaseListSqlMapper purchaseListSqlMapper;
 
+    
+
     /**
-     * 카테고리 전체 목록
-     * @return Map
+     * 카테고리 중분류
+     * @return
      */
-    public Map<String,String> getCategoryList(){
-        Map<String,String> map = new HashMap<>();
-        int cnt = 1;
-        for(ProductCategoryDto dto : shopSqlMapper.categoryFindAll()){
-            String value = String.valueOf(cnt);
-            map.put(value, dto.getCategoryName());
-            cnt++;
+    public List<Map<String,Object>> getCategoryList(){
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<ProductCategoryDto> categoryDtoList = shopSqlMapper.categoryFindAll();
+
+        for(ProductCategoryDto categoryDto : categoryDtoList){
+            Map<String, Object> map = new HashMap<>();
+            List<ProductCategoryMediumDto> categoryMediumDtoList = shopSqlMapper.categoryMediumFindByCategoryNo(categoryDto.getCategoryNo());
+
+            map.put("categoryDto", categoryDto);
+            map.put("categoryMediumDto", categoryMediumDtoList);
+            
+            list.add(map);
         }
-        return map;
+
+
+        return list;
     }
+
 
     /**
      * 메인페이지 상품 목록 6개 가져오기
@@ -396,11 +407,7 @@ public class ShopService {
         return list;
     }
 
-
-    public PurchaseListDto getPurchaseDetail(PurchaseListDto params){
-        return purchaseListSqlMapper.purchaseListFindByPurchaseNoAndProductNo(params);
-    }
-
+   
     /**
      * 총 결제금액 가져오기
      * @param params

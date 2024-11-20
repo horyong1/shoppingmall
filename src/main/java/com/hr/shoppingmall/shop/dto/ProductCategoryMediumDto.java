@@ -8,6 +8,6 @@ import lombok.Data;
 public class ProductCategoryMediumDto {
     private int categoryMediumNo;
     private int categoryNo;
-    private String categoryMideumName;
+    private String categoryMediumName;
     private Date createdAt;
 }
