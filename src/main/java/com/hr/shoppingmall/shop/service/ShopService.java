@@ -58,16 +58,28 @@ public class ShopService {
      * @param no
      * @return List
      */
-    public List<Map<String,Object>> getProductShow(int no){
+    public List<Map<String,Object>> getProductShow(){
         List<Map<String,Object>> list = new ArrayList<>();
-        for(ProductDto dto : shopSqlMapper.productLimitFindCategoryId(no,6)){
 
-            String price = decimelFormatter(dto.getPrice());
+        for(ProductCategoryDto categoryDto : shopSqlMapper.categoryFindAll()){
             Map<String,Object> map = new HashMap<>();
-            map.put("productDto", dto);
-            map.put("price",price);
-           
-            list.add(map);  
+
+            List<Map<String, Object>> productList = new ArrayList<>();
+            for(ProductDto productDto : shopSqlMapper.productLimitFindCategoryId(categoryDto.getCategoryNo(),6)){
+                
+                Map<String,Object> productMap = new HashMap<>();
+                String price = decimelFormatter(productDto.getPrice());
+                
+                productMap.put("productDto", productDto);
+                productMap.put("price",price);
+               
+                  
+                productList.add(productMap);
+            }
+            map.put("categoryDto", categoryDto);
+            map.put("productList", productList);
+
+            list.add(map);
         }
         return list;
     }
@@ -124,6 +136,7 @@ public class ShopService {
 
             purchaseListSqlMapper.createPurchaseList(purchaseListDto);
             shopSqlMapper.deleteCart(cartNo);
+            shopSqlMapper.updateTotalQuantity(purchaseListDto);
 
         }
         return purchaseDto;

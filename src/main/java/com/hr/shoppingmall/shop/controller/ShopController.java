@@ -39,12 +39,7 @@ public class ShopController {
     // 메인 페이지
     @RequestMapping("mainPage")
     public String mainPage(Model model){
-
-        model.addAttribute("categoryMap", shopService.getCategoryList());
-        model.addAttribute("clothingList", shopService.getProductShow(1));
-        model.addAttribute("householdItemsList", shopService.getProductShow(2));
-        model.addAttribute("electronicList", shopService.getProductShow(3));
-        model.addAttribute("foodList", shopService.getProductShow(4));
+        model.addAttribute("mainList", shopService.getProductShow());
 
         return "shop/mainPage";
     }
@@ -86,10 +81,6 @@ public class ShopController {
             model.addAttribute("consumerDto", consumerService.getConsumer(consumerInfo.getConsumerNo()));
             model.addAttribute("paymentList", shopService.getPaymentList(cartMax));
             model.addAttribute("totalPrice", shopService.getTotalPrice(cartMax));                       
-
-            // model.addAttribute("consumerDto", consumerService.getConsumer(consumerInfo.getConsumerNo()));
-            // model.addAttribute("paymentList", shopService.getPaymentList(params));
-            // model.addAttribute("totalPrice", shopService.getTotalPrice(params));
 
             return "shop/paymentPage";
     }

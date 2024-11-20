@@ -48,111 +48,35 @@
                </div>
              </div>
            <!-- 카테고리별 상품 목록 start-->
-             <div class="row pt-3 pb-2">
-               <div class="col-auto fw-bold fs-1-0" th:text="${categoryMap['1']}"></div>
-               <div class="col-auto ms-auto">
-                 <a class="text-secondary fs-0-8" href="">더보기</a>
-               </div>
-             </div>
-             <div class="row px-2">
-               <div class="col-3" th:each="list : ${clothingList}">
-                 <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}" >
-                   <div class="col">
-                     <div class="row pt-1">
-                       <div class="col p-0">
-                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="" style="width: 6em; height: 7em;">
-                       </div>
-                     </div>
-                     <div class="row fs-0-7">
-                       <div class="col p-0 ps-1" th:text="${list.productDto.productName}"></div>
-                     </div>
-                     <div class="row fs-0-7">
-                       <div class="col fw-bold p-0 ps-1" th:text="${list.price} + '원'"></div>
-                     </div>
-                   </div>
-                 </a>
-               </div>
-             </div>
-
-             <div class="row pt-5 pb-2">
-               <div class="col-auto fw-bold fs-1-0" th:text="${categoryMap['2']}"></div>
-               <div class="col-auto ms-auto">
-                 <a class="text-secondary fs-0-8" href="">더보기</a>
-               </div>
-             </div>
-             <div class="row">
-               <div class="col-4" th:each="list : ${householdItemsList}">
-                 <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
-                   <div class="col">
-                     <div class="row pt-1">
-                       <div class="col">
-                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
-                       </div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto" th:text="${list.productDto.productName}"></div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
-                     </div>
-                   </div>
-                 </a>
-               </div>
-             </div>
-
-             <div class="row pt-5 pb-2">
-               <div class="col-auto fw-bold fs-1-0" th:text="${categoryMap['3']}"></div>
-               <div class="col-auto ms-auto">
-                 <a class="text-secondary fs-0-8" href="">더보기</a>
-               </div>
-             </div>
-             <div class="row">
-               <div class="col-4" th:each="list : ${electronicList}">
-                 <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
-                   <div class="col">
-                     <div class="row pt-1">
-                       <div class="col">
-                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
-                       </div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto" th:text="${list.productDto.productName}"></div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
-                     </div>
-                   </div>
-                 </a>
-               </div>
-             </div>
-
-             <div class="row pt-5 pb-2">
-               <div class="col-auto fw-bold fs-1-0" th:text="${categoryMap['4']}"></div>
-               <div class="col-auto ms-auto">
-                 <a class="text-secondary fs-0-8" href="">더보기</a>
-               </div>
-             </div>
-             <div class="row">
-               <div class="col-4" th:each="list : ${foodList}">
-                 <a class="row text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
-                   <div class="col">
-                     <div class="row pt-1">
-                       <div class="col">
-                         <img class="img-fluid" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
-                       </div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto" th:text="${list.productDto.productName}"></div>
-                     </div>
-                     <div class="row fs-0-8">
-                       <div class="col-auto fw-bold" th:text="${list.price} + '원'"></div>
-                     </div>
-                   </div>
-                 </a>
-               </div>
-             </div>
+            <div class="row py-2" th:each="list : ${mainList}">
+              <div class="col">
+                <div class="row border-bottom">
+                  <div class="col-auto fw-bold" th:text="${list.categoryDto.categoryName}"></div>
+                  <div class="col-auto ms-auto">
+                    <a class="text-secondary fs-0-7" href="">더보기</a>
+                  </div>
+                </div>
+                <div class="row pt-2 ps-2">
+                  <div class="col-3" th:each="data : ${list.productList}">
+                    <a class="text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${data.productDto.productNo})}">
+                      <div class="row">
+                        <div class="col p-0">
+                          <img class="img-fluid" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col p-0 fs-0-7 ms-1" th:text="${data.productDto.productName}"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col p-0 fs-0-7 ms-1 fw-bold" th:text="${data.price}+'원'"></div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
            <!-- 카테고리별 상품 목록 end -->
-         </div> 
+         </div>
        </main>
        <div class="row py-5"></div>
         <!-- footer start -->
