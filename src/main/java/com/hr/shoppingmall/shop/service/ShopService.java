@@ -16,6 +16,7 @@ import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
+import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.PurchaseListDto;
@@ -96,11 +97,13 @@ public class ShopService {
         String priceTrans = decimelFormatter(dto.getPrice());
         SellerDto sellerDto = sellerSqlMapper.findByNo(dto.getSellerNo());
         int reviewCount = reviewSqlMapper.reviewConut(productNo);
+        List<ProductDetailImageDto> detailImageDtoList = shopSqlMapper.detailImageFindByProductNo(productNo);
 
         map.put("reviewCount", reviewCount);
         map.put("productDto", dto);
         map.put("price",priceTrans);
         map.put("sellerDto",sellerDto);
+        map.put("detailImageDtoList",detailImageDtoList);
         return map;
     }
 

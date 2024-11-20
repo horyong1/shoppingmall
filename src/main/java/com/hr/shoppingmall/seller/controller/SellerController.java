@@ -2,7 +2,9 @@ package com.hr.shoppingmall.seller.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,58 +69,32 @@ public class SellerController {
 
     // 판매자 상품 등록 페이지
     @RequestMapping("registerProductPage")
-    public String registerProductPage(HttpSession session){
+    public String registerProductPage(HttpSession session, Model model){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
+        model.addAttribute("categoryList", sellerService.getCategoryList());
+        model.addAttribute("categoryMediumList", sellerService.getCategoryMediumList());
         return "seller/product/registerProductPage";
     }
 
     // 상품 등록 프로세스
     @RequestMapping("registerProductProcess")
     public String registerProductProcess(ProductDto params, HttpSession session,
-    @RequestParam("mainImgUrl") MultipartFile mainImgUrl){
+        @RequestParam("mainImgUrl") MultipartFile[] mainImgUrl,@RequestParam("imageLink") MultipartFile[] imageLink){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
         
         SellerDto sellerInfo = getSellerInfo(session);
        
-        if(mainImgUrl != null){
-            String rootPath = "C:/uploadfiles/";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
-            String todayPath = sdf.format(new Date());
-            File todayFolderForCreate = new File(rootPath+todayPath);
-
-            if(!todayFolderForCreate.exists()){
-                todayFolderForCreate.mkdirs();
-            }
- 
-            String originalFilename = mainImgUrl.getOriginalFilename();
-            String uuid = UUID.randomUUID().toString();
-            long currentTime = System.currentTimeMillis();
-
-            String fileName = uuid + "_" + currentTime;
-
-            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-            fileName += ext;
-
-            try {
-                mainImgUrl.transferTo(new File(rootPath+todayPath+fileName));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            String url = todayPath + fileName;
-            System.out.println("url >>>  "+ url);
-            params.setMainImageUrl(url);
-        }
-
-
-
+        List<String> mainUrlList = uploadFiles(mainImgUrl);
+        List<String> detailUrlList = uploadFiles(imageLink);
+         
         
-
+        
         params.setSellerNo(sellerInfo.getSellerNo());
-        sellerService.registerProduct(params);
+        sellerService.registerProduct(params,mainUrlList,detailUrlList);
 
         return "seller/product/registerProductSuccess";
     }
@@ -156,17 +132,23 @@ public class SellerController {
         }
         
         model.addAttribute("productDto", sellerService.getProductInfo(productNo));
+        model.addAttribute("categoryList", sellerService.getCategoryList());
+        model.addAttribute("categoryMediumList", sellerService.getCategoryMediumList());
         return "seller/product//updateProductPage";
     }
 
     //  상품 수정 프로세스
     @RequestMapping("updateProductProcess")
-    public String updateProductProcess(HttpSession session,ProductDto productDto){
+    public String updateProductProcess(HttpSession session,ProductDto productDto,
+    @RequestParam("mainImgUrl") MultipartFile[] mainImgUrl,@RequestParam("imageLink") MultipartFile[] imageLink){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
 
-        sellerService.updateProduct(productDto);
+        List<String> mainUrlList = uploadFiles(mainImgUrl);
+        List<String> detailUrlList = uploadFiles(imageLink);
+        
+        sellerService.updateProduct(productDto, mainUrlList, detailUrlList);
 
         return "seller/product/updateProductSuccess";
     }
@@ -182,4 +164,45 @@ public class SellerController {
         return (SellerDto)session.getAttribute("sellerInfo");
     }
 
+
+    private List<String> uploadFiles(MultipartFile[] uploadFiles) {
+        List<String> fileList = new ArrayList<>();
+        String rootPath = "C:/uploadFiles/";
+
+        // 날짜별 폴더(디렉토리) 생성
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+        String todayPath = sdf.format(new Date());
+        File todayFolderForCreate = new File(rootPath + todayPath);
+
+        // 해당 폴더가 존재하지 않으면 생성
+        if (!todayFolderForCreate.exists()) {
+            todayFolderForCreate.mkdirs();
+        }
+
+        // 각 파일 처리
+        for (MultipartFile uploadFile : uploadFiles) {
+            if (uploadFile.isEmpty()) {
+                continue;
+            }
+
+            String originalFilename = uploadFile.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+            long currentTime = System.currentTimeMillis();
+            String fileName = uuid + "_" + currentTime;
+
+            // 확장자명 추출
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            fileName += ext;
+
+            try {
+                uploadFile.transferTo(new File(rootPath + todayPath + fileName));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            fileList.add(todayPath + fileName);
+        }
+
+        return fileList;
+    }
 }

@@ -31,9 +31,26 @@
 
     <!-- 판매자 제품 등록 -->
     <insert id="createProduct">
-        INSERT INTO sp_product (category_no,seller_no,product_name,product_description,price,main_image_url,total_quantity)
-        VALUES (#{categoryNo}, #{sellerNo}, #{productName}, #{productDescription}, #{price}, #{mainImageUrl}, #{totalQuantity})
+        <selectKey resultType="int" keyProperty="productNo" order="AFTER">
+            SELECT  MAX(sp.product_no)
+            FROM    sp_product sp
+        </selectKey>
+        INSERT INTO sp_product (category_no, category_medium_no, seller_no,product_name,product_description,price,main_image_url,total_quantity)
+        VALUES (#{categoryNo},#{categoryMediumNo}, #{sellerNo}, #{productName}, #{productDescription}, #{price}, #{mainImageUrl}, #{totalQuantity})
     </insert>
+
+    <!-- 판매자 제품 상세 이미지 등록 -->
+    <insert id="createProductDetailImage">
+        INSERT INTO sp_product_detail_image (product_no, image_link)
+        VALUES (#{productNo}, #{imageLink})
+    </insert>
+
+    <!-- 판매자 제품 상세 이미지 삭제 -->
+    <delete id="removeProductDetailImage">
+        DELETE FROM sp_product_detail_image
+        WHERE product_no = #{product_no}
+    </delete>
+
 
     <!-- 판매자 제품 삭제 -->
     <delete id="removeProduct">
@@ -46,8 +63,12 @@
         UPDATE  sp_product 
         SET     product_name = #{productName},
                 category_no = #{categoryNo},
+                category_medium_no = #{categoryMediumNo},
                 product_description = #{productDescription},
                 price = #{price},
+                <if test="mainImageUrl != null">
+                    main_image_url = #{mainImageUrl},
+                </if>
                 total_quantity = #{totalQuantity}
         WHERE   product_no = #{productNo}
          
@@ -57,6 +78,7 @@
     <select id="productFindBySellerNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
         SELECT  (sp.product_no) AS productNo,
                 (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS categoryMediumNo,
                 (sp.seller_no) AS sellerNo,
                 (sp.product_name) AS productName,
                 (sp.product_description) AS productDescription,
@@ -72,6 +94,7 @@
     <select id="productFindBySellerNoAndProductNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
         SELECT  (sp.product_no) AS productNo,
                 (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS categoryMediumNo,
                 (sp.seller_no) AS sellerNo,
                 (sp.product_name) AS productName,
                 (sp.product_description) AS productDescription,
@@ -83,9 +106,5 @@
         WHERE   sp.product_no = #{productNo}
     </select>
 
-    <!-- 판매자 상태별 배송 목록 -->
-    <!-- <select id="findBySellerIdAndState">
-        
-    </select> -->
     
 </mapper>

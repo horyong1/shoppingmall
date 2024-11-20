@@ -9,10 +9,29 @@
         FROM    sp_product_category spc
     </select>
 
+    <select id="categoryMediumFindAll" resultType="com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto">
+        SELECT  (spcm.category_medium_no) AS categoryMediumNo,
+                (spcm.category_no) AS categoryNo,
+                (spcm.category_medium_name) AS categoryMideumName,
+                (spcm.created_at) AS createdAt
+        FROM    sp_product_category_medium spcm
+    </select>
+
+    <!-- 상품 카테고리 대분류 기준 중분류 리스트 -->
+    <select id="categoryMediumFindByCategoryNo" resultType="com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto">
+        SELECT  (spcm.category_medium_no) AS categoryMediumNo,
+                (spcm.category_no) AS categoryNo,
+                (spcm.category_medium_name) AS categoryMediumName,
+                (spcm.created_at) AS createdAt
+        FROM    sp_product_category_medium spcm
+        WHERE   spcm.category_no = #{categoryNo}
+    </select>
+
     <!-- 상품 목록 카테고리별로 메인페이지 보여줄 6개만 가져오기 -->
     <select id="productLimitFindCategoryId" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
         SELECT  (sp.product_no) AS productNo,
                 (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS categoryMediumNo,
                 (sp.seller_no) AS sellerNo,
                 (sp.product_name) AS productName,
                 (sp.product_description) AS productDescription,
@@ -31,6 +50,7 @@
     <select id="productFindCategoryId" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
         SELECT  (sp.product_no) AS productNo,
                 (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS categoryMediumNo,
                 (sp.seller_no) AS sellerNo,
                 (sp.product_name) AS productName,
                 (sp.product_description) AS productDescription,
@@ -46,6 +66,7 @@
     <select id="findByProductNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
         SELECT  (sp.product_no) AS productNo,
                 (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS categoryMediumNo,
                 (sp.seller_no) AS sellerNo,
                 (sp.product_name) AS productName,
                 (sp.product_description) AS productDescription,
@@ -55,6 +76,16 @@
                 (sp.created_at) AS createdAt
         FROM    sp_product sp
         WHERE   sp.product_no = #{productNo} 
+    </select>
+
+    <!-- 상품 상세 이미지 -->
+    <select id="detailImageFindByProductNo">
+        SELECT  (spdi.image_no) AS imageNo,
+                (spdi.product_no) AS productNo,
+                (spdi.image_link) AS imageLink,
+                (spdi.created_at) AS createdAt
+        FROM    sp_product_detail_image spdi
+        WHERE   spdi.product_no = #{productNo}
     </select>
 
     <!-- 상품구매 -->

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
+import com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto;
+import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.PurchaseListDto;
@@ -14,8 +16,14 @@ import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 
 @Mapper
 public interface ShopSqlMapper {
-    // 카테고리 리스트
+    // 카테고리(대분류) 리스트
     List<ProductCategoryDto> categoryFindAll();
+
+    // 카테고리(중분류) 리스트
+    List<ProductCategoryMediumDto> categoryMediumFindAll();
+
+    // 대분류 기준 카테고리(중분류) 리스트
+    List<ProductCategoryMediumDto> categoryMediumFindByCategoryNo(int categoryNo);
     
     // 상품 목록 카테고리별 조회 가져오기
     List<ProductDto> productFindCategoryId(int categoryNo);
@@ -25,6 +33,9 @@ public interface ShopSqlMapper {
     
     // 상품 상세 정보
     ProductDto findByProductNo(int productNo);
+
+    // 상품 상세 이미지 리스트
+    List<ProductDetailImageDto> detailImageFindByProductNo(int productNo);
     
     // 상품 구매 등록
     void createPurchase(ShoppingPurchaseDto purchaseDto);
@@ -70,5 +81,7 @@ public interface ShopSqlMapper {
 
     // 장바구니 
     int cartNoMax(int consumerNo);
+
+    
 
 }

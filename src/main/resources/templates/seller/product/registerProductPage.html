@@ -14,56 +14,76 @@
             <div th:replace="~{common/sidebar::sidebar-left}"></div>
             <div class="col-2"></div>
             <div class="col-10 mx-auto">
-                <div class="row">
+                <div class="row ps-4">
                     <div class="col">
                         <div class="row">
-                            <div class="col fs-1 text-center py-3">
+                            <div class="col fs-1 py-3">
                                 상품 등록                                
                             </div>
                         </div>
                         <form class="row" action="./registerProductProcess" method="post" enctype="multipart/form-data" >
                             <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <input name="productName" type="text" class="form-control" placeholder="상품명">
+                                <div class="row py-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">상품명</div>
+                                    <div class="col-6">
+                                        <input name="productName" type="text" class="form-control form-control-sm" placeholder="상품명">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <select class="form-select" name="categoryNo">
-                                            <option value="1" selected>의류</option>
-                                            <option value="2">생활용품</option>
-                                            <option value="3">전자기기</option>
-                                            <option value="4">식품</option>
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">대분류</div>
+                                    <div class="col-6">
+                                        <select class="form-select form-select-sm" name="categoryNo">
+                                            <div th:each="list : ${categoryList}">
+                                                <option th:value="${list.categoryNo}" th:text="${list.categoryName}"></option>
+                                            </div>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <input name="totalQuantity" type="text" class="form-control" placeholder="수량">
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">중분류</div>
+                                    <div class="col-6">
+                                        <select class="form-select form-select-sm" name="categoryMediumNo">
+                                            <div th:each="list : ${categoryMediumList}">
+                                                <option th:value="${list.categoryMediumNo}" th:text="${list.categoryMideumName}"></option>
+                                            </div>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">재고</div>
+                                    <div class="col-6">
+                                        <input name="totalQuantity" type="text" class="form-control form-control-sm" placeholder="수량">
+                                    </div>
+                                </div>
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">가격</div>
+                                    <div class="col-6">
+                                        <input name="price" type="text" class="form-control form-control-sm" placeholder="가격">
+                                    </div>
+                                </div>
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">대표이미지</div>
+                                    <div class="col-6">
+                                        <input name="mainImgUrl"  type="file" class="form-control form-control-sm" multiple accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="row pb-2">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">상세이미지</div>
+                                    <div class="col-6">
+                                        <input name="imageLink"  type="file" class="form-control form-control-sm" multiple accept="image/*">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
-                                        <input name="price" type="text" class="form-control" placeholder="가격">
+                                    <div class="col-1 py-1 fs-0-9 fw-bold">상세설명</div>
+                                    <div class="col-6">
+                                        <textarea name="productDescription" class="form-control form-control-sm" rows="10"></textarea>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <input name="mainImgUrl"  type="file" class="form-control" accept="image/*">
+                                <div class="row py-2">
+                                    <div class="col-1"></div>
+                                    <div class="col-6 d-grid text-end">
+                                        <input class="btn btn-outline-dark" type="submit" value="등록">
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <textarea name="productDescription" class="form-control" rows="10"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-0">
-                                <div class="col text-end">
-                                    
-                                        <input class="btn btn-primary" type="submit" value="등록">
-                                    
                                 </div>
                             </div>
                         </form>

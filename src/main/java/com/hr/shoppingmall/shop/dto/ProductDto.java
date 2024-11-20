@@ -8,6 +8,7 @@ import lombok.Data;
 public class ProductDto {
     private int productNo;
     private int categoryNo;
+    private int categoryMediumNo;
     private int sellerNo;
     private String productName;
     private String productDescription;
