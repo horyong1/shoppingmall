@@ -157,7 +157,7 @@ public class ShopController {
     // 장바구니 추가
     @RequestMapping("registerCart")
     public String registerCart(HttpSession session,CartDto params,
-    @RequestParam(value="count")String count){
+    @RequestParam(value = "count", defaultValue = "0")String count){
         if(!isConsumerLoggedIn(session)){
             return "redirect:/consumer/loginPage";
         }
