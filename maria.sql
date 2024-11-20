@@ -31,6 +31,7 @@ DROP TABLE sp_product;
 CREATE TABLE  sp_product  (
 	 product_no  INT PRIMARY KEY AUTO_INCREMENT,
 	 category_no  INT,
+	 category_medium_no INT,
 	 seller_no  INT,
 	 product_name  VARCHAR(80),
 	 product_description  VARCHAR(1000),
@@ -40,12 +41,21 @@ CREATE TABLE  sp_product  (
 	 created_at  DATETIME DEFAULT NOW()		 
 );
 
-#상품 카테고리
+#상품 카테고리(대분류)
 DROP TABLE sp_product_category;
 CREATE TABLE  sp_product_category  (
 	 category_no 	INT PRIMARY KEY AUTO_INCREMENT,
 	 category_name 	VARCHAR(50),
 	 created_at 	DATETIME DEFAULT NOW()		 
+);
+
+#상품 카테고리(중분류)
+DROP TABLE sp_product_category_medium;
+CREATE TABLE sp_product_category_medium (
+	category_medium_no INT PRIMARY KEY AUTO_INCREMENT,
+	category_no	INT,
+	category_medium_name VARCHAR(50),
+	created_at DATETIME	DEFAULT NOW()
 );
 
 #상품구매
@@ -91,9 +101,10 @@ CREATE TABLE  sp_seller_wishlist  (
 #상품리뷰
 DROP TABLE sp_product_review;
 CREATE TABLE  sp_product_review  (
-	 review_no 	INT PRIMARY KEY AUTO_INCREMENT,
-	 product_no  INT,
-	 consumer_no  INT,
+	 review_no INT PRIMARY KEY AUTO_INCREMENT,
+	 product_no INT,
+	 consumer_no INT,
+	 purchase_no INT,
 	 review_content  VARCHAR(4000),
 	 rating  INT,
 	 created_at  DATETIME DEFAULT NOW(),
@@ -106,7 +117,7 @@ DROP TABLE sp_product_detail_image;
 CREATE TABLE  sp_product_detail_image  (
 	 image_no  INT PRIMARY KEY AUTO_INCREMENT,
 	 product_no  INT,
-	 image_link  VARCHAR(50),
+	 image_link  VARCHAR(500),
 	 created_at  DATETIME DEFAULT NOW()		 
 );
 
