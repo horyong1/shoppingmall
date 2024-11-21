@@ -139,3 +139,35 @@ CREATE TABLE sp_cart (
 	quantity INT,
 	created_at DATETIME DEFAULT NOW()
 );
+
+#옵션
+DROP TABLE sp_product_option; 
+CREATE TABLE sp_product_option (
+    option_no INT PRIMARY KEY AUTO_INCREMENT,    		-- 옵션 고유 번호
+    seller_no INT,						-- 판매자 번호 (판매자 고유 옵션 관리)
+    option_name VARCHAR(200),           		 	-- 옵션 이름 (예: 색상, 사이즈)
+    created_at DATETIME DEFAULT NOW(),            
+    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()  
+);
+
+#옵션 상세
+DROP TABLE sp_product_option_detail; 
+CREATE TABLE sp_product_option_detail (
+    option_detail_no INT PRIMARY KEY AUTO_INCREMENT,   	-- 옵션 상세 고유 번호
+    option_no INT,                                     	-- 옵션 번호 (외래 키)
+    option_detail_name VARCHAR(200),          		-- 세부 옵션 이름 (예: 빨간색, M 사이즈)
+    price_adjustment INT DEFAULT 0,                    	-- 옵션에 따른 가격 조정 (기본 가격에 더해질 금액)
+    created_at DATETIME DEFAULT NOW(),                 
+    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
+);
+
+#중간 옵션 매핑
+DROP TABLE sp_product_option_mapping; 
+CREATE TABLE sp_product_option_mapping (
+    mapping_id INT PRIMARY KEY AUTO_INCREMENT,  	-- 매핑 고유 번호
+    product_no INT,                            		-- 상품 번호 (외래 키)
+    option_no INT,                             		-- 옵션 번호 (외래 키)
+    option_detail_no INT,                      		-- 옵션 상세 번호 (외래 키)
+    total_quantity INT DEFAULT 0,                   	-- 재고 수량
+    UNIQUE (product_no, option_no, option_detail_no) 	-- 동일한 상품-옵션-상세 조합 중복 방지
+);
