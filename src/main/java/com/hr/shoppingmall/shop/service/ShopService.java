@@ -118,6 +118,34 @@ public class ShopService {
         return map;
     }
 
+    public ProductCategoryDto getCategoryName(int categoryNo){
+        return shopSqlMapper.categoryFindByCategoryNo(categoryNo);
+    }
+
+    /**
+     * 특정 카테고리 상품 리스트 
+     * @param categoryNo
+     * @return
+     */
+    public List<Map<String, Object>> getProductCategoryList(int categoryNo){
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        for(ProductDto productDto : shopSqlMapper.productFindCategoryId(categoryNo)){
+            Map<String, Object> map = new HashMap<>();
+            
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+            String price = decimelFormatter(productDto.getPrice());
+
+            map.put("productDto", productDto);
+            map.put("price", price);
+            map.put("sellerDto", sellerDto);
+
+            list.add(map);
+        }
+
+        return list;
+    }
+
     /**
      * 고객 상품 구매 등록
      * @param consumerNo

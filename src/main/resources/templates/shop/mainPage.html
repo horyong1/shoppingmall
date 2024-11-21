@@ -53,15 +53,15 @@
                 <div class="row border-bottom">
                   <div class="col-auto fw-bold" th:text="${list.categoryDto.categoryName}"></div>
                   <div class="col-auto ms-auto">
-                    <a class="text-secondary fs-0-7" href="">더보기</a>
+                    <a class="text-secondary fs-0-7" th:href="@{./categoryProductListPage(categoryNo=${list.categoryDto.categoryNo})}">더보기</a>
                   </div>
                 </div>
                 <div class="row pt-2 ps-2">
-                  <div class="col-3" th:each="data : ${list.productList}">
+                  <div class="col-4" th:each="data : ${list.productList}">
                     <a class="text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${data.productDto.productNo})}">
                       <div class="row">
                         <div class="col p-0">
-                          <img class="img-fluid" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
+                          <img class="img-fluid aspect-ratio" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
                         </div>
                       </div>
                       <div class="row">

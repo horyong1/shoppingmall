@@ -1,6 +1,5 @@
 package com.hr.shoppingmall.shop.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.CartDto;
-import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ReviewService;
@@ -209,6 +207,19 @@ public class ShopController {
         model.addAttribute("categoryList",shopService.getCategoryList());
         return "shop/categoryPage";
     }
+
+    // 카테고리별 제품 리스트 페이지
+    @RequestMapping("categoryProductListPage")
+    public String categoryProductListPage(Model model,@RequestParam(value = "categoryNo")int cateoryNo){
+        model.addAttribute("categoryDto", shopService.getCategoryName(cateoryNo));
+        model.addAttribute("categoryProductList", shopService.getProductCategoryList(cateoryNo));
+        return "shop/categoryProductListPage";
+    }
+
+
+
+
+
     // 세션 로그인 체크
     private boolean isConsumerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");

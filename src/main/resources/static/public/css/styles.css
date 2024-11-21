@@ -78,6 +78,9 @@ body{
     font-size: 1.6em;
 }
 
+.aspect-ratio{
+    aspect-ratio: 5 / 6
+}
 
 .link-dcr-none {
     text-decoration: none; /* 밑줄 제거 */

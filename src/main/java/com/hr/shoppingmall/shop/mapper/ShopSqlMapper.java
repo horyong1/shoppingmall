@@ -19,6 +19,9 @@ public interface ShopSqlMapper {
     // 카테고리(대분류) 리스트
     List<ProductCategoryDto> categoryFindAll();
 
+    // 특정 카테고리(대분류) 
+    ProductCategoryDto categoryFindByCategoryNo(int categoryNo);
+
     // 카테고리(중분류) 리스트
     List<ProductCategoryMediumDto> categoryMediumFindAll();
 
