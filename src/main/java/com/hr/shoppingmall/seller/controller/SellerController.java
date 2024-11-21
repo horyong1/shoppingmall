@@ -16,7 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
+import com.hr.shoppingmall.shop.dto.OptionDetailDto;
+import com.hr.shoppingmall.shop.dto.OptionDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.service.OptionService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,6 +29,8 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
+    @Autowired
+    private OptionService optionService;
 
     // 로그인 페이지
     @RequestMapping("loginPage")
@@ -153,6 +158,34 @@ public class SellerController {
         return "seller/product/updateProductSuccess";
     }
 
+    // 특정 상품 옵션 관리 페이지
+    @RequestMapping("optionEditPage")
+    public String optionEditPage(Model model, HttpSession session, @RequestParam("productNo")int productNo){
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+        
+        return "seller/product/optionEditPage";
+    }
+
+    // 옵션 등록
+    @RequestMapping("registerOptionList")
+    public String registerOptionList(Model model, HttpSession session,
+        OptionDetailDto optionDetailDto, 
+        @RequestParam(value = "optionName") String optionName,
+        @RequestParam(value = "productNo")int productNo){
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+        SellerDto sellerDto = getSellerInfo(session);
+        OptionDto optionDto = new OptionDto();
+        optionDto.setOptionName(optionName);
+        optionDto.setSellerNo(sellerDto.getSellerNo());
+        optionService.registerOption(optionDto, optionDetailDto, productNo);
+
+        return "redirect:./optionEditPage?productNo="+productNo;
+    }
+
 
     // 세션 로그인 체크
     private boolean isSellerLoggedIn(HttpSession session) {
@@ -164,7 +197,11 @@ public class SellerController {
         return (SellerDto)session.getAttribute("sellerInfo");
     }
 
-
+    /**
+     * 이미지 저장 로직
+     * @param uploadFiles
+     * @return
+     */
     private List<String> uploadFiles(MultipartFile[] uploadFiles) {
         List<String> fileList = new ArrayList<>();
         String rootPath = "C:/uploadFiles/";

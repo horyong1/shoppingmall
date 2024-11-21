@@ -38,6 +38,16 @@ body{
     background-color: white; /* 호버 시 배경색 */
     color: black; /* 호버 시 텍스트 색상 */
 }
+
+.over-b:hover{
+    background-color: #0D6EFD; /* 호버 시 배경색 */
+    color: white; /* 호버 시 텍스트 색상 */
+}
+
+.over-r:hover{
+    background-color: red; /* 호버 시 배경색 */
+    color: white !important; /* 호버 시 텍스트 색상 */
+}
 .topsize{
     height: 2.3em;
 }
@@ -106,6 +116,10 @@ body{
     object-fit: cover; /* 비율 유지하면서 영역을 채우도록 설정 */
     margin: auto; /* 중앙 정렬 */
     inset: 0; /* 모든 방향에서 0 간격 */
+}
+
+.max-w-5{
+    min-width: 5em !important;
 }
 
 

@@ -23,33 +23,48 @@
                         </div>
                         <div class="row bg-body-secondary p-3">
                             <div class="col bg-white rounded-3">
-                                <div class="row py-2 fw-bold border-bottom border-black">
+                                <div class="row py-2 pt-4">
+                                    <div class="col">
+                                        <input class="form-control form-control-sm" type="text" placeholder="상품검색">
+                                    </div>
+                                    <div class="col-2 d-grid">
+                                        <input class="btn btn-sm btn-outline-dark" type="submit" value="검색">
+                                    </div>
+                                </div>
+                                <div class="row py-2 fw-bold border-bottom border-black text-center">
+                                    <div class="col text-start max-w-5 ">no</div>
                                     <div class="col-3">상품</div>
-                                    <div class="col">금액</div>
+                                    <div class="col">가격</div>
+                                    <div class="col">옵션수정</div>
                                     <div class="col">구매수량</div>
                                     <div class="col">재고수량</div>
                                     <div class="col">리뷰</div>
-                                    <div class="col">상품수정</div>
+                                    <div class="col">문의</div>
+                                    <div class="col-2">상품수정</div>
                                 </div>
-                                <div class="row" th:each="list : ${productList}">
+                                <div class="row" th:each="list,iterStat : ${productList}">
                                     <div class="col">
-                                        <div class="row py-2 border-bottom fs-0-9">
-                                            
-                                            <div class="col-3" th:text="${list.productDto.productName}"></div>
-                                            <div class="col" th:text="${list.price}+'원'"></div>
+                                        <div class="row py-2 text-center border-bottom fs-0-9">
+                                            <div class="col text-start max-w-5" th:text="${iterStat.index+1}"></div>
+                                            <div class="col-3 text-start" th:text="${list.productDto.productName}"></div>
+                                            <div class="col text-end" th:text="${list.price}+'원'"></div>
+                                            <div class="col">
+                                                <a class="link-dcr-none fw-bold border border-primary over-b px-2 py-1 rounded-2 fs-0-8" th:href="@{./optionEditPage(productNo=${list.productDto.productNo})}">옵션수정</a>
+                                            </div>
                                             <div class="col">1개</div>
                                             <div class="col" th:text="${list.productDto.totalQuantity}+'개'"></div>
                                             <div class="col">
                                                 <a class="link-dcr-none text-black" th:href="@{./productReviewList(productNo=(${list.productDto.productNo}))}">
-                                                    <i class="bi bi-star-fill text-warning fs-0-8"></i>
-                                                    <span class="fs-0-8" th:text="${list.reviewCount}"></span>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <span th:text="${list.reviewCount}"></span>
                                                 </a>
                                             </div>
-                                            <div class="col">
+                                            <div class="col"><i class="bi bi-chat-left-dots"></i>1</div>
+                                            <div class="col-2">
                                                 <div class="row">
-                                                    <div class="col-auto">
-                                                        <a class="link-dcr-none fw-bold" th:href="@{./updateProductPage(productNo=${list.productDto.productNo})}">수정</a>
-                                                        <a class="link-dcr-none text-danger fw-bold" th:href="@{./deleteProductProcess(productNo=${list.productDto.productNo})}">삭제</a>
+                                                    <div class="col-auto mx-auto">
+                                                        <a class="link-dcr-none fw-bold me-2 border border-primary over-b px-2 py-1 rounded-2 fs-0-8" th:href="@{./updateProductPage(productNo=${list.productDto.productNo})}">수정</a>
+                                                        <a class="link-dcr-none text-danger fw-bold border border-danger over-r px-2 py-1 rounded-2 fs-0-8" th:href="@{./deleteProductProcess(productNo=${list.productDto.productNo})}">삭제</a>
                                                     </div>
                                                 </div>
                                             </div>
