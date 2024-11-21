@@ -46,8 +46,8 @@
                                     <div class="col-6">
                                         <select class="form-select form-select-sm" name="categoryMediumNo">
                                             <div th:each="list : ${categoryMediumList}">
-                                                <option th:if="${list.categoryMediumNo == productDto.categoryMediumNo}" th:value="${list.categoryMediumNo}" th:text="${list.categoryMideumName}" selected></option>
-                                                <option th:unless="${list.categoryMediumNo == productDto.categoryMediumNo}" th:value="${list.categoryMediumNo}" th:text="${list.categoryMideumName}"></option>
+                                                <option th:if="${list.categoryMediumNo == productDto.categoryMediumNo}" th:value="${list.categoryMediumNo}" th:text="${list.categoryMediumName}" selected></option>
+                                                <option th:unless="${list.categoryMediumNo == productDto.categoryMediumNo}" th:value="${list.categoryMediumNo}" th:text="${list.categoryMediumName}"></option>
                                             </div>
                                         </select>
                                     </div>

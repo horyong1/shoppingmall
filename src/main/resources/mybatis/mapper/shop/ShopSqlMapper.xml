@@ -12,7 +12,7 @@
     <select id="categoryMediumFindAll" resultType="com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto">
         SELECT  (spcm.category_medium_no) AS categoryMediumNo,
                 (spcm.category_no) AS categoryNo,
-                (spcm.category_medium_name) AS categoryMideumName,
+                (spcm.category_medium_name) AS categoryMediumName,
                 (spcm.created_at) AS createdAt
         FROM    sp_product_category_medium spcm
     </select>
