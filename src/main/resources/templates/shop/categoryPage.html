@@ -21,45 +21,20 @@
         <!-- navbar end -->
         <div class="row topsize pt-5"></div>
         <main>
-            <div class="d-flex align-items-start">
-                <div class="row">
-                    <div class="col-auto">
-                        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <div th:each="list, iterStat : ${categoryList}">
-                                <button class="nav-link" 
-                                        id="'v-pills-home-tab' + ${iterStat.index}" 
-                                        data-bs-toggle="pill" 
-                                        th:data-bs-target="'#v-pills-home' + ${iterStat.index}" 
-                                        type="button" 
-                                        role="tab" 
-                                        aria-controls="v-pills-home" 
-                                        aria-selected="true" 
-                                        th:text="${list.categoryDto.categoryName}"></button>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row" th:each="list, iterStat : ${categoryList}">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div>
-                                            <div th:each="data : ${list.categoryMediumDto}" 
-                                                 class="tab-pane fade" 
-                                                 th:id="'v-pills-home' + ${iterStat.index}" 
-                                                 role="tabpanel" 
-                                                 aria-labelledby="'v-pills-home-tab' + ${iterStat.index}" 
-                                                 tabindex="0">
-                                                <a href="" th:text="${data.categoryMediumName}"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+           <div class="row">
+            <div class="col-3 border-end" style="height: 50em;">
+                <div class="row pb-2" th:each="list : ${categoryList}">
+                    <div class="col fs-0-9" th:text="${list.categoryDto.categoryName}">
+
                     </div>
                 </div>
             </div>
+            <div class="col ms-2">
+                <div class="row pb-2" th:each="list : ${categoryList}">
+                    <a href="" class="col-4 link-dcr-none fs-0-9 text-dark" th:each="data : ${list.categoryMediumDto}"  th:text="${data.categoryMediumName}"></a>
+                </div>
+            </div>
+           </div>
         </main>
         <!-- footer start -->
         <div class="row py-4"></div>
