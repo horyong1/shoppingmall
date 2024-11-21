@@ -1,10 +1,12 @@
 package com.hr.shoppingmall.seller.service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.checkerframework.checker.units.qual.degrees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -123,18 +125,33 @@ public class SellerService {
         return sellerSqlMapper.productFindBySellerNoAndProductNo(productNo);
     }
 
+
     public List<Map<String,Object>> getProuctList(int sellerNo){
         List<Map<String,Object>> list = new ArrayList<>();
         for(ProductDto productDto : sellerSqlMapper.productFindBySellerNo(sellerNo)){
             Map<String,Object> map = new HashMap<>();
+            
+            String price = decimelFormatter(productDto.getPrice());
 
             map.put("reviewCount", reviewSqlMapper.reviewConut(productDto.getProductNo()));
             map.put("productDto",productDto);
+            map.put("price", price);
 
             list.add(map);
         }
 
         return list;
+    }
+
+     /**
+     * 금액 #,### 포멧터
+     * @param price
+     * @return String
+     */ 
+    private String decimelFormatter(int price){
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String resultPrice = decimalFormat.format(price);
+        return resultPrice;
     }
 
 }
