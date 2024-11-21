@@ -142,7 +142,7 @@ public class ShopController {
         model.addAttribute("wishlistDto", wishlistDto);
     
         
-        return "shop/productDetailPage";
+        return "redirect:/shop/productDetailPage?productNo="+productNo;
     }
 
     // 판매자 찜
