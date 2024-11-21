@@ -6,17 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.checkerframework.checker.units.qual.degrees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
+import com.hr.shoppingmall.consumer.mapper.ConsumerSqlMapper;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.mapper.SellerSqlMapper;
 import com.hr.shoppingmall.shop.dto.ProductCategoryDto;
 import com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto;
 import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
+import com.hr.shoppingmall.shop.mapper.PurchaseListSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ShopSqlMapper;
 
@@ -29,6 +31,10 @@ public class SellerService {
     private ReviewSqlMapper reviewSqlMapper;
     @Autowired
     private ShopSqlMapper shopSqlMapper;
+    @Autowired
+    private ConsumerSqlMapper consumerSqlMapper;
+    @Autowired
+    private PurchaseListSqlMapper purchaseListSqlMapper;
 
     public void registerSeller(SellerDto sellerDto){
         sellerSqlMapper.createSeller(sellerDto);
@@ -125,23 +131,30 @@ public class SellerService {
         return sellerSqlMapper.productFindBySellerNoAndProductNo(productNo);
     }
 
-
+    /**
+     * 제품 리스트
+     * @param sellerNo
+     * @return
+     */
     public List<Map<String,Object>> getProuctList(int sellerNo){
         List<Map<String,Object>> list = new ArrayList<>();
         for(ProductDto productDto : sellerSqlMapper.productFindBySellerNo(sellerNo)){
             Map<String,Object> map = new HashMap<>();
             
             String price = decimelFormatter(productDto.getPrice());
+            int productPurchaseCount = purchaseListSqlMapper.productPurchaseCount(productDto.getProductNo());
 
             map.put("reviewCount", reviewSqlMapper.reviewConut(productDto.getProductNo()));
             map.put("productDto",productDto);
             map.put("price", price);
+            map.put("productPurchaseCount", productPurchaseCount);
 
             list.add(map);
         }
 
         return list;
     }
+
 
      /**
      * 금액 #,### 포멧터

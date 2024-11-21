@@ -17,4 +17,5 @@ public interface PurchaseListSqlMapper {
     void createPurchaseList(PurchaseListDto purchaseListDto);
     // 주문 번호 기준 단일 상품 정보 가져오기
     PurchaseListDto purchaseListFindByPurchaseNoAndProductNo(PurchaseListDto purchaseListDto);
+    int productPurchaseCount(int productNo);
 }

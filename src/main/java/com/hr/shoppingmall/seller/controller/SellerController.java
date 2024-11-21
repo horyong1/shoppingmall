@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.seller.dto.SellerDto;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.OptionDetailDto;
 import com.hr.shoppingmall.shop.dto.OptionDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.service.OptionService;
+import com.hr.shoppingmall.shop.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +34,8 @@ public class SellerController {
     private SellerService sellerService;
     @Autowired
     private OptionService optionService;
+    @Autowired
+    private ReviewService reviewService;
 
     // 로그인 페이지
     @RequestMapping("loginPage")
@@ -186,6 +191,30 @@ public class SellerController {
         return "redirect:./optionEditPage?productNo="+productNo;
     }
 
+    // 제품 리뷰 관리 페이지
+    @RequestMapping("productReviewList")
+    public String productReviewList(HttpSession session, Model model, @RequestParam("productNo") int productNo){
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+
+        List<Map<String, Object>> list = reviewService.getProductReviewList(productNo);
+        System.out.println(list);
+        model.addAttribute("reviewList", list);
+        model.addAttribute("reviewCount", reviewService.reviewConut(productNo));
+        return "seller/product/productReviewList";
+    }
+
+    // 리뷰 답글 달기
+    @RequestMapping("registerReply")
+    public String registerReply(HttpSession session, Model model, ProductReviewDto reviewDto){
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+        reviewService.registerReply(reviewDto);
+
+        return"redirect:/seller/productReviewList?productNo=" + reviewDto.getProductNo();
+    }
 
     // 세션 로그인 체크
     private boolean isSellerLoggedIn(HttpSession session) {

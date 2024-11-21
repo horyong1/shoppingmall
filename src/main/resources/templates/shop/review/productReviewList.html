@@ -24,12 +24,12 @@
             <div class="row">
                 <div class="col">
                     <div class="row py-3">
-                        <div class="col">
+                        <div class="col  fw-bold">
                             최근 리뷰
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col" th:text="${reviewList.size()}+'개'"></div>
+                        <div class="col fs-0-8 fw-bold" th:text="'전체' + ${reviewList.size()}+'개'"></div>
                     </div>
                     <div class="row py-3" th:if="${reviewList.size() == 0}">
                         <div class="col">
@@ -42,18 +42,22 @@
                                 <div class="col-auto">
                                     <img class="img-fluid rounded-5" src="/public/img/user.png" alt="" style="width: 2em;">
                                 </div>
-                                <div class="col-auto align-self-center fs-0-8" th:text="${list.consumerDto.nickname}">
+                                <div class="col-auto p-0 align-self-center fs-0-8 fw-bold" th:text="${list.consumerDto.nickname}">
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <i class="bi bi-star-fill text-warning fs-0-8"></i>
                                     <span class="fs-0-8" th:text="${list.reviewDto.rating}"></span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col" th:text="${list.reviewDto.reviewContent}"></div>
+                            <div class="row pt-2 pb-3">
+                                <div class="col fs-0-8" th:text="${list.reviewDto.reviewContent}"></div>
+                            </div>
+                            <div class="row" th:if="${list.reviewDto.sellerReply != null}">
+                                <div class="col-auto">└</div>
+                                <div class="col p-0 fs-0-8 bg-secondary-subtle py-3 ps-2 rounded-2" th:text="${list.reviewDto.sellerReply}"></div>
                             </div>
                         </div>
                     </div>

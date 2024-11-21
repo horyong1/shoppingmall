@@ -117,4 +117,35 @@ public class ReviewService {
         return map;
     }
 
+
+    /**
+     * 제품 리뷰 목록
+     * @param productNo
+     * @return
+     */
+    public List<Map<String, Object>> getProductReviewList(int productNo){
+        List<Map<String, Object>> list = new ArrayList<>();
+        
+        List<ProductReviewDto> reviewDtos = reviewSqlMapper.reviewFindByProductNo(productNo);
+        for(ProductReviewDto reviewDto : reviewDtos){
+            Map<String, Object> map = new HashMap<>();
+            ProductDto productDto = shopSqlMapper.findByProductNo(productNo);
+            SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+            ConsumerDto consumerDto = consumerSqlMapper.findByNo(reviewDto.getConsumerNo());
+
+            map.put("reviewDto", reviewDto);
+            map.put("productDto", productDto);
+            map.put("sellerDto", sellerDto);
+            map.put("consumerDto", consumerDto);
+
+            list.add(map);
+        }
+
+        return list;
+    }
+
+    public void registerReply(ProductReviewDto reviewDto){
+        reviewSqlMapper.updateReply(reviewDto);
+
+    }
 }

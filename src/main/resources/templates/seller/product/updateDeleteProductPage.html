@@ -51,7 +51,7 @@
                                             <div class="col">
                                                 <a class="link-dcr-none fw-bold border border-primary over-b px-2 py-1 rounded-2 fs-0-8" th:href="@{./optionEditPage(productNo=${list.productDto.productNo})}">옵션수정</a>
                                             </div>
-                                            <div class="col">1개</div>
+                                            <div class="col" th:text="${list.productPurchaseCount}+'개'"></div>
                                             <div class="col" th:text="${list.productDto.totalQuantity}+'개'"></div>
                                             <div class="col">
                                                 <a class="link-dcr-none text-black" th:href="@{./productReviewList(productNo=(${list.productDto.productNo}))}">

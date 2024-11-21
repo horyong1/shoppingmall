@@ -47,4 +47,11 @@
         AND     sppl.product_no = #{productNo}
     </select>
 
+    <!-- 판매 개수 구하기 -->
+    <select id="productPurchaseCount" resultType="int">
+        SELECT  COUNT(*)
+        FROM    sp_product_purchase_list
+        WHERE   product_no = #{productNo}
+    </select>
+
   </mapper>

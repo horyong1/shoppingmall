@@ -18,6 +18,16 @@
         AND     review_no = #{reviewNo}
     </update>
 
+    <!-- 리뷰 댓글달기 -->
+    <update id="updateReply">
+        UPDATE  sp_product_review
+        SET     seller_reply = #{sellerReply},
+                reply_date = now()
+        WHERE   product_no = #{productNo}
+        AND     review_no = #{reviewNo}
+        AND     consumer_no =#{consumerNo}
+    </update>
+
     <!-- 제품 리뷰 가져오기 -->
     <select id="reviewFindByProductNo" resultType="com.hr.shoppingmall.consumer.dto.ProductReviewDto">
         SELECT  (spr.review_no) AS reviewNo,
@@ -104,4 +114,5 @@
         WHERE 	spr.purchase_no = #{purchaseNo}
         AND     spr.product_no = #{productNo}
     </select>
+
 </mapper>
