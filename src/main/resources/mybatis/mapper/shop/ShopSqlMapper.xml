@@ -186,11 +186,30 @@
     </select>
 
     <!-- 판매자 찜 추가 -->
-    <insert id="addToSeller">
+    <insert id="addSellerWishList">
         INSERT 
-        INTO    sp_seller_wishlist (seller_wishlis_no, consumer_no, product_no)
-        VALUES  (#{sellerWishlisNo}, #{consumerNo}, #{productNo}) 
+        INTO    sp_seller_wishlist (consumer_no, seller_no)
+        VALUES  (#{consumerNo}, #{sellerNo})
     </insert>
+
+    <!-- 판매자 찜 삭제 -->
+    <delete id="removeSellerWishList">
+        DELETE
+        FROM    sp_seller_wishlist
+        WHERE   consumer_no = #{consumerNo}
+        AND     seller_no = #{sellerNo}
+    </delete>
+
+    <!-- 판매자 찜 유무 확인 -->
+    <select id="sellerWishListFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.SellerWishListDto"> 
+        SELECT  (ssw.seller_wishlist_no) AS sellerWishList,
+                (ssw.consumer_no) AS consumerNo,
+                (ssw.seller_no) AS sellerNo,
+                (ssw.created_at) AS createdAt
+        FROM    sp_seller_wishlist ssw
+        WHERE   ssw.consumer_no = #{consumerNo}
+        AND     ssw.seller_no = #{sellerNo}
+    </select>
 
     <!-- 장바구니 추가 -->
     <select id="addCart">

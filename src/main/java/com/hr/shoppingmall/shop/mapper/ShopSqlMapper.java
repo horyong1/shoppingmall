@@ -12,6 +12,7 @@ import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.PurchaseListDto;
+import com.hr.shoppingmall.shop.dto.SellerWishListDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 
 @Mapper
@@ -85,6 +86,10 @@ public interface ShopSqlMapper {
     // 장바구니 
     int cartNoMax(int consumerNo);
 
-    
+    // 판매자 찜 생성
+    void addSellerWishList(SellerWishListDto sellerWishListDto);
+    // 판매자 찜 삭제
+    void removeSellerWishList(SellerWishListDto sellerWishListDto);
+    SellerWishListDto sellerWishListFindByConsumerNo(SellerWishListDto sellerWishListDto);
 
 }

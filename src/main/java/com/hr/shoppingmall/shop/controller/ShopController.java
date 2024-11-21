@@ -14,6 +14,7 @@ import com.hr.shoppingmall.consumer.service.ConsumerService;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.CartDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
+import com.hr.shoppingmall.shop.dto.SellerWishListDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
@@ -47,12 +48,17 @@ public class ShopController {
         public String productDetailPage(@RequestParam("productNo")int productNo,HttpSession session, Model model){
             ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
             ProductWishlistDto wishlistDto = new ProductWishlistDto();
+            SellerWishListDto sellerWishListDto = new SellerWishListDto();
             
             if(consumerInfo != null){
                 wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
                 wishlistDto.setProductNo(productNo);
                 wishlistDto = shopService.getWishlistPruduct(wishlistDto);
+                
+                sellerWishListDto.setConsumerNo(consumerInfo.getConsumerNo());
+                sellerWishListDto = shopService.getSellerWishList(sellerWishListDto, productNo);
                 model.addAttribute("wishlistDto", wishlistDto);
+                model.addAttribute("sellerWishListDto", sellerWishListDto);
             }
             Map<String,Object> map =  shopService.getProductDetail(productNo);
             
@@ -137,6 +143,22 @@ public class ShopController {
     
         
         return "shop/productDetailPage";
+    }
+
+    // 판매자 찜
+    @RequestMapping("toggleSellerWishlist")
+    public String toggleSellerWishlist(HttpSession session, 
+        @RequestParam("sellerNo")int sellerNo, @RequestParam("productNo")int productNo){
+        if(!isConsumerLoggedIn(session)){
+            return "redirect:/consumer/loginPage";
+        }
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        SellerWishListDto sellerWishListDto = new SellerWishListDto();
+        sellerWishListDto.setConsumerNo(consumerInfo.getConsumerNo());
+        sellerWishListDto.setSellerNo(sellerNo);
+        
+        shopService.updateSellerWishList(sellerWishListDto);
+        return"redirect:/shop/productDetailPage?productNo=" + productNo;
     }
 
 

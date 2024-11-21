@@ -21,6 +21,7 @@ import com.hr.shoppingmall.shop.dto.ProductDetailImageDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.PurchaseListDto;
+import com.hr.shoppingmall.shop.dto.SellerWishListDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
 import com.hr.shoppingmall.shop.mapper.PurchaseListSqlMapper;
 import com.hr.shoppingmall.shop.mapper.ReviewSqlMapper;
@@ -132,13 +133,17 @@ public class ShopService {
 
         for(ProductDto productDto : shopSqlMapper.productFindCategoryId(categoryNo)){
             Map<String, Object> map = new HashMap<>();
-            
+            int productNo = productDto.getProductNo();
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             String price = decimelFormatter(productDto.getPrice());
+            int wishListCount = shopSqlMapper.wishlistCount(productNo);
+            int reviewCount = reviewSqlMapper.reviewConut(productNo);
 
             map.put("productDto", productDto);
             map.put("price", price);
             map.put("sellerDto", sellerDto);
+            map.put("wishListCount",wishListCount);
+            map.put("reviewCount", reviewCount);
 
             list.add(map);
         }
@@ -323,6 +328,29 @@ public class ShopService {
             shopSqlMapper.addToWishlist(wishlistDto);
         }else{
             shopSqlMapper.removeFromWishlist(wishlistDto);
+        }
+    }
+
+    /**
+     * 판매자 찜 목록 확인
+     * @param sellerWishListDto
+     * @param productNo
+     * @return
+     */
+    public SellerWishListDto getSellerWishList(SellerWishListDto sellerWishListDto,int productNo){
+        ProductDto productDto = shopSqlMapper.findByProductNo(productNo);
+        SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
+        sellerWishListDto.setSellerNo(sellerDto.getSellerNo());
+        return shopSqlMapper.sellerWishListFindByConsumerNo(sellerWishListDto);
+    }
+
+    public void updateSellerWishList(SellerWishListDto sellerWishListDto){
+        SellerWishListDto dto = shopSqlMapper.sellerWishListFindByConsumerNo(sellerWishListDto);
+
+        if(dto == null){
+            shopSqlMapper.addSellerWishList(sellerWishListDto);
+        }else{
+            shopSqlMapper.removeSellerWishList(sellerWishListDto);
         }
     }
 

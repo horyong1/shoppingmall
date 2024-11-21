@@ -44,6 +44,16 @@
                                 <div class="row">
                                     <div class="col fs-0-8 p-0 fw-bold" th:text="${list.price}+'원'"></div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-auto p-0 fs-0-8">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span th:text="${list.reviewCount}"></span>
+                                    </div>
+                                    <div class="col-auto p-0 ps-1 fs-0-8 align-self-center">
+                                        <i class="bi bi-heart-fill text-danger"></i>
+                                        <span th:text="${list.wishListCount}"></span>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                     </div>

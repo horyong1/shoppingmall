@@ -40,10 +40,11 @@
                         </div>
                         <div class="col p-0 fs-0-9 fw-bold align-self-center" th:text="${productMap.sellerDto.shopName}"></div>
                         <div class="col-auto align-self-center">
-                            <a class="link-dcr-none border px-1 rounded-2 fs-0-9" href="#">
-                                <i class="bi bi-heart text-danger"></i>
-                                <span></span>
-                            </a>
+                            
+                                <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart text-danger" th:if="${sellerWishListDto == null}"></i></a>
+                                <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart-fill text-danger" th:unless="${sellerWishListDto == null}"></i></a>
+                                
+                            
                         </div>
                     </div>
                     <div class="row">
