@@ -170,6 +170,7 @@ public class ShopService {
             if (cartDto == null) {
                 return new ShoppingPurchaseDto();
             }
+
             purchaseListDto.setPurchaseNo(purchaseDto.getPurchaseNo());
             purchaseListDto.setProductNo(cartDto.getProductNo());
             purchaseListDto.setQuantity(cartDto.getQuantity());
@@ -341,17 +342,55 @@ public class ShopService {
         ProductDto productDto = shopSqlMapper.findByProductNo(productNo);
         SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
         sellerWishListDto.setSellerNo(sellerDto.getSellerNo());
-        return shopSqlMapper.sellerWishListFindByConsumerNo(sellerWishListDto);
+        return shopSqlMapper.sellerWishListFindByConsumerNoAndSellerNo(sellerWishListDto);
     }
 
+    /**
+     * 판매자 찜 등록 삭제 
+     * @param sellerWishListDto
+     */
     public void updateSellerWishList(SellerWishListDto sellerWishListDto){
-        SellerWishListDto dto = shopSqlMapper.sellerWishListFindByConsumerNo(sellerWishListDto);
+        SellerWishListDto dto = shopSqlMapper.sellerWishListFindByConsumerNoAndSellerNo(sellerWishListDto);
 
         if(dto == null){
             shopSqlMapper.addSellerWishList(sellerWishListDto);
         }else{
             shopSqlMapper.removeSellerWishList(sellerWishListDto);
         }
+    }
+
+    /**
+     * 고객 판매자 찜 목록 가져오기
+     * @param consumerNo
+     * @return
+     */
+    public List<Map<String,Object>> getWishlistByConsumerNo(int consumerNo){
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<SellerWishListDto> sellerWishListDtoList = shopSqlMapper.sellerWishListFindByConsumerNo(consumerNo);
+
+        for(SellerWishListDto sellerWishListDto : sellerWishListDtoList){
+            List<Map<String,Object>> DetailList = new ArrayList<>();
+            Map<String, Object> map = new HashMap<>();
+            SellerDto sellerDto = sellerSqlMapper.findByNo(sellerWishListDto.getSellerNo());
+            List<ProductDto> productDtoList = shopSqlMapper.productListFindBySellerNo(sellerWishListDto.getSellerNo());
+            
+            for(ProductDto productDto : productDtoList){
+                Map<String, Object> productDetailMap = new HashMap<>();
+                String price = decimelFormatter(productDto.getPrice());
+
+                productDetailMap.put("productDto", productDto);
+                productDetailMap.put("price", price);
+                
+                DetailList.add(productDetailMap);
+            }
+
+            map.put("DetailList", DetailList);
+            map.put("sellerDto", sellerDto);
+
+            list.add(map);
+        }
+
+        return list;
     }
 
     /**

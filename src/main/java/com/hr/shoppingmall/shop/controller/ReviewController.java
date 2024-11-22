@@ -57,7 +57,7 @@ public class ReviewController {
         reviewDto.setConsumerNo(consumerInfo.getConsumerNo());
         reviewService.registerReview(reviewDto);
 
-        return "shop/review/reviewSuccess";
+        return "redirect:/consumer/purchaseList";
     }
 
     // 내 리뷰 목록 가져오기

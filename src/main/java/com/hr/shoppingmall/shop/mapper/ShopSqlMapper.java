@@ -90,6 +90,11 @@ public interface ShopSqlMapper {
     void addSellerWishList(SellerWishListDto sellerWishListDto);
     // 판매자 찜 삭제
     void removeSellerWishList(SellerWishListDto sellerWishListDto);
-    SellerWishListDto sellerWishListFindByConsumerNo(SellerWishListDto sellerWishListDto);
+    // 고객 판매자 찜 리스트
+    List<SellerWishListDto> sellerWishListFindByConsumerNo(int consumerNo);
+    // 고객 판매자 찜 데이터 확인
+    SellerWishListDto sellerWishListFindByConsumerNoAndSellerNo(SellerWishListDto sellerWishListDto);
+    // 판매자 상품 목록
+    List<ProductDto> productListFindBySellerNo(int sellerNo);
 
 }

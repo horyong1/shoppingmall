@@ -235,6 +235,8 @@ public class ShopController {
     public String categoryProductListPage(Model model,@RequestParam(value = "categoryNo")int cateoryNo){
         model.addAttribute("categoryDto", shopService.getCategoryName(cateoryNo));
         model.addAttribute("categoryProductList", shopService.getProductCategoryList(cateoryNo));
+        model.addAttribute("categoryList", shopService.getCategoryList());
+        model.addAttribute("cateoryNo", cateoryNo);
         return "shop/categoryProductListPage";
     }
 

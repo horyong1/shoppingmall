@@ -201,7 +201,7 @@
     </delete>
 
     <!-- 판매자 찜 유무 확인 -->
-    <select id="sellerWishListFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.SellerWishListDto"> 
+    <select id="sellerWishListFindByConsumerNoAndSellerNo" resultType="com.hr.shoppingmall.shop.dto.SellerWishListDto"> 
         SELECT  (ssw.seller_wishlist_no) AS sellerWishList,
                 (ssw.consumer_no) AS consumerNo,
                 (ssw.seller_no) AS sellerNo,
@@ -210,6 +210,34 @@
         WHERE   ssw.consumer_no = #{consumerNo}
         AND     ssw.seller_no = #{sellerNo}
     </select>
+
+    <!-- 고객 판매자 찜 리스트 -->
+    <select id="sellerWishListFindByConsumerNo" resultType="com.hr.shoppingmall.shop.dto.SellerWishListDto"> 
+        SELECT  (ssw.seller_wishlist_no) AS sellerWishList,
+                (ssw.consumer_no) AS consumerNo,
+                (ssw.seller_no) AS sellerNo,
+                (ssw.created_at) AS createdAt
+        FROM    sp_seller_wishlist ssw
+        WHERE   ssw.consumer_no = #{consumerNo}
+    </select>
+
+    <select id="productListFindBySellerNo" resultType="com.hr.shoppingmall.shop.dto.ProductDto">
+        SELECT  (sp.product_no) AS productNo,
+                (sp.category_no) AS categoryNo,
+                (sp.category_medium_no) AS category_medium_no,
+                (sp.seller_no) AS sellerNo,
+                (sp.product_name) AS productName,
+                (sp.product_description) AS productDescription,
+                (sp.price) AS price,
+                (sp.main_image_url) AS mainImageUrl,
+                (sp.total_quantity) AS totalQuantity,
+                (sp.created_at) AS createdAt
+        FROM    sp_product sp
+        WHERE  	sp.seller_no  = #{sellerNo}
+        LIMIT   3
+    </select>
+
+    
 
     <!-- 장바구니 추가 -->
     <select id="addCart">

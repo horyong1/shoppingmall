@@ -74,6 +74,7 @@
         FROM 	sp_product_review spr
         WHERE 	spr.product_no = #{productNo}
         AND     consumer_no = #{consumerNo}
+        ORDER BY spr.created_at DESC
     </select>
 
     
@@ -97,6 +98,7 @@
                 (spr.reply_date) AS replyDate
         FROM 	sp_product_review spr
         WHERE 	consumer_no = #{consumerNo}
+        ORDER BY spr.created_at DESC
     </select>
 
     <!-- 주문번호 제품 리뷰 확인 -->

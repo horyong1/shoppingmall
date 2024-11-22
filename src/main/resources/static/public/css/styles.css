@@ -48,6 +48,24 @@ body{
     background-color: red; /* 호버 시 배경색 */
     color: white !important; /* 호버 시 텍스트 색상 */
 }
+
+.over-g:hover{
+    background-color: gray;
+    color:white !important;
+    transition: all 0.2s;
+}
+
+.bg-gray{
+    background-color: gray;
+}
+
+.btn-cus1{
+    --bs-btn-padding-y: .25rem; 
+    --bs-btn-padding-x: .5rem; 
+    --bs-btn-font-size: .75rem;
+    
+}
+
 .topsize{
     height: 2.3em;
 }
@@ -120,6 +138,19 @@ body{
 
 .max-w-5{
     min-width: 5em !important;
+}
+
+.of-x-h{
+    overflow-x: auto;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: flex-start;
+    max-width: 600px; 
+    cursor: pointer;
+    white-space: nowrap; 
+}
+.of-x-h::-webkit-scrollbar{
+    display: none;
 }
 
 

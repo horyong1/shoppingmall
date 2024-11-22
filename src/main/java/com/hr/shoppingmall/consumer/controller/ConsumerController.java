@@ -179,6 +179,16 @@ public class ConsumerController {
         return "consumer/wishlist";
     }
 
+    @RequestMapping("selectwishList")
+    public String wishlist(){
+        return"";
+    }
+
+    @RequestMapping("sellerWishListPage")
+    public String sellerWishListPage(){
+        return "shop/sellerWishListPage";
+    }
+
 
     // 세션 로그인 체크
     private boolean isSellerLoggedIn(HttpSession session) {

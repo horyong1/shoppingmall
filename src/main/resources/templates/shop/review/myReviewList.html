@@ -35,7 +35,7 @@
                                 <div class="col-auto align-self-center fs-0-8" th:text="${list.consumerDto.nickname}"></div>
                             </div> -->
                             <div class="row pb-2">
-                                <div class="col-auto fs-0-8 align-self-center" th:text="${#dates.format(list.reviewDto.createdAt,'yyyy-MM-dd')}"></div>
+                                <div class="col-auto fs-0-8 align-self-center fw-bold" th:text="${#dates.format(list.reviewDto.createdAt,'yyyy-MM-dd')}"></div>
                             </div>
                             <div class="row">
                                 <div class="col-auto">
@@ -60,12 +60,17 @@
                             <div class="row">
                                 <div class="col fs-0-8" th:text="${list.reviewDto.reviewContent}"></div>
                             </div>
+                            <div class="row pt-2" th:unless="${list.reviewDto.sellerReply == null}">
+                                <div class="col-auto align-self-center">└</div>
+                                <div class="col-10 py-2 ms-2 bg-secondary-subtle rounded-3 fs-0-8" th:text="${list.reviewDto.sellerReply}"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
         <!-- footer start -->
+         <div class="row py-5"></div>
         <footer>
             <div class="row">
                 <div class="col">

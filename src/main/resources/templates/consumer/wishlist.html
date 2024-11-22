@@ -28,14 +28,25 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-auto p-0 ps-2 ms-1 fs-0-8" th:if="${list.size() > 0}">
+                        <a class="btn btn-dark btn-sm link-dcr-none text-white bg-dark px-2 py-1 border rounded-2 p-0" href="">상품</a>
+                    </div>
+                    <div class="col-auto p-0 ps-2 ms-1 fs-0-8" th:unless="${list.size() > 0}">
+                        <a class="btn btn-outline-dark btn-sm link-dcr-none text-black over-g px-2 py-1 border rounded-2 p-0" href="">상품</a>
+                    </div>
+                    <div class="col-auto p-0 fs-0-8">
+                        <a class="btn btn-outline-dark btn-cus1 btn-sm link-dcr-none ms-1 text-black over-g px-2 py-1 border rounded-2 p-0" href="">브랜드</a>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col">
-                        <div class="row">
+                        <div class="row" th:if="${list.size() > 0}">
                             <div class="col-3 pt-2" th:each="data : ${list}">
                                 <a class="row link-dcr-none text-black" th:href="@{/shop/productDetailPage(productNo=${data.productDto.productNo})}">
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <img class="img-fluid" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
+                                                <img class="img-fluid aspect-ratio" th:src="|/uploadfiles/${data.productDto.mainImageUrl}|" alt="">
                                             </div>
                                         </div>
                                         <div class="row pt-1">
