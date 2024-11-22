@@ -56,7 +56,7 @@
                     <a class="text-secondary fs-0-7" th:href="@{./categoryProductListPage(categoryNo=${list.categoryDto.categoryNo})}">더보기</a>
                   </div>
                 </div>
-                <div class="row pt-2 ps-2">
+                <div class="row pt-2 px-2">
                   <div class="col-4" th:each="data : ${list.productList}">
                     <a class="text-dark link-dcr-none" th:href="@{./productDetailPage(productNo=${data.productDto.productNo})}">
                       <div class="row">

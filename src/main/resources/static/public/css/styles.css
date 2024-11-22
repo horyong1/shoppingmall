@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300&display=swap');
 
 body{
-    font-family: "Gowun Dodum", sans-serif;
+    font-family: Pretendard, Apple SD Gothic Neo, sans-serif;
     font-weight: 400;
     font-style: normal;
     overflow-y: scroll;
@@ -106,8 +106,16 @@ body{
     font-size: 1.6em;
 }
 
+.fs-13px{
+    font-size: 13px;
+}
+
 .aspect-ratio{
     aspect-ratio: 5 / 6
+}
+
+.ar-11{
+    aspect-ratio: 11 / 12
 }
 
 .link-dcr-none {
@@ -146,12 +154,32 @@ body{
     grid-auto-flow: column;
     justify-content: flex-start;
     max-width: 600px; 
-    cursor: pointer;
     white-space: nowrap; 
+    cursor: pointer;
+    transition: transform 0.1s ease-out;
 }
 .of-x-h::-webkit-scrollbar{
     display: none;
 }
+.of-x-h.grabbing {
+    cursor: grabbing;
+    transition: none; /* 드래그 중에는 애니메이션 비활성화 */
+}
 
+.category-container {
+    display: flex; /* 버튼들이 가로로 배치되도록 설정 */
+    gap: 10px; /* 버튼 사이 간격 */
+    cursor: grab;
+    transition: transform 0.1s ease-out; /* 부드러운 이동 */
+}
 
+.category-container.grabbing {
+    cursor: grabbing;
+    transition: none; /* 드래그 중에는 애니메이션 비활성화 */
+}
+
+.category-btn{
+    background: white;
+    border: 0;
     
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Move Practice</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* 스크롤바 숨김 */
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200vw; /* 화면의 두 배 너비 */
+            height: 100vh;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            cursor: grab;
+            transition: transform 0.1s ease-out; /* 부드러운 이동 */
+        }
+
+        .container.grabbing {
+            cursor: grabbing;
+            transition: none; /* 드래그 중에는 애니메이션 비활성화 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+        const container = document.querySelector('.container');
+
+        let isMouseDown = false; // 마우스 클릭 상태 플래그
+        let startX = 0;          // 클릭한 시작 X 좌표
+        let currentX = 0;        // 컨테이너 이동 거리
+
+        // 마우스 클릭 이벤트
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true; // 클릭 상태 활성화
+            container.classList.add('grabbing'); // 시각적 피드백
+            startX = e.pageX - currentX; // 이동 거리 기준점 설정
+        });
+
+        // 마우스 이동 이벤트
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return; // 클릭 중이 아니면 동작하지 않음
+            const x = e.pageX; // 현재 마우스 X 좌표
+            currentX = x - startX; // 컨테이너의 현재 위치 계산
+            container.style.transform = `translateX(${currentX}px)`; // 이동 적용
+        });
+
+        // 마우스 해제 이벤트
+        container.addEventListener('mouseup', () => {
+            isMouseDown = false; // 클릭 상태 해제
+            container.classList.remove('grabbing'); // 시각적 피드백 제거
+        });
+
+        // 마우스가 컨테이너 밖으로 나갔을 때 상태 해제
+        container.addEventListener('mouseleave', () => {
+            isMouseDown = false; // 클릭 상태 해제
+            container.classList.remove('grabbing'); // 시각적 피드백 제거
+        });
+
+    </script>
+</body>
+</html>

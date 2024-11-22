@@ -136,6 +136,12 @@ public class ShopService {
             int productNo = productDto.getProductNo();
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             String price = decimelFormatter(productDto.getPrice());
+            
+            // ProductWishlistDto wishlistDto = new ProductWishlistDto();
+            // wishlistDto.setConsumerNo(consumerNo);
+            // wishlistDto.setProductNo(productNo);
+            // wishlistDto = shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
+            
             int wishListCount = shopSqlMapper.wishlistCount(productNo);
             int reviewCount = reviewSqlMapper.reviewConut(productNo);
 
@@ -144,6 +150,7 @@ public class ShopService {
             map.put("sellerDto", sellerDto);
             map.put("wishListCount",wishListCount);
             map.put("reviewCount", reviewCount);
+            // map.put("wishlistDto", wishlistDto);
 
             list.add(map);
         }

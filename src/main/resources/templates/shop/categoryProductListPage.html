@@ -8,14 +8,167 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
+        
         function categoryClick(categoryNo){
-            alert(categoryNo);
-            fetch()
-            .then(r=>r.json)
-            .then(()=>{
+            fetch(`/api/shop/getProductsByCategory?categoryNo=${categoryNo}`)
+            .then(r=>r.json())
+            .then(response =>{
+                console.log(response.data);
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('categoryNo', categoryNo); // categoryNo 변경
 
+                // URL을 변경하지만 페이지를 새로 고치지 않음
+                window.history.pushState({}, '', currentUrl);
+                categoryNoCheck(categoryNo);
+
+                const productContainer = document.getElementById("productContainer");
+                productContainer.innerHTML="";
+
+
+                // 제품 목록 생성
+                response.data.categoryProductList.forEach(e =>{
+                    // 상품 리스트 최상단
+                    const productElement = document.createElement('div');
+                    productElement.className = "col-4 pb-4"
+
+                    // 링크
+                    const productDetailLink = document.createElement('a')
+                    productDetailLink.className ="link-dcr-none text-dark";
+                    productDetailLink.href = `./productDetailPage(productNo=${e.productDto.productNo})`;
+
+                    // 이미지
+                    const imageRow = document.createElement('div');
+                    imageRow.className = "row";
+                    const imageCol = document.createElement('div');
+                    imageCol.className = "col p-0 position-relative";
+                    const image = document.createElement('img');
+                    image.src = `/uploadfiles/${e.productDto.mainImageUrl}`;
+                    image.className = "img-fluid ar-11";
+                    const heartSpan = document.createElement('span');
+                    heartSpan.className = "position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1";
+                    const heartIcon = document.createElement('i');
+                    heartIcon.className = "bi bi-heart"
+
+                    heartSpan.appendChild(heartIcon);
+                    imageCol.appendChild(image);
+                    imageCol.appendChild(heartSpan);
+                    imageRow.appendChild(imageCol);
+                    productDetailLink.appendChild(imageRow);
+
+                    // 스토어 이름
+                    const shopNameRow = document.createElement('div');
+                    shopNameRow.className = "row ps-2";
+                    const shopName = document.createElement('div');
+                    shopName.className = "col fs-0-8 p-0 fw-bold"
+                    shopName.innerText = e.sellerDto.shopName;
+
+                    shopNameRow.appendChild(shopName);
+                    productDetailLink.appendChild(shopNameRow);
+                    
+
+                    // 제품 이름
+                    const productNameRow = document.createElement('div');
+                    productNameRow.className = "row ps-2";
+                    const productName = document.createElement('div');
+                    productName.className = "col fs-0-8 p-0"
+                    productName.innerText = e.productDto.productName;
+
+                    productNameRow.appendChild(productName);
+                    productDetailLink.appendChild(productNameRow);
+
+                    // 제품 가격
+                    const priceRow = document.createElement('div');
+                    priceRow.className = "row ps-2";
+                    const price = document.createElement('div');
+                    price.className = "col fs-0-8 p-0 fw-bold"
+                    price.innerText = e.price + "원";
+
+                    priceRow.appendChild(price);
+                    productDetailLink.appendChild(priceRow);
+
+                    productElement.appendChild(productDetailLink);
+
+                    // 찜, 리뷰 아이콘 row
+                    const row = document.createElement("div");
+                    row.className="row ps-2";
+
+                    // 찜
+                    const wishCol = document.createElement("div");
+                    wishCol.className = "col-auto p-0 fs-0-8";
+                    const wishLink = document.createElement("a");
+                    wishLink.className = "link-dcr-none text-dark";
+                    const wishIcon = document.createElement("i");
+                    wishIcon.className="bi bi-heart-fill text-danger";
+                    const wishCount = document.createElement("span");
+                    wishCount.className = "ms-1"
+                    wishCount.innerText = e.wishListCount;
+                    
+                    wishLink.appendChild(wishIcon);
+                    wishLink.appendChild(wishCount);
+                    wishCol.appendChild(wishLink);
+                    
+                    // 리뷰
+                    const reviewCol = document.createElement("div");
+                    reviewCol.className = "col-auto p-0 fs-0-8 ms-1";
+                    const reviewLink = document.createElement("a");
+                    reviewLink.className = "link-dcr-none text-dark";
+                    const reviewIcon = document.createElement("i");
+                    reviewIcon.className="bi bi-star-fill text-warning";
+                    const reviewCount = document.createElement("span");
+                    reviewCount.className ="pe-1 ms-1";
+                    reviewCount.innerText = e.reviewCount;
+
+                    reviewLink.appendChild(reviewIcon);
+                    reviewLink.appendChild(reviewCount);
+                    reviewCol.appendChild(reviewLink);
+
+                    row.appendChild(wishCol);
+                    row.appendChild(reviewCol);
+
+
+
+                    
+                    productDetailLink.appendChild(row);
+                    productElement.appendChild(productDetailLink);
+                    productContainer.appendChild(productElement);
+
+                    
+                })
+                // for (let i = 0; i < response.data.categoryProductList.length; i++){
+                //     const e = response.data.categoryProductList[i];
+                //     productNo[i].href = `./productDetailPage(productNo=${e.productDto.productNo})`;
+                //     mainImageUrl[i].src = `/uploadfiles/${e.productDto.mainImageUrl}`;
+                //     shopName[i].innerText = e.sellerDto.shopName;
+                //     productName[i].innerText = e.productDto.productName;
+                //     price[i].innerText = e.price+"원";
+                //     reviewCount[i].innerText = e.reviewCount;
+                //     wishListCount[i].innerText = e.wishListCount;
+                    
+                // }
             })
         }
+        
+
+        function categoryNoCheck(categoryNo){
+            const categoryList =  document.querySelectorAll(".categoryList");
+            categoryList.forEach(e => {
+                const dataCategoryNo = e.getAttribute('data-categoryNo');
+                e.classList.remove("fw-bold");
+
+                if(categoryNo == dataCategoryNo){
+                    e.classList.add("fw-bold");
+                }
+                
+            });
+        }
+
+        // // 페이지가 로드될 때 categoryClick 함수 실행
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const currentUrl = new URL(window.location.href);
+        //     const params = new URLSearchParams(currentUrl.search);
+        //     const categoryNo = params.get('categoryNo'); // 기본값으로 1 사용
+        //     categoryClick(categoryNo); // 원하는 카테고리 번호를 전달
+        // });
 
     </script>
 </head>
@@ -31,58 +184,73 @@
         </nav>
         <!-- navbar end -->
         <div class="row topsize"></div>
-        <main>
-            <div class="row">
-                <div class="col">
-                    <div class="row pt-3 border-bottom">
-                        <div class="col">
-                            <div class="row p-2">
-                                <div class="col-auto fs-0-8 of-x-h p-0">
-                                    <a class="link-dcr-none text-black px-2" th:each="list : ${categoryList}" th:onclick="'categoryClick(' + ${list.categoryDto.categoryNo} + ')'">
-                                        <span class="fw-bold" 
-                                              th:text="${list.categoryDto.categoryName}" 
-                                              th:if="${categoryDto.categoryNo == list.categoryDto.categoryNo}"></span>
-                                        <span th:text="${list.categoryDto.categoryName}" 
-                                              th:unless="${categoryDto.categoryNo == list.categoryDto.categoryNo}"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row px-2 pt-2">
-                        <div class="col-4" th:each="list : ${categoryProductList}">
-                            <a class="link-dcr-none text-dark" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
-                                <div class="row">
-                                    <div class="col p-0">
-                                        <img class="img-fluid aspect-ratio" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col fs-0-8 p-0 fw-bold" th:text="${list.sellerDto.shopName}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col fs-0-8 p-0" th:text="${list.productDto.productName}"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col fs-0-8 p-0 fw-bold" th:text="${list.price}+'원'"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-auto p-0 fs-0-8">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span th:text="${list.reviewCount}"></span>
-                                    </div>
-                                    <div class="col-auto p-0 ps-1 fs-0-8 align-self-center">
-                                        <i class="bi bi-heart-fill text-danger"></i>
-                                        <span th:text="${list.wishListCount}"></span>
-                                    </div>
-                                </div>
-                            </a>
+        <!-- 카테고리 바 start -->
+        <div class="row pt-3 border-bottom">
+            <div class="col">
+                <div class="row p-2">
+                    <div class="col-auto p-0 fs-0-8 of-x-h" style="scroll-snap-type: none; scroll-behavior: auto;">
+                        <div class="category-container">
+                            <button class="category-btn text-dark pe-2" th:each="list : ${categoryList}" th:onclick="'categoryClick(' + ${list.categoryDto.categoryNo} + ')'">
+                                <span class="categoryList fw-bold" 
+                                        th:text="${list.categoryDto.categoryName}"
+                                        th:attr="data-categoryNo=${list.categoryDto.categoryNo}" 
+                                        th:if="${categoryDto.categoryNo == list.categoryDto.categoryNo}"></span>
+                                <span class="categoryList" 
+                                        th:text="${list.categoryDto.categoryName}"
+                                        th:attr="data-categoryNo=${list.categoryDto.categoryNo}" 
+                                        th:unless="${categoryDto.categoryNo == list.categoryDto.categoryNo}"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+        <!-- 카테고리 바 end  -->
+
+        <!-- 상품 리스트 start -->
+        <div class="row">
+            <div class="col">
+                <div class="row pt-2" id="productContainer">
+                    <div class="col-4 pb-4" th:each="list : ${categoryProductList}">
+                        <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
+                            <div class="row">
+                                <div class="col p-0 position-relative">
+                                    <img class="img-fluid ar-11" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
+                                    <span class="position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1">
+                                        <i class="bi bi-heart"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row ps-2">
+                                <div class="col fs-0-8 p-0 fw-bold shopName" th:text="${list.sellerDto.shopName}"></div>
+                            </div>
+                            <div class="row ps-2">
+                                <div class="col fs-0-8 p-0 productName" th:text="${list.productDto.productName}"></div>
+                            </div>
+                            <div class="row ps-2">
+                                <div class="col fs-0-8 p-0 fw-bold price" th:text="${list.price}+'원'"></div>
+                            </div>
+                        </a>
+                        <div class="row ps-2">
+                            <div class="col-auto p-0 fs-0-8">
+                                <a class="link-dcr-none text-dark" href="">
+                                    <i class="bi bi-heart-fill text-danger"></i>
+                                    <span class="wishListCount" th:text="${list.wishListCount}"></span>
+                                </a>
+                            </div>
+                            <div class="col-auto p-0 fs-0-8 ms-1">
+                                <a class="link-dcr-none text-dark" href="">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <span class="reviewCount" th:text="${list.reviewCount}"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- footer start -->
+        <div class="row py-4"></div>
         <footer>
             <div class="row">
                 <div class="col">
@@ -92,6 +260,49 @@
         </footer>
         <!-- footer end-->
     </div>
+    <script>
+       const categoryContainer = document.querySelector('.category-container');
+
+        let isMouseDown = false; // 마우스 클릭 상태 플래그
+        let startX = 0;          // 클릭한 시작 X 좌표
+        let currentX = 0;        // 컨테이너 이동 거리
+
+        // 마우스 클릭 이벤트
+        categoryContainer.addEventListener('mousedown', (e) => {
+            isMouseDown = true; // 클릭 상태 활성화
+            categoryContainer.classList.add('grabbing'); // 시각적 피드백
+            startX = e.pageX - currentX; // 이동 거리 기준점 설정
+
+            e.preventDefault();
+        });
+
+        // 마우스 이동 이벤트
+        categoryContainer.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return; // 클릭 중이 아니면 동작하지 않음
+            const x = e.pageX; // 현재 마우스 X 좌표
+            currentX = x - startX; // 컨테이너의 현재 위치 계산
+            // 컨테이너 이동, 왼쪽과 오른쪽 경계를 제한
+            if (currentX > 0) {
+                currentX = 0; // 왼쪽 경계
+            } else if (currentX < -categoryContainer.offsetWidth + categoryContainer.parentElement.offsetWidth) {
+                currentX = -categoryContainer.offsetWidth + categoryContainer.parentElement.offsetWidth; // 오른쪽 경계
+            }
+            categoryContainer.style.transform = `translateX(${currentX}px)`; // 이동 적용
+        });
+
+        // 마우스 해제 이벤트
+        categoryContainer.addEventListener('mouseup', () => {
+            isMouseDown = false; // 클릭 상태 해제
+            categoryContainer.classList.remove('grabbing'); // 시각적 피드백 제거
+        });
+
+        // 마우스가 컨테이너 밖으로 나갔을 때 상태 해제
+        categoryContainer.addEventListener('mouseleave', () => {
+            isMouseDown = false; // 클릭 상태 해제
+            categoryContainer.classList.remove('grabbing'); // 시각적 피드백 제거
+        });
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
