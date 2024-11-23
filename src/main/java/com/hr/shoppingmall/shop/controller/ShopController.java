@@ -53,7 +53,7 @@ public class ShopController {
             if(consumerInfo != null){
                 wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
                 wishlistDto.setProductNo(productNo);
-                wishlistDto = shopService.getWishlistPruduct(wishlistDto);
+                wishlistDto = shopService.wishlistFindByConsumerNoAndProductNo(wishlistDto);
                 
                 sellerWishListDto.setConsumerNo(consumerInfo.getConsumerNo());
                 sellerWishListDto = shopService.getSellerWishList(sellerWishListDto, productNo);
@@ -134,7 +134,7 @@ public class ShopController {
 
         shopService.toggleWishlist(wishlistDto);
 
-        wishlistDto = shopService.getWishlistPruduct(wishlistDto);
+        wishlistDto = shopService.wishlistFindByConsumerNoAndProductNo(wishlistDto);
         
         Map<String,Object> map =  shopService.getProductDetail(productNo);
         
@@ -232,9 +232,14 @@ public class ShopController {
 
     // 카테고리별 제품 리스트 페이지
     @RequestMapping("categoryProductListPage")
-    public String categoryProductListPage(Model model,@RequestParam(value = "categoryNo")int cateoryNo){
+    public String categoryProductListPage(Model model,@RequestParam(value = "categoryNo")int cateoryNo, HttpSession session){
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        int consumerNo = 0;
+        if(consumerInfo != null){
+            consumerNo = consumerInfo.getConsumerNo();
+        }
         model.addAttribute("categoryDto", shopService.getCategoryName(cateoryNo));
-        model.addAttribute("categoryProductList", shopService.getProductCategoryList(cateoryNo));
+        model.addAttribute("categoryProductList", shopService.getProductCategoryList(cateoryNo,consumerNo));
         model.addAttribute("categoryList", shopService.getCategoryList());
         model.addAttribute("cateoryNo", cateoryNo);
         return "shop/categoryProductListPage";

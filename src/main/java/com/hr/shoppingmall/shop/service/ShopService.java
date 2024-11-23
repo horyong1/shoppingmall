@@ -128,7 +128,7 @@ public class ShopService {
      * @param categoryNo
      * @return
      */
-    public List<Map<String, Object>> getProductCategoryList(int categoryNo){
+    public List<Map<String, Object>> getProductCategoryList(int categoryNo,int consumerNo){
         List<Map<String, Object>> list = new ArrayList<>();
 
         for(ProductDto productDto : shopSqlMapper.productFindCategoryId(categoryNo)){
@@ -137,10 +137,10 @@ public class ShopService {
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());
             String price = decimelFormatter(productDto.getPrice());
             
-            // ProductWishlistDto wishlistDto = new ProductWishlistDto();
-            // wishlistDto.setConsumerNo(consumerNo);
-            // wishlistDto.setProductNo(productNo);
-            // wishlistDto = shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
+            ProductWishlistDto wishlistDto = new ProductWishlistDto();
+            wishlistDto.setConsumerNo(consumerNo);
+            wishlistDto.setProductNo(productNo);
+            wishlistDto = shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
             
             int wishListCount = shopSqlMapper.wishlistCount(productNo);
             int reviewCount = reviewSqlMapper.reviewConut(productNo);
@@ -150,7 +150,7 @@ public class ShopService {
             map.put("sellerDto", sellerDto);
             map.put("wishListCount",wishListCount);
             map.put("reviewCount", reviewCount);
-            // map.put("wishlistDto", wishlistDto);
+            map.put("wishlistDto", wishlistDto);    
 
             list.add(map);
         }
@@ -314,14 +314,26 @@ public class ShopService {
         }
         return list;
     }
-
+    /**
+     * 특정 제품 찜 개수
+     * @param productNo
+     * @return
+     */
+    public int getProductWishListCount(int productNo){
+        return shopSqlMapper.wishlistCount(productNo);
+    }
     /** 
      * 찜목록 중 특정 상품 확인
      * @param wishlistDto
      * @return
     */
-    public ProductWishlistDto getWishlistPruduct(ProductWishlistDto wishlistDto){
+    public ProductWishlistDto wishlistFindByConsumerNoAndProductNo(ProductWishlistDto wishlistDto){
         return shopSqlMapper.wishlistFindByConsumerNoAndProductNo(wishlistDto);
+    }
+
+    public Boolean isConsumerProductWishList(ProductWishlistDto productWishlistDto){
+
+        return shopSqlMapper.wishlistFindByConsumerNoAndProductNo(productWishlistDto) != null ? true : false;
     }
 
     /**
