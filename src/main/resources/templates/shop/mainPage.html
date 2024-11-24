@@ -48,7 +48,7 @@
                </div>
              </div>
            <!-- 카테고리별 상품 목록 start-->
-            <div class="row py-2" th:each="list : ${mainList}">
+            <div class="row py-2" th:each="list : ${mainList}" th:if="${list.categoryDto.categoryNo != 1}">
               <div class="col">
                 <div class="row pb-2 border-bottom">
                   <div class="col-auto fw-bold" th:text="${list.categoryDto.categoryName}"></div>
