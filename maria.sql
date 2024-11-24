@@ -48,6 +48,36 @@ CREATE TABLE  sp_product_category  (
 	 category_name 	VARCHAR(50),
 	 created_at 	DATETIME DEFAULT NOW()		 
 );
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('전체');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('패션의류/잡화');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('뷰티');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('출산/유아동');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('식품');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('주방용품');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('생활용품');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('홈인테리어');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('가전디지털');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('스포츠/레저');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('자동차용품');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('도서/음반/DVD');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('완구/취미');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('반려동물용품');
+-- INSERT INTO sp_product_category(category_name)
+-- VALUES('헬스/건강식품');
 
 #상품 카테고리(중분류)
 DROP TABLE sp_product_category_medium;
