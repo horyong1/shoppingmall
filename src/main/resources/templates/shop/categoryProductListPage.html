@@ -23,13 +23,14 @@
             
         }
 
-        function categoryClick(categoryNo){
-            fetch(`/api/shop/getProductsByCategory?categoryNo=${categoryNo}`)
+        function categoryClick(categoryNo,categoryMediumNo){
+            fetch(`/api/shop/getProductsByCategory?categoryNo=${categoryNo}&categoryMediumNo=${categoryMediumNo}`)
             .then(r=>r.json())
             .then(response =>{
                 console.log(response.data);
                 const currentUrl = new URL(window.location.href);
                 currentUrl.searchParams.set('categoryNo', categoryNo); // categoryNo 변경
+                currentUrl.searchParams.set('categoryMediumNo', categoryMediumNo);
 
                 // URL을 변경하지만 페이지를 새로 고치지 않음
                 window.history.pushState({}, '', currentUrl);
@@ -38,9 +39,40 @@
                 const productContainer = document.getElementById("productContainer");
                 productContainer.innerHTML="";
 
+                const categoryMediumContainer = document.getElementById("categoryMedium-container");
+                
+                categoryMediumContainer.innerHTML = "";
+                
+                if(categoryNo != 1){
+                    const col = document.createElement("div")
+                    col.className = "col-auto p-0"
+                    // 카테고리 중분류
+                    response.data.categoryMediumList.forEach(e => {
+                        const cmButton = document.createElement('button');
+                        cmButton.className = `medium${e.categoryMediumNo} category-btn text-dark pe-2`;
+                        cmButton.setAttribute("onclick" , `categoryClick(${categoryNo},${e.categoryMediumNo})`)
+                        const cmSpan = document.createElement('span');
+                        if(e.categoryMediumNo == categoryMediumNo){
+                            cmSpan.className = "fs-13px fw-bold";
+                        }else{
+                            cmSpan.className = "fs-13px";
+
+                        }
+                        cmSpan.innerText = e.categoryMediumName;
+                        
+                        cmButton.appendChild(cmSpan);
+                        col.appendChild(cmButton);
+                        categoryMediumContainer.append(col);
+                    })
+                    categoryMediumContainer.classList.add('border-bottom');
+                }else{
+                    
+                    categoryMediumContainer.classList.remove('border-bottom');
+                }
+
 
                 // 제품 목록 생성
-                response.data.categoryProductList.forEach(e =>{
+                response.data.categoryProductList.forEach(e => {
                     // 상품 리스트 최상단
                     const productElement = document.createElement('div');
                     productElement.className = "col-4 pb-4"
@@ -62,6 +94,7 @@
                     heartSpan.className = "position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1";
                     const heartIcon = document.createElement('i');
                     heartIcon.setAttribute("onclick",`heartClick(${e.productDto.productNo},event)`);
+                    
                     if(e.wishlistDto != null){
                         heartIcon.className = `wishProduct${e.productDto.productNo} bi bi-heart-fill text-danger`;
 
@@ -77,9 +110,9 @@
 
                     // 스토어 이름
                     const shopNameRow = document.createElement('div');
-                    shopNameRow.className = "row ps-2";
+                    shopNameRow.className = "row ps-2 pt-2";
                     const shopName = document.createElement('div');
-                    shopName.className = "col fs-0-8 p-0 fw-bold"
+                    shopName.className = "col fs-11px p-0 fw-bold"
                     shopName.innerText = e.sellerDto.shopName;
 
                     shopNameRow.appendChild(shopName);
@@ -90,7 +123,7 @@
                     const productNameRow = document.createElement('div');
                     productNameRow.className = "row ps-2";
                     const productName = document.createElement('div');
-                    productName.className = "col fs-0-8 p-0"
+                    productName.className = "col fs-13px p-0"
                     productName.innerText = e.productDto.productName;
 
                     productNameRow.appendChild(productName);
@@ -100,7 +133,7 @@
                     const priceRow = document.createElement('div');
                     priceRow.className = "row ps-2";
                     const price = document.createElement('div');
-                    price.className = "col fs-0-8 p-0 fw-bold"
+                    price.className = "col fs-13px p-0 fw-bold"
                     price.innerText = e.price + "원";
 
                     priceRow.appendChild(price);
@@ -110,37 +143,31 @@
 
                     // 찜, 리뷰 아이콘 row
                     const row = document.createElement("div");
-                    row.className="row ps-2";
+                    row.className="row ps-2 mt-1";
 
                     // 찜
                     const wishCol = document.createElement("div");
-                    wishCol.className = "col-auto p-0 fs-0-8";
-                    const wishLink = document.createElement("a");
-                    wishLink.className = "link-dcr-none text-dark";
+                    wishCol.className = "col-auto p-0 fs-11px";
                     const wishIcon = document.createElement("i");
                     wishIcon.className="bi bi-heart-fill text-danger";
                     const wishCount = document.createElement("span");
                     wishCount.className = `wishListCount${e.productDto.productNo} ms-1`
                     wishCount.innerText = e.wishListCount;
                     
-                    wishLink.appendChild(wishIcon);
-                    wishLink.appendChild(wishCount);
-                    wishCol.appendChild(wishLink);
+                    wishCol.appendChild(wishIcon);
+                    wishCol.appendChild(wishCount);
                     
                     // 리뷰
                     const reviewCol = document.createElement("div");
-                    reviewCol.className = "col-auto p-0 fs-0-8 ms-1";
-                    const reviewLink = document.createElement("a");
-                    reviewLink.className = "link-dcr-none text-dark";
+                    reviewCol.className = "col-auto p-0 fs-11px ms-1";
                     const reviewIcon = document.createElement("i");
                     reviewIcon.className="bi bi-star-fill text-warning";
                     const reviewCount = document.createElement("span");
                     reviewCount.className ="pe-1 ms-1";
                     reviewCount.innerText = e.reviewCount;
 
-                    reviewLink.appendChild(reviewIcon);
-                    reviewLink.appendChild(reviewCount);
-                    reviewCol.appendChild(reviewLink);
+                    reviewCol.appendChild(reviewIcon);
+                    reviewCol.appendChild(reviewCount);
 
                     row.appendChild(wishCol);
                     row.appendChild(reviewCol);
@@ -148,23 +175,12 @@
 
 
                     
-                    productDetailLink.appendChild(row);
-                    productElement.appendChild(productDetailLink);
+                    productElement.appendChild(row);
                     productContainer.appendChild(productElement);
 
                     
                 })
-                // for (let i = 0; i < response.data.categoryProductList.length; i++){
-                //     const e = response.data.categoryProductList[i];
-                //     productNo[i].href = `./productDetailPage(productNo=${e.productDto.productNo})`;
-                //     mainImageUrl[i].src = `/uploadfiles/${e.productDto.mainImageUrl}`;
-                //     shopName[i].innerText = e.sellerDto.shopName;
-                //     productName[i].innerText = e.productDto.productName;
-                //     price[i].innerText = e.price+"원";
-                //     reviewCount[i].innerText = e.reviewCount;
-                //     wishListCount[i].innerText = e.wishListCount;
-                    
-                // }
+                
             })
         }
         
@@ -182,11 +198,15 @@
             });
         }
 
+        function categoryNoDetailList(){
+
+        }
+
         // 찜 체크
         function heartClick(productNo, event){
             event.preventDefault();
             if(consumerNo == null){
-                if(confirm("로그인 후 이용 가능합니다. 로그인 하시겠습니까?"+ productNo)){
+                if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동 하시겠습니까?")){
                     location.href = "/consumer/loginPage"
                 }
                 return;
@@ -210,6 +230,7 @@
             })
         }
 
+        // 찜 개수
         function wishCount(productNo){
             fetch(`/api/shop/${productNo}/wishListCount`)
             .then(r => r.json())
@@ -237,12 +258,12 @@
         <!-- navbar end -->
         <div class="row topsize"></div>
         <!-- 카테고리 바 start -->
-        <div class="row pt-3 border-bottom">
+        <div class="row pt-3 ">
             <div class="col">
-                <div class="row p-2">
+                <div class="row py-1 border-bottom">
                     <div class="col-auto p-0 fs-0-8 of-x-h" style="scroll-snap-type: none; scroll-behavior: auto;">
                         <div class="category-container">
-                            <button class="category-btn text-dark pe-2" th:each="list : ${categoryList}" th:onclick="'categoryClick(' + ${list.categoryDto.categoryNo} + ')'">
+                            <button class="category-btn text-dark pe-2" th:each="list : ${categoryList}" th:onclick="'categoryClick(' + ${list.categoryDto.categoryNo} + ',1)'">
                                 <span class="categoryList fw-bold" 
                                         th:text="${list.categoryDto.categoryName}"
                                         th:attr="data-categoryNo=${list.categoryDto.categoryNo}" 
@@ -253,6 +274,20 @@
                                         th:unless="${categoryDto.categoryNo == list.categoryDto.categoryNo}"></span>
                             </button>
                         </div>
+                    </div>
+                </div>
+                <div id="categoryMedium-container" class="row py-1 p-0" th:if="${categoryNo == 1}">
+                    <div class="col-auto p-0 of-x-h"></div>
+                </div>
+                <div id="categoryMedium-container" class="row border-bottom py-1 p-0" th:unless="${categoryNo == 1}">
+                    <div class="col-auto p-0 of-x-h">
+                        <button th:class="'medium'+${list.categoryMediumNo}+' category-btn text-dark pe-2'" th:each="list : ${categoryMediumList}"
+                        th:onclick="'categoryClick(' + ${categoryNo} + ',' + ${list.categoryMediumNo} + ')'">
+                            <span th:if="${list.categoryMediumNo == categoryMediumNo}" class="fs-13px fw-bold" th:text="${list.categoryMediumName}">
+                            </span>
+                            <span th:unless="${list.categoryMediumNo == categoryMediumNo}" class="fs-13px" th:text="${list.categoryMediumName}">
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -267,7 +302,7 @@
                         <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
                             <div class="row">
                                 <div class="col p-0 position-relative">
-                                    <img class="img-fluid ar-11" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
+                                    <img class="img-fluid ar-11 pb-img" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
                                     <span class="position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1">
                                         <!-- <i th:if="${session.consumetInfo == null}" class="bi bi-heart"></i> -->
                                         <i th:class="'wishProduct'+${list.productDto.productNo}+' '+${session.consumerInfo == null ? 'bi bi-heart' : (list.wishlistDto != null ? 'bi bi-heart-fill text-danger' : 'bi bi-heart')}" 
@@ -275,33 +310,24 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row ps-2">
-                                <div class="col fs-0-8 p-0 fw-bold shopName" th:text="${list.sellerDto.shopName}"></div>
+                            <div class="row ps-2 pt-2">
+                                <div class="col fs-11px p-0 fw-bold shopName" th:text="${list.sellerDto.shopName}"></div>
                             </div>
                             <div class="row ps-2">
-                                <div class="col fs-0-8 p-0 productName" th:text="${list.productDto.productName}"></div>
+                                <div class="col fs-13px p-0 productName" th:text="${list.productDto.productName}"></div>
                             </div>
                             <div class="row ps-2">
                                 <div class="col fs-0-8 p-0 fw-bold price" th:text="${list.price}+'원'"></div>
                             </div>
                         </a>
-                        <div class="row">
-                            <div class="col">
-                                
+                        <div class="row ps-2 mt-1">
+                            <div class="col-auto p-0 fs-11px">
+                                <i class="bi bi-heart-fill text-danger"></i>
+                                <span th:class="'wishListCount'+${list.productDto.productNo}" th:text="${list.wishListCount}"></span>
                             </div>
-                        </div>
-                        <div class="row ps-2">
-                            <div class="col-auto p-0 fs-0-8">
-                                <a class="link-dcr-none text-dark" href="">
-                                    <i class="bi bi-heart-fill text-danger"></i>
-                                    <span th:class="'wishListCount'+${list.productDto.productNo}" th:text="${list.wishListCount}"></span>
-                                </a>
-                            </div>
-                            <div class="col-auto p-0 fs-0-8 ms-1">
-                                <a class="link-dcr-none text-dark" href="">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="reviewCount" th:text="${list.reviewCount}"></span>
-                                </a>
+                            <div class="col-auto p-0 fs-11px ms-1">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <span class="reviewCount" th:text="${list.reviewCount}"></span>
                             </div>
                         </div>
                     </div>

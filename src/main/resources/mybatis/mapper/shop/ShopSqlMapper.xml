@@ -29,6 +29,11 @@
 
     <!-- 상품 카테고리 대분류 기준 중분류 리스트 -->
     <select id="categoryMediumFindByCategoryNo" resultType="com.hr.shoppingmall.shop.dto.ProductCategoryMediumDto">
+        SELECT  1 AS categoryMediumNo,
+                #{categoryNo} AS categoryNo,
+                '전체' AS categoryMediumName,
+                NULL AS createdAt
+        UNION ALL
         SELECT  (spcm.category_medium_no) AS categoryMediumNo,
                 (spcm.category_no) AS categoryNo,
                 (spcm.category_medium_name) AS categoryMediumName,
@@ -71,7 +76,11 @@
         FROM    sp_product sp
         <if test="categoryNo != 1">
             WHERE   category_no = #{categoryNo}
+            <if test="categoryMediumNo != null and categoryMediumNo != 1">
+                AND sp.category_medium_no =#{categoryMediumNo}
+            </if>
         </if>
+
     </select>
 
     <!-- 상품 상세 정보  -->

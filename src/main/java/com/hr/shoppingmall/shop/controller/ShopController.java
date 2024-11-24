@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.consumer.service.ConsumerService;
-import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.CartDto;
+import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.dto.SellerWishListDto;
 import com.hr.shoppingmall.shop.dto.ShoppingPurchaseDto;
-import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,10 +27,6 @@ public class ShopController {
 
     @Autowired
     private ShopService shopService;
-    @Autowired 
-    private SellerService sellerService;
-    @Autowired
-    private ReviewService reviewService;
     @Autowired
     private ConsumerService consumerService;
 
@@ -226,22 +221,32 @@ public class ShopController {
     // 카테고리 페이지
     @RequestMapping("categoryPage")
     public String categoryPage(Model model){
+        model.addAttribute("categorys", shopService.getCategorys());
         model.addAttribute("categoryList",shopService.getCategoryList());
         return "shop/categoryPage";
     }
 
     // 카테고리별 제품 리스트 페이지
     @RequestMapping("categoryProductListPage")
-    public String categoryProductListPage(Model model,@RequestParam(value = "categoryNo")int cateoryNo, HttpSession session){
+    public String categoryProductListPage(Model model,
+        @RequestParam(value = "categoryNo")int categoryNo,
+        @RequestParam(value = "categoryMediumNo", defaultValue = "1")int categoryMediumNo, HttpSession session){
         ConsumerDto consumerInfo = getConsumerInfo(session);
         int consumerNo = 0;
         if(consumerInfo != null){
             consumerNo = consumerInfo.getConsumerNo();
         }
-        model.addAttribute("categoryDto", shopService.getCategoryName(cateoryNo));
-        model.addAttribute("categoryProductList", shopService.getProductCategoryList(cateoryNo,consumerNo));
+
+        ProductDto selectCategory = new ProductDto();
+        selectCategory.setCategoryNo(categoryNo);
+        selectCategory.setCategoryMediumNo(categoryMediumNo);
+
+        model.addAttribute("categoryDto", shopService.getCategoryName(categoryNo));
+        model.addAttribute("categoryProductList", shopService.getProductCategoryList(selectCategory,consumerNo));
         model.addAttribute("categoryList", shopService.getCategoryList());
-        model.addAttribute("cateoryNo", cateoryNo);
+        model.addAttribute("categoryMediumList", shopService.getProductCategoryMediumList(categoryNo));
+        model.addAttribute("categoryNo", categoryNo);
+        model.addAttribute("categoryMediumNo", categoryMediumNo);
         return "shop/categoryProductListPage";
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hr.shoppingmall.common.dto.RestResponseDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
+import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
 import com.hr.shoppingmall.shop.service.ShopService;
 
@@ -23,9 +24,10 @@ public class ShopRestController {
     @Autowired
     private ShopService shopService;
 
-
+    // 카테고리별 상세 제품 가져오기
     @RequestMapping("getProductsByCategory")
-    public RestResponseDto getProductsByCategory(@RequestParam("categoryNo")int categoryNo, HttpSession session){
+    public RestResponseDto getProductsByCategory(@RequestParam("categoryNo")int categoryNo,
+        @RequestParam("categoryMediumNo")int categoryMediumNo, HttpSession session){
         RestResponseDto restResponseDto = new RestResponseDto();
         
         ConsumerDto consumerInfo = getConsumerInfo(session);
@@ -33,8 +35,10 @@ public class ShopRestController {
         if(consumerInfo != null){
             consumerNo = consumerInfo.getConsumerNo();
         }
-
-        List<Map<String,Object>> list = shopService.getProductCategoryList(categoryNo, consumerNo);
+        ProductDto selectCategory = new ProductDto();
+        selectCategory.setCategoryNo(categoryNo);
+        selectCategory.setCategoryMediumNo(categoryMediumNo);
+        List<Map<String,Object>> list = shopService.getProductCategoryList(selectCategory, consumerNo);
         
         if (list == null) {
             restResponseDto.setResult("fail!!!");
@@ -43,6 +47,7 @@ public class ShopRestController {
         restResponseDto.setResult("success!!!");
         restResponseDto.add("categoryProductList", list);
         restResponseDto.add("categoryNo", categoryNo);
+        restResponseDto.add("categoryMediumList", shopService.getProductCategoryMediumList(categoryNo));
         
         return restResponseDto;
     }

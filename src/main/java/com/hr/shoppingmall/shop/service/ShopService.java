@@ -43,8 +43,12 @@ public class ShopService {
 
     
 
+    public List<ProductCategoryDto> getCategorys(){
+        return shopSqlMapper.categoryFindAll();
+    }
+
     /**
-     * 카테고리 중분류
+     * 카테고리 대분류 중분류 리스트
      * @return
      */
     public List<Map<String,Object>> getCategoryList(){
@@ -65,6 +69,13 @@ public class ShopService {
         return list;
     }
 
+    /**
+     * 카테고리 중분류 리스트
+     * @return
+     */
+    public List<ProductCategoryMediumDto> getProductCategoryMediumList(int categoryNo){
+        return shopSqlMapper.categoryMediumFindByCategoryNo(categoryNo);
+    }
 
     /**
      * 메인페이지 상품 목록 6개 가져오기
@@ -119,6 +130,7 @@ public class ShopService {
         return map;
     }
 
+
     public ProductCategoryDto getCategoryName(int categoryNo){
         return shopSqlMapper.categoryFindByCategoryNo(categoryNo);
     }
@@ -128,10 +140,10 @@ public class ShopService {
      * @param categoryNo
      * @return
      */
-    public List<Map<String, Object>> getProductCategoryList(int categoryNo,int consumerNo){
+    public List<Map<String, Object>> getProductCategoryList(ProductDto selectCategory, int consumerNo){
         List<Map<String, Object>> list = new ArrayList<>();
 
-        for(ProductDto productDto : shopSqlMapper.productFindCategoryId(categoryNo)){
+        for(ProductDto productDto : shopSqlMapper.productFindCategoryId(selectCategory)){
             Map<String, Object> map = new HashMap<>();
             int productNo = productDto.getProductNo();
             SellerDto sellerDto = sellerSqlMapper.findByNo(productDto.getSellerNo());

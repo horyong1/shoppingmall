@@ -53,7 +53,7 @@
                 <div class="row pb-2 border-bottom">
                   <div class="col-auto fw-bold" th:text="${list.categoryDto.categoryName}"></div>
                   <div class="col-auto ms-auto">
-                    <a class="text-secondary fs-0-7" th:href="@{./categoryProductListPage(categoryNo=${list.categoryDto.categoryNo})}">더보기</a>
+                    <a class="text-secondary fs-0-7" th:href="@{./categoryProductListPage(categoryNo=${list.categoryDto.categoryNo},categoryMediumNo=1)}">더보기</a>
                   </div>
                 </div>
                 <div class="row pt-2 px-2">

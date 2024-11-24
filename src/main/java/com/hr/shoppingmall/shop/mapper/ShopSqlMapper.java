@@ -30,7 +30,7 @@ public interface ShopSqlMapper {
     List<ProductCategoryMediumDto> categoryMediumFindByCategoryNo(int categoryNo);
     
     // 상품 목록 카테고리별 조회 가져오기
-    List<ProductDto> productFindCategoryId(int categoryNo);
+    List<ProductDto> productFindCategoryId(ProductDto selectCategory);
     
     // 상품 목록 6개만 가져오기 카테고리별
     List<ProductDto> productLimitFindCategoryId(@Param("categoryNo")int categoryNo, @Param("limit")int limit);
