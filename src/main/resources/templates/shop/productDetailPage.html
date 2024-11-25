@@ -90,12 +90,9 @@
                         </div>
                     </div>
                     <div class="row py-4">
-                        <div class="col">
-                            제품 상세설명
-                        </div>
                     </div>
                     <div class="row py-4">
-                        <div class="col" th:text="${productMap.productDto.productDescription}"></div>
+                        <div class="col fs-13px" th:text="${productMap.productDto.productDescription}"></div>
                     </div>
                     <div class="row" th:each="list : ${productMap.detailImageDtoList}">
                         <div class="col">

@@ -5,11 +5,10 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class OptionMappingDto {
-    private int mappingNo;
-    private int optionNo;
-    private int optionDetailNo;
+public class OptionCombinationsDto {
+    private int combinationNo;
     private int productNo;
+    private String combinationValue;
+    private int stock;
     private Date createdAt;
-    private Date updatedAt;
 }

@@ -7,21 +7,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hr.shoppingmall.consumer.dto.ProductReviewDto;
 import com.hr.shoppingmall.seller.dto.SellerDto;
+import com.hr.shoppingmall.seller.service.OptionService;
 import com.hr.shoppingmall.seller.service.SellerService;
 import com.hr.shoppingmall.shop.dto.OptionDetailDto;
 import com.hr.shoppingmall.shop.dto.OptionDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
-import com.hr.shoppingmall.shop.service.OptionService;
 import com.hr.shoppingmall.shop.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
@@ -169,26 +171,44 @@ public class SellerController {
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
-        
+        model.addAttribute("optionList", optionService.getOptionsByProductNo(productNo));
+        model.addAttribute("productNo", productNo);
         return "seller/product/optionEditPage";
     }
 
     // 옵션 등록
     @RequestMapping("registerOptionList")
     public String registerOptionList(Model model, HttpSession session,
-        OptionDetailDto optionDetailDto, 
-        @RequestParam(value = "optionName") String optionName,
-        @RequestParam(value = "productNo")int productNo){
+        OptionDto optionDto, 
+        @RequestParam(value = "optionDetailName") String optionDetailName){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
-        SellerDto sellerDto = getSellerInfo(session);
-        OptionDto optionDto = new OptionDto();
-        optionDto.setOptionName(optionName);
-        optionDto.setSellerNo(sellerDto.getSellerNo());
-        optionService.registerOption(optionDto, optionDetailDto, productNo);
+        int productNo = optionDto.getProductNo();
+        optionService.registerOption(optionDto, optionDetailName, productNo);
 
         return "redirect:./optionEditPage?productNo="+productNo;
+    }
+
+    // 옵션 상세 등록
+    @RequestMapping("registerOptionDetail")
+    public String registerOptionDetail(
+        @RequestBody Map<String, Object> requestData, 
+        HttpSession session) {
+        if (!isSellerLoggedIn(session)) {
+            return "redirect:./loginPage";
+        }
+        int productNo = (int)requestData.get("productNo");
+        List<?> rawList = (List<?>) requestData.get("productDetailNo");
+        int stock = (int)requestData.get("stock");
+        List<Integer> productDetailList = rawList.stream()
+                                                 .map(item -> Integer.valueOf((item.toString())))
+                                                 .collect(Collectors.toList());
+        System.out.println("productNo >>>> " + productNo);
+        System.out.println("productDetailList >>>> " + productDetailList);
+        System.out.println("stock >>>> " + stock);
+
+        return "성공";
     }
 
     // 제품 리뷰 관리 페이지

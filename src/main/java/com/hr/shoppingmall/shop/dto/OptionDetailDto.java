@@ -10,8 +10,6 @@ public class OptionDetailDto {
     private int optionDetailNo;
     private int optionNo;
     private String optionDetailName;
-    private int totalQuantity;
     private int priceAdjustment;
     private Date createdAt;
-    private Date updatedAt;
 }

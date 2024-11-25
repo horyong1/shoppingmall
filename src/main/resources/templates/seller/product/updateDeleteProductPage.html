@@ -32,21 +32,21 @@
                                     </div>
                                 </div>
                                 <div class="row py-2 fw-bold border-bottom border-black text-center">
-                                    <div class="col text-start max-w-5 ">no</div>
-                                    <div class="col-3">상품</div>
+                                    <div class="col text-start max-w-5">no</div>
+                                    <div class="col-4">상품</div>
                                     <div class="col">가격</div>
                                     <div class="col">옵션수정</div>
                                     <div class="col">구매수량</div>
                                     <div class="col">재고수량</div>
                                     <div class="col">리뷰</div>
                                     <div class="col">문의</div>
-                                    <div class="col-2">상품수정</div>
+                                    <div class="col">상품수정</div>
                                 </div>
                                 <div class="row" th:each="list,iterStat : ${productList}">
                                     <div class="col">
                                         <div class="row py-2 text-center border-bottom fs-0-9">
                                             <div class="col text-start max-w-5" th:text="${iterStat.index+1}"></div>
-                                            <div class="col-3 text-start" th:text="${list.productDto.productName}"></div>
+                                            <div class="col-4 text-start" th:text="${list.productDto.productName}"></div>
                                             <div class="col text-end" th:text="${list.price}+'원'"></div>
                                             <div class="col">
                                                 <a class="link-dcr-none fw-bold border border-primary over-b px-2 py-1 rounded-2 fs-0-8" th:href="@{./optionEditPage(productNo=${list.productDto.productNo})}">옵션수정</a>
@@ -60,7 +60,7 @@
                                                 </a>
                                             </div>
                                             <div class="col"><i class="bi bi-chat-left-dots"></i>1</div>
-                                            <div class="col-2">
+                                            <div class="col">
                                                 <div class="row">
                                                     <div class="col-auto mx-auto">
                                                         <a class="link-dcr-none fw-bold me-2 border border-primary over-b px-2 py-1 rounded-2 fs-0-8" th:href="@{./updateProductPage(productNo=${list.productDto.productNo})}">수정</a>

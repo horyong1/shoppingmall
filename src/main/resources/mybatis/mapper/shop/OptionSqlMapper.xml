@@ -8,21 +8,29 @@
         <selectKey resultType="int" keyProperty="optionNo" order="AFTER">
             SELECT  MAX(spo.option_no)
             FROM    sp_product_option spo
-            WHERE   spo.seller_no = #{sellerNo}
+            WHERE   spo.product_no = #{productNo}
         </selectKey>
-        INSERT INTO sp_product_option (seller_no, option_name)
-        VALUES (#{sellerNo}, #{optionName})
+        INSERT INTO sp_product_option (product_no, option_name)
+        VALUES (#{productNo}, #{optionName})
     </insert>
 
     <!-- 옵션번호로 옵션가져오기 -->
-    <select id="optionFindByOptinNo" resultType="com.hr.shoppingmall.shop.dto.OptionDto">
+    <select id="optionFindByProductNo" resultType="com.hr.shoppingmall.shop.dto.OptionDto">
         SELECT  (spo.option_no) AS optionNo,
+                (spo.product_no) AS propductNo,
                 (spo.option_name) AS optionName,
-                (spo.seller_no) AS sellerNo,
-                (spo.created_at) AS createdAt,
-                (spo.updated_at) AS updatedAt
+                (spo.created_at) AS createdAt
         FROM    sp_product_option spo
-        WHERE   spo.option_no = #{optionNo}
+        WHERE   spo.product_no = #{productNo}
+    </select>
+    <!-- 옵션번호로 옵션가져오기 -->
+    <select id="optionFindByOptionName" resultType="com.hr.shoppingmall.shop.dto.OptionDto">
+        SELECT  (spo.option_no) AS optionNo,
+                (spo.product_no) AS propductNo,
+                (spo.option_name) AS optionName,
+                (spo.created_at) AS createdAt
+        FROM    sp_product_option spo
+        WHERE   spo.option_name LIKE #{optionName}
     </select>
 
 
@@ -36,19 +44,17 @@
             FROM    sp_product_option_detail spod
             WHERE   spod.option_no = #{optionNo}
         </selectKey>
-        INSERT INTO sp_product_option_detail (option_no, option_detail_name, total_quantity)
-        VALUES (#{optionNo}, #{optionDetailName}, #{totalQuantity})
+        INSERT INTO sp_product_option_detail (option_no, option_detail_name)
+        VALUES (#{optionNo}, #{optionDetailName})
     </insert>
 
     <!-- 옵션 번호로 특정 옵션 상세 값 가져오기 -->
-    <select id="optionDetailFindByOptionNo" resultType="com.hr.shoppingmall.shop.dto.OptionDetailDto">
+    <select id="optionDetailFindByOptinNo" resultType="com.hr.shoppingmall.shop.dto.OptionDetailDto">
         SELECT  (spod.option_detail_no) AS optionDetailNo,
                 (spod.option_no) AS optionNo,
-                (spod.option_detail_name) AS optionDetail,
-                (spod.total_quantity) AS totalQuantity,
+                (spod.option_detail_name) AS optionDetailName,
                 (spod.price_adjustment) AS priceAdjustment,
-                (spod.created_at) AS createdAt,
-                (spod.updated_at) AS updatedAt
+                (spod.created_at) AS createdAt
         FROM    sp_product_option_detail spod
         WHERE   spod.option_no = #{optionNo}
     </select>
@@ -57,19 +63,19 @@
     <!-- optionMapping SQL -->
 
     <!-- 옵션 매핑 생성 -->
-    <insert id="createOptionMapping">
-        INSERT INTO sp_product_option_mapping (product_no, option_no, option_detail_no)
-        VALUES (#{productNo}, #{optionNo}, #{optionDetailNo})
+    <insert id="createOptionCombination">
+        INSERT INTO sp_product_option_combination (product_no, combination_value, stock)
+        VALUES (#{productNo}, #{combinationValue}, #{stock})
     </insert>
 
     <!-- 상품 옵션 매핑 값 가져오기 -->
-    <select id="optionMappingFindByProductNo" resultType="com.hr.shoppingmall.shop.dto.OptionMappingDto">
-        SELECT  (spom.mapping_no) AS mappingNo,
-                (spom.product_no) AS productNo,
-                (spom.option_no) AS option_no,
-                (spom.option_detail_no) AS optionDetailNo
-        FROM    sp_product_option_mapping spom
-        WHERE   spom.product_no = #{productNo}
+    <select id="optionCombinationFindByProductNo" resultType="com.hr.shoppingmall.shop.dto.OptionCombinationsDto">
+        SELECT  (spoc.mapping_no) AS mappingNo,
+                (spoc.product_no) AS productNo,
+                (spoc.option_no) AS option_no,
+                (spoc.option_detail_no) AS optionDetailNo
+        FROM    sp_product_option_combination spoc
+        WHERE   spoc.product_no = #{productNo}
     </select>
     
 </mapper>
