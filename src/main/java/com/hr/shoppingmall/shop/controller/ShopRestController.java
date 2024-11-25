@@ -80,6 +80,16 @@ public class ShopRestController {
         return restResponseDto;
     }
 
+    // 상품 상세정보 모달
+    @RequestMapping("productDetailModal")
+    public RestResponseDto productDetailModal(@RequestParam(value="productNo")int productNo){
+        RestResponseDto restResponseDto = new RestResponseDto();
+        restResponseDto.add("productList", shopService.getProductDetail(productNo));
+        return restResponseDto;
+    }
+
+
+
      // 세션 로그인 체크
     private boolean isConsumerLoggedIn(HttpSession session) {
         ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
@@ -89,4 +99,5 @@ public class ShopRestController {
     private ConsumerDto getConsumerInfo(HttpSession session){
         return (ConsumerDto)session.getAttribute("consumerInfo");
     }
+
 }

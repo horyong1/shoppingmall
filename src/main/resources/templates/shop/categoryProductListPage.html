@@ -299,8 +299,8 @@
             <div class="col">
                 <div class="row" id="productContainer">
                     <div class="col-4 pb-4" th:each="list : ${categoryProductList}">
-                        <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
-                            <div class="row">
+                        <!-- <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}"> -->
+                            <div class="row" th:onclick="'showModal('+${list.productDto.productNo}+')'">
                                 <div class="col p-0 position-relative">
                                     <img class="img-fluid ar-11 pb-img" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
                                     <span class="position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1">
@@ -319,7 +319,7 @@
                             <div class="row ps-2">
                                 <div class="col fs-0-8 p-0 fw-bold price" th:text="${list.price}+'원'"></div>
                             </div>
-                        </a>
+                        <!-- </a> -->
                         <div class="row ps-2 mt-1">
                             <div class="col-auto p-0 fs-11px">
                                 <i class="bi bi-heart-fill text-danger"></i>
@@ -347,7 +347,70 @@
         </footer>
         <!-- footer end-->
     </div>
+
+    <!-- Modal start -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal end -->
+    
+    
     <script>
+        function showModal (productNo){
+            fetch(`/api/shop/productDetailModal?productNo=${productNo}`)
+            .then(r => r.json())
+            .then(response => {
+                const list = response.data.productList;
+                const modalBody = document.getElementById('modalBody');
+
+                // form 태그
+                const form = document.createElement("form");
+                form.className = "row"
+                form.method= "post"
+                form.action= "./registerPurchaseProcess"
+
+                // row,col
+                const col1 = document.createElement("div");
+                col1.className = "col"
+                const row2 = document.createElement("div");
+                row2.className = "row"
+                col1.appendChild(row2);
+
+                // 대표이미지
+                const mainImageUrlCol = document.createElement("div");
+                mainImageUrlCol.className = "col p-0 position-relative";
+                const mainImage = document.createElement("div");
+                mainImage.className = "img-fluid"
+                mainImage.src = `/uploadfiles/${list.productDto.mainImageUrl}`
+                const heartSpan = createElement.createElement("span");
+                heartSpan.className="position-absolute bottom-0 end-0 me-4 mb-2 fw-bold";
+                const heartLink = createElement.createElement("a");
+                heartLink.
+
+
+
+                container.appendChild(col);
+                modalBody.appendChild(container);
+            })
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("staticBackdrop"));
+        
+            modal.show();
+        }
+
        const categoryContainer = document.querySelector('.category-container');
 
         let isMouseDown = false; // 마우스 클릭 상태 플래그
