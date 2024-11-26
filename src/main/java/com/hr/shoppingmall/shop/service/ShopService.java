@@ -551,6 +551,15 @@ public class ShopService {
         return totalPrice;
     }
 
+    // 남여 상품 구매 비율
+    public List<Double> getGenderPurchasePercentage(int productNo){
+        return shopSqlMapper.avgProductPurchaseGender(productNo);
+    }
+
+
+
+
+
     /**
      * 금액 #,### 포멧터
      * @param price

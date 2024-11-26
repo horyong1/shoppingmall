@@ -71,11 +71,13 @@ public class SellerController {
 
     // 판매자 페이지
     @RequestMapping("mainPage")
-    public String mainPage(HttpSession session){
+    public String mainPage(HttpSession session, Model model){
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
-
+        SellerDto sellerInfo = getSellerInfo(session);
+        System.out.println(sellerService.getSellerMainPageItem(sellerInfo.getSellerNo()));
+        model.addAttribute("count", sellerService.getSellerMainPageItem(sellerInfo.getSellerNo()));
         return "seller/mainPage";
     }
 

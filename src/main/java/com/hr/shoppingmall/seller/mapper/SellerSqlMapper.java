@@ -1,6 +1,7 @@
 package com.hr.shoppingmall.seller.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -30,4 +31,6 @@ public interface SellerSqlMapper {
 
     // 상세 이미지 삭제
     void removeProductDetailImage(int product);
+
+    List<Integer> checkShipmentStatusUpdates(int sellerNo);
 }

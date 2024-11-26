@@ -248,6 +248,27 @@
         LIMIT   3
     </select>
 
+    <!-- 남여 상품 구매 비율 -->
+    <select id="avgProductPurchaseGender" resultType="double">
+        SELECT  ROUND(COUNT(*) *100.0/(SELECT COUNT(*) 
+						 FROM 	sp_product_purchase_list sppl
+						 WHERE 	sppl.product_no = #{productNo}),1) AS AVG
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_consumer sc ON spp.consumer_no = sc.consumer_no 
+        WHERE 	sppl.product_no = #{productNo}
+        AND 	sc.gender = 'M'
+        UNION ALL
+        SELECT  ROUND(COUNT(*) *100.0/(SELECT COUNT(*) 
+                                FROM 	sp_product_purchase_list sppl
+                                WHERE	sppl.product_no = #{productNo}),1)
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_consumer sc ON spp.consumer_no = sc.consumer_no 
+        WHERE 	sppl.product_no = #{productNo}
+        AND 	sc.gender = 'F'
+    </select>
+
     
 
     <!-- 장바구니 추가 -->

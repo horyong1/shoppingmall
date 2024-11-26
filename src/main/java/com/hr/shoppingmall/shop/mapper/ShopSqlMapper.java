@@ -97,4 +97,6 @@ public interface ShopSqlMapper {
     // 판매자 상품 목록
     List<ProductDto> productListFindBySellerNo(int sellerNo);
 
+    // 남여 상품 구매 비율
+    List<Double> avgProductPurchaseGender(int productNo);
 }

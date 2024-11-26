@@ -55,7 +55,10 @@ public class SellerService {
     public List<ProductCategoryMediumDto> getCategoryMediumList(){
         return shopSqlMapper.categoryMediumFindAll();
     }
-
+    
+    public List<Integer> getSellerMainPageItem(int sellerNo){
+        return sellerSqlMapper.checkShipmentStatusUpdates(sellerNo);
+    }
 
     /**
      * 판매자 제품 등록

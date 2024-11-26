@@ -95,6 +95,16 @@
                             <img class="img-fluid" th:src="|/uploadfiles/${list.imageLink}|" alt="">
                         </div>
                     </div>
+                    <div class="row pt-3">
+                        <div class="col fw-bold fs-1-2">
+                            남녀 구매 비율
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto mx-auto" style="width: auto; height: 150px;"> 
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </form>
         </main>
@@ -109,6 +119,60 @@
         </footer>
         <!-- footer end-->
     </div>
+    <script>
+        const urlParam = new URLSearchParams(window.location.search);
+        const productNo = urlParam.get("productNo");
+
+        window.addEventListener("DOMContentLoaded", async () => {
+            await chartJs(productNo);
+        })
+
+        async function chartJs(productNo){
+            const r =  await fetch(`/api/shop/getGenderPurchasePercentage?productNo=${productNo}`);
+            
+            const response = await r.json();
+            const avg =[];
+            response.data.genderAvg.forEach(e => {
+                avg.push(e);
+            });
+            
+            const ctx = document.getElementById("myChart");
+            const data = {
+                labels: [
+                    '남자',
+                    '여자'
+                ],
+                datasets: [{
+                    data: avg,
+                    backgroundColor: ['#36A2EB', '#FF6384'],
+                    hoverOffset: 2,
+                   
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, context) => {
+                                const total = context.chart.data.datasets[0].data.reduce((acc, val) => acc + val, 0);
+                                const percentage = ((value / total) * 100).toFixed(1) + '%'; // 백분율 계산
+                                return percentage; // 백분율 반환
+                            },
+                            color: '#fff', // 텍스트 색상
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                },
+                plugins: [ChartDataLabels] // 플러그인 등록
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

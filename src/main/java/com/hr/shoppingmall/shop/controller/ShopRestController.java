@@ -102,6 +102,14 @@ public class ShopRestController {
         SellerWishListDto sellerWishListDto = new SellerWishListDto();
         sellerWishListDto.setConsumerNo(consumerNo);
         restResponseDto.add("isSeller", shopService.getSellerWishList(sellerWishListDto,productNo));
+
+        return restResponseDto;
+    }
+
+    @RequestMapping("getGenderPurchasePercentage")
+    public RestResponseDto getGenderPurchasePercentage(@RequestParam(value="productNo")int productNo){
+        RestResponseDto restResponseDto = new RestResponseDto();
+        restResponseDto.add("genderAvg", shopService.getGenderPurchasePercentage(productNo));
         return restResponseDto;
     }
 
