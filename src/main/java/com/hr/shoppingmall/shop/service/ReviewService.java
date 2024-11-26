@@ -148,4 +148,12 @@ public class ReviewService {
         reviewSqlMapper.updateReply(reviewDto);
 
     }
+    /**
+     * 리뷰 평점
+     * @param productNo
+     * @return
+     */
+    public double reviewAvg(int productNo){
+        return reviewSqlMapper.reviewAvg(productNo);
+    }
 }

@@ -122,6 +122,7 @@ public class ShopService {
         int reviewCount = reviewSqlMapper.reviewConut(productNo);
         List<ProductDetailImageDto> detailImageDtoList = shopSqlMapper.detailImageFindByProductNo(productNo);
 
+        map.put("reviewAvg", reviewSqlMapper.reviewAvg(productNo));
         map.put("reviewCount", reviewCount);
         map.put("productDto", dto);
         map.put("price",priceTrans);

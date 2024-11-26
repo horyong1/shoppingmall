@@ -117,4 +117,10 @@
         AND     spr.product_no = #{productNo}
     </select>
 
+    <!-- 제품 리뷰 평점 -->
+    <select id="reviewAvg" resultType="double"> 
+        SELECT  COALESCE(ROUND(AVG(rating),1),0)
+        FROM	sp_product_review
+        WHERE 	product_no  = #{productNo}
+    </select>
 </mapper>

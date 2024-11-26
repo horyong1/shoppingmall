@@ -32,19 +32,15 @@
                                 <a class="text-danger" th:href="@{./toggleWishlist(productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart-fill" th:unless="${wishlistDto == null}"></i></a>
                             </span>
                         </div>
-                        
                     </div>
                     <div class="row py-2 border-bottom">
                         <div class="col-auto">
                             <img class="img-fluid rounded-5" src="/public/img/sellerLog.png" alt="" style="width: 2em;">
                         </div>
                         <div class="col p-0 fs-0-9 fw-bold align-self-center" th:text="${productMap.sellerDto.shopName}"></div>
-                        <div class="col-auto align-self-center">
-                            
-                                <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart text-danger" th:if="${sellerWishListDto == null}"></i></a>
-                                <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart-fill text-danger" th:unless="${sellerWishListDto == null}"></i></a>
-                                
-                            
+                        <div class="col-auto align-self-center p-0 me-4">
+                            <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart text-danger" th:if="${sellerWishListDto == null}"></i></a>
+                            <a class="text-danger" th:href="@{./toggleSellerWishlist(sellerNo=${productMap.productDto.sellerNo}, productNo=${productMap.productDto.productNo})}"><i class="bi bi-heart-fill text-danger" th:unless="${sellerWishListDto == null}"></i></a>
                         </div>
                     </div>
                     <div class="row">
@@ -53,7 +49,7 @@
                     <div class="row">
                         <div class="col-auto fs-0-7 align-self-center">
                             <i class="bi bi-star-fill text-warning"></i>
-                            <span>4.5</span>
+                            <span th:text="${productMap.reviewAvg}"></span>
                             <a class="text-secondary" th:href="@{/review/productReviewList(productNo=${param.productNo})}">
                                 후기 <span th:text="${productMap.reviewCount}"></span>개</a>
                         </div>

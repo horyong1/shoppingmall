@@ -26,4 +26,6 @@ public interface ReviewSqlMapper {
     ProductReviewDto reviewFindByPurchaseNoAndProductNo(ProductReviewDto reviewDto);
     // 리플 생성
     void updateReply(ProductReviewDto reviewDto);
+    // 상품 리뷰 평점
+    double reviewAvg(int productNo);
 }

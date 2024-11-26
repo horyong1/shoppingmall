@@ -13,6 +13,8 @@ import com.hr.shoppingmall.common.dto.RestResponseDto;
 import com.hr.shoppingmall.consumer.dto.ConsumerDto;
 import com.hr.shoppingmall.shop.dto.ProductDto;
 import com.hr.shoppingmall.shop.dto.ProductWishlistDto;
+import com.hr.shoppingmall.shop.dto.SellerWishListDto;
+import com.hr.shoppingmall.shop.service.ReviewService;
 import com.hr.shoppingmall.shop.service.ShopService;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +25,8 @@ public class ShopRestController {
 
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private ReviewService reviewService;
 
     // 카테고리별 상세 제품 가져오기
     @RequestMapping("getProductsByCategory")
@@ -82,9 +86,22 @@ public class ShopRestController {
 
     // 상품 상세정보 모달
     @RequestMapping("productDetailModal")
-    public RestResponseDto productDetailModal(@RequestParam(value="productNo")int productNo){
+    public RestResponseDto productDetailModal(@RequestParam(value="productNo")int productNo,HttpSession session){
         RestResponseDto restResponseDto = new RestResponseDto();
+
+        ConsumerDto consumerInfo = getConsumerInfo(session);
+        int consumerNo = 0;
+        if(consumerInfo != null){
+            consumerNo = consumerInfo.getConsumerNo();
+        }
+        ProductWishlistDto wishlistDto = new ProductWishlistDto();
+        wishlistDto.setConsumerNo(consumerNo);
+        wishlistDto.setProductNo(productNo);
         restResponseDto.add("productList", shopService.getProductDetail(productNo));
+        restResponseDto.add("isHeart",shopService.isConsumerProductWishList(wishlistDto));
+        SellerWishListDto sellerWishListDto = new SellerWishListDto();
+        sellerWishListDto.setConsumerNo(consumerNo);
+        restResponseDto.add("isSeller", shopService.getSellerWishList(sellerWishListDto,productNo));
         return restResponseDto;
     }
 

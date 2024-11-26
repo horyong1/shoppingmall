@@ -14,6 +14,7 @@
             await sessionLoginCheck();
         })
 
+        // 세션 로그인  
         async function sessionLoginCheck(){
             const r = await fetch(`/api/consumer/getSessionConsumerInfo`);
             const response = await r.json();
@@ -23,6 +24,7 @@
             
         }
 
+        // 카테고리 클릭 
         function categoryClick(categoryNo,categoryMediumNo){
             fetch(`/api/shop/getProductsByCategory?categoryNo=${categoryNo}&categoryMediumNo=${categoryMediumNo}`)
             .then(r=>r.json())
@@ -102,7 +104,14 @@
                         heartIcon.className = `wishProduct${e.productDto.productNo} bi bi-heart`;
                     }
 
+                    const searchSpan = document.createElement('span');
+                    searchSpan.className = "position-absolute bottom-0 end-0 me-2 mb-4 fs-13px fw-bold";
+                    const searchIcon = document.createElement('i');
+                    searchIcon.className = "bi bi-search";
+                    searchIcon.setAttribute("onclick", `showModal(${e.productDto.productNo},event)`);
+                    searchSpan.appendChild(searchIcon);
                     heartSpan.appendChild(heartIcon);
+                    imageCol.appendChild(searchSpan);
                     imageCol.appendChild(image);
                     imageCol.appendChild(heartSpan);
                     imageRow.appendChild(imageCol);
@@ -299,14 +308,17 @@
             <div class="col">
                 <div class="row" id="productContainer">
                     <div class="col-4 pb-4" th:each="list : ${categoryProductList}">
-                        <!-- <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}"> -->
-                            <div class="row" th:onclick="'showModal('+${list.productDto.productNo}+')'">
+                        <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.productDto.productNo})}">
+                            <div class="row">
                                 <div class="col p-0 position-relative">
                                     <img class="img-fluid ar-11 pb-img" th:src="|/uploadfiles/${list.productDto.mainImageUrl}|" alt="">
                                     <span class="position-absolute bottom-0 end-0 fs-0-8 me-2 mb-1">
                                         <!-- <i th:if="${session.consumetInfo == null}" class="bi bi-heart"></i> -->
                                         <i th:class="'wishProduct'+${list.productDto.productNo}+' '+${session.consumerInfo == null ? 'bi bi-heart' : (list.wishlistDto != null ? 'bi bi-heart-fill text-danger' : 'bi bi-heart')}" 
                                             th:onclick="'heartClick(' + ${list.productDto.productNo} + ', event)'"></i>
+                                    </span>
+                                    <span class="position-absolute bottom-0 end-0 me-2 mb-4 fs-13px fw-bold">
+                                        <i class="bi bi-search" th:onclick="'showModal('+${list.productDto.productNo}+', event)'"></i>
                                     </span>
                                 </div>
                             </div>
@@ -319,7 +331,7 @@
                             <div class="row ps-2">
                                 <div class="col fs-0-8 p-0 fw-bold price" th:text="${list.price}+'원'"></div>
                             </div>
-                        <!-- </a> -->
+                        </a>
                         <div class="row ps-2 mt-1">
                             <div class="col-auto p-0 fs-11px">
                                 <i class="bi bi-heart-fill text-danger"></i>
@@ -349,19 +361,23 @@
     </div>
 
     <!-- Modal start -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="staticBackdrop"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <h1 class="modal-title fs-0-9" id="staticBackdropLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalBody">
                     
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+                <div class="modal-footer border-0 row">
+                        <div class="col d-grid p-0 ms-2">
+                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                        <div class="col d-grid p-0 me-2">
+                            <button type="button" class="btn btn-dark btn-sm">구매하기</button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -370,46 +386,241 @@
     
     
     <script>
-        function showModal (productNo){
+        function showModal (productNo, event){
+            event.preventDefault();
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("staticBackdrop"));
+
             fetch(`/api/shop/productDetailModal?productNo=${productNo}`)
             .then(r => r.json())
             .then(response => {
                 const list = response.data.productList;
+                const staticBackdropLabel = document.getElementById("staticBackdropLabel");
+                staticBackdropLabel.innerHTML="";
+                staticBackdropLabel.innerText = list.productDto.productName;
                 const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML="";
 
                 // form 태그
                 const form = document.createElement("form");
                 form.className = "row"
                 form.method= "post"
                 form.action= "./registerPurchaseProcess"
+                modalBody.appendChild(form);
 
                 // row,col
                 const col1 = document.createElement("div");
                 col1.className = "col"
-                const row2 = document.createElement("div");
-                row2.className = "row"
-                col1.appendChild(row2);
+                const imgrow2 = document.createElement("div");
+                imgrow2.className = "row"
+                col1.appendChild(imgrow2);
+                form.appendChild(col1);
 
                 // 대표이미지
                 const mainImageUrlCol = document.createElement("div");
                 mainImageUrlCol.className = "col p-0 position-relative";
-                const mainImage = document.createElement("div");
+                const mainImage = document.createElement("img");
                 mainImage.className = "img-fluid"
                 mainImage.src = `/uploadfiles/${list.productDto.mainImageUrl}`
-                const heartSpan = createElement.createElement("span");
+                const heartSpan = document.createElement("span");
                 heartSpan.className="position-absolute bottom-0 end-0 me-4 mb-2 fw-bold";
-                const heartLink = createElement.createElement("a");
-                heartLink.
+                const heartLink = document.createElement("a");
+                heartLink.className="text-danger"
+                const heartIcon = document.createElement("i");
+
+                if(list.isHeart == true){
+                    heartIcon.className = "bi bi-heart-fill" 
+                }else{
+                    heartIcon.className = "bi bi-heart" 
+                }
+            
+                heartLink.appendChild(heartIcon);
+                heartSpan.appendChild(heartLink);
+                mainImageUrlCol.appendChild(mainImage);
+                mainImageUrlCol.appendChild(heartSpan);
+                imgrow2.appendChild(mainImageUrlCol);
+
+                // 판매자 정보
+                const row2 = document.createElement("div");
+                row2.className = "row py-2 border-bottom";
+                const col2 = document.createElement("div");
+                col2.className ="col-auto";
+                const sellerImg = document.createElement("img");
+                sellerImg.className = "img-fluid rounded-5";
+                sellerImg.src = "/public/img/sellerLog.png"
+                sellerImg.style.width = "2em";
+                const col3 = document.createElement("div");
+                col3.className = "col p-0 fs-0-9 fw-bold align-self-center"
+                col3.innerText = list.sellerDto.shopName;
+                // 판매자 찜
+                const sellerCol = document.createElement("div")
+                sellerCol.className = "col-auto align-self-center p-0 me-4";
+                const sellerlink = document.createElement("a");
+                sellerlink.className = "text-danger"
+                const sellerIcon = document.createElement("i")
+                if(list.isSeller == null){
+                    sellerIcon.className="bi bi-heart"
+                }else{
+                    sellerIcon.className="bi bi-heart-fill"
+
+                }
+                col2.appendChild(sellerImg);
+                row2.appendChild(col2);
+                row2.appendChild(col3);
+                sellerlink.appendChild(sellerIcon);
+                sellerCol.appendChild(sellerlink);
+                row2.appendChild(sellerCol);
+                col1.appendChild(row2);
+
+                // 상품 이름 
+                const productNameRow = document.createElement("div");
+                productNameRow.className = "row";
+                const productName = document.createElement("div")
+                productName.className = "col-auto fw-bold py-2 fs-0-9"
+                productName.innerText = list.productDto.productName;
+
+                productNameRow.appendChild(productName);
+                col1.appendChild(productNameRow);
+
+                // 후기 
+                const reviewRow = document.createElement("div");
+                reviewRow.className = "row";
+                const reviewCol = document.createElement("div");
+                reviewCol.className = "col-auto fs-0-7 align-self-center";
+                const reviewIcon = document.createElement("i");
+                reviewIcon.className = "bi bi-star-fill text-warning";
+                const reviewAvg = document.createElement("span");
+                reviewAvg.innerText = list.reviewAvg;
+                const reviewlink = document.createElement("a");
+                reviewlink.className = "text-secondary";
+                reviewlink.href = `/review/productReviewList?productNo=${list.productDto.productNo}`;
+                
+                const reviewCount = document.createElement("span");
+                reviewCount.innerText =`후기 ${list.reviewCount}개`;
+                reviewCount.className = "ms-1"
+                
+                reviewlink.appendChild(reviewCount);
+                reviewCol.appendChild(reviewIcon);
+                reviewCol.appendChild(reviewAvg);
+                reviewCol.appendChild(reviewlink);
+                reviewRow.appendChild(reviewCol);
+                col1.appendChild(reviewRow);
+
+                // 금액
+                const priceRow = document.createElement("div");
+                priceRow.className = "row py-2";
+                const priceCol = document.createElement("div");
+                priceCol.className = "col fs-0-9 fw-bold"
+                priceCol.innerText = list.price + "원";
+
+                priceRow.appendChild(priceCol);
+                col1.appendChild(priceRow);
+
+                // 셀렉트 박스
+                const selectRow = document.createElement("div");
+                selectRow.className = "row py-2"
+                const selectCol = document.createElement("div");
+                selectCol.className = "col p-0 px-2"
+                const productNohidden = document.createElement("input");
+                productNohidden.type = "hidden";
+                productNohidden.name = "productNo";
+                productNohidden.value = list.productDto.productNo;
+                const select = document.createElement("select");
+                select.className = "form-select form-select-sm";
+                select.name = "count";
+                for(i= 1; i <= 5; i++){
+                    const option = document.createElement("option");
+                    option.value = i;
+                    option.innerText = i+"개";
+                    if(i == 1){
+                        option.setAttribute("selected",true);
+                    }
+                    select.appendChild(option);   
+                }
+                selectCol.appendChild(productNohidden);
+                selectCol.appendChild(select);
+
+                selectRow.appendChild(selectCol);
+                col1.appendChild(selectRow);
+
+                // 장바구니, 구매하기 버튼
+                const buttonRow = document.createElement("div");
+                buttonRow.className = "row";
+                const buttonCol = document.createElement("div");
+                buttonCol.className = "col d-grid"
+
+                if(list.productDto.totalQuantity > 0){
+                    const brow = document.createElement("div");
+                    brow.className = "row"
+                    const bcol1 = document.createElement("div");
+                    bcol1.className = "col d-grid p-0 ps-2";
+                    const cartSubmit = document.createElement("input");
+                    cartSubmit.className = "btn btn-outline-dark btn-sm fs-0-8";
+                    cartSubmit.value = "장바구니";
+                    cartSubmit.type = "submit";
+                    cartSubmit.formAction = "/shop/registerCart"
+                    const bcol2 = document.createElement("div");
+                    bcol2.className = "col d-grid p-0 ps-2";
+                    const purchaseSubmit = document.createElement("input");
+                    purchaseSubmit.className = "btn btn-dark btn-sm fs-0-8";
+                    purchaseSubmit.value = "구매하기";
+                    purchaseSubmit.type = "submit";
+                    
+                    bcol1.appendChild(cartSubmit);   
+                    bcol2.appendChild(purchaseSubmit);
+                    brow.appendChild(bcol1);
+                    brow.appendChild(bcol2);
+                    buttonCol.appendChild(brow);
+
+                }else{
+                    const soldOut = document.createElement("input");
+                    soldOut.type = "button";
+                    soldOut.className = "btn btn-secondary";
+                    soldOut.setAttribute("disabled", true);
+                    soldOut.value = "품절";
+                    buttonCol.appendChild("soldOut");
+                }
+
+                buttonRow.appendChild(buttonCol);
+                col1.appendChild(buttonRow);
+
+                // 제품 상세 설명
+                const ptRow = document.createElement("div");
+                ptRow.className = "row py-4";
+                const descriptionRow =document.createElement("div");
+                descriptionRow.className = "row py-4";
+                const descriptionText = document.createElement("div");
+                descriptionText.innerText = list.productDto.productDescription
+                descriptionText.className = "col fs-13px"
+
+                descriptionRow.appendChild(descriptionText);
+                col1.appendChild(ptRow);
+                col1.appendChild(descriptionRow);
 
 
+                // 제품 상세 이미지
+                list.detailImageDtoList.forEach(e =>{
+                    const detailRow = document.createElement("div");
+                    detailRow.className = "row";
+                    const detailCol = document.createElement("div");
+                    detailRow.className = "col";
+                    const detailImage = document.createElement("img");
+                    detailImage.className = "img-fluid";
+                    detailImage.src = `/uploadfiles/${e.imageLink}`;
 
-                container.appendChild(col);
-                modalBody.appendChild(container);
+                    detailCol.appendChild(detailImage);
+                    detailRow.appendChild(detailCol);
+                    col1.appendChild(detailRow);
+                });
+
+
             })
-            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("staticBackdrop"));
+
+            
         
             modal.show();
         }
+
+    
 
        const categoryContainer = document.querySelector('.category-container');
 
