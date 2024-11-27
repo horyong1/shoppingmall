@@ -56,7 +56,7 @@ public class SellerService {
         return shopSqlMapper.categoryMediumFindAll();
     }
     
-    public List<Integer> getSellerMainPageItem(int sellerNo){
+    public Map<String, Integer> getSellerMainPageItem(int sellerNo){
         return sellerSqlMapper.checkShipmentStatusUpdates(sellerNo);
     }
 

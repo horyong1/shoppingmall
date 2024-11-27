@@ -32,5 +32,5 @@ public interface SellerSqlMapper {
     // 상세 이미지 삭제
     void removeProductDetailImage(int product);
 
-    List<Integer> checkShipmentStatusUpdates(int sellerNo);
+    Map<String,Integer> checkShipmentStatusUpdates(int sellerNo);
 }

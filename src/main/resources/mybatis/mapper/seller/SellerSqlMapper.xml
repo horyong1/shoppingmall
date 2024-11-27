@@ -107,46 +107,18 @@
     </select>
 
     <!-- 배송관리 카운트 -->
-    <select id="checkShipmentStatusUpdates" resultType="list">
-        SELECT COUNT(*)
-        FROM 	sp_product_purchase spp 
-        INNER JOIN sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
-        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no 
-        INNER JOIN sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE   spp.state = 1
-        AND     ss.seller_no = #{sellerNo}
-        UNION ALL 
-        SELECT COUNT(*)
-        FROM 	sp_product_purchase spp 
-        INNER JOIN sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
-        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no 
-        INNER JOIN sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE   spp.state = 2
-        AND     ss.seller_no = #{sellerNo}
-        UNION ALL 
-        SELECT COUNT(*)
-        FROM 	sp_product_purchase spp 
-        INNER JOIN sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
-        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no 
-        INNER JOIN sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE   spp.state = 3
-        AND     ss.seller_no = #{sellerNo}
-        UNION ALL 
-        SELECT COUNT(*)
-        FROM 	sp_product_purchase spp 
-        INNER JOIN sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
-        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no 
-        INNER JOIN sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE   spp.state = 4
-        AND     ss.seller_no = #{sellerNo}
-        UNION ALL 
-        SELECT COUNT(*)
-        FROM 	sp_product_purchase spp 
-        INNER JOIN sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
-        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no 
-        INNER JOIN sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE   spp.state = 5
-        AND     ss.seller_no = #{sellerNo}
+    <select id="checkShipmentStatusUpdates" resultType="map">
+        SELECT 		SUM(CASE WHEN spp.state = 1 THEN 1 ELSE 0 END) AS state1,
+                    SUM(CASE WHEN spp.state = 2 THEN 1 ELSE 0 END) AS state2,
+                    SUM(CASE WHEN spp.state = 3 THEN 1 ELSE 0 END) AS state3,
+                    SUM(CASE WHEN spp.state = 4 THEN 1 ELSE 0 END) AS state4,
+                    SUM(CASE WHEN spp.state = 5 THEN 1 ELSE 0 END) AS state5
+        FROM 		sp_product_purchase spp 
+        INNER JOIN 	sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
+        INNER JOIN 	sp_product sp ON sppl.product_no = sp.product_no 
+        INNER JOIN 	sp_seller ss ON sp.seller_no = ss.seller_no 
+        WHERE 		ss.seller_no = #{sellerNo};
+
     </select>
 
     
