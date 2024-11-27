@@ -8,6 +8,247 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+<script>
+    function productWishList(){
+        fetch(`/api/consumer/productWishList`)
+        .then(r => r.json())
+        .then(response => {
+            const list = response.data.productWishList;
+            console.log(list);
+
+            const topbutton = document.getElementById("topbutton")
+            topbutton.innerHTML = "";
+
+            const col1 = document.createElement("div");
+            col1.className = "col-auto p-0 ps-2 ms-1 fs-0-8";
+            const productWish = document.createElement("button");
+            productWish.className = "btn btn-dark btn-sm link-dcr-none text-white bg-dark px-2 py-1 border rounded-2 p-0";
+            productWish.innerText = "상품";
+            productWish.setAttribute("onclick","productWishList()");
+            col1.appendChild(productWish);
+            topbutton.appendChild(col1);
+
+            const col2 = document.createElement("div");
+            col2.className = "col-auto p-0 fs-0-8";
+            const sellerWish = document.createElement("button");
+            sellerWish.className = "btn btn-outline-dark btn-cus1 btn-sm link-dcr-none ms-1 text-black over-g px-2 py-1 border rounded-2 p-0";
+            sellerWish.innerText = "브랜드";
+            sellerWish.setAttribute("onclick","sellerWishList()");
+            col2.appendChild(sellerWish);
+            topbutton.appendChild(col2);
+
+            // 상품 리스트
+            const parentElement = document.getElementById('parent');
+            parentElement.innerHTML = "";
+            list.forEach(e => { 
+                
+                // 첫번째 col
+                const firstCol = document.createElement("div");
+                firstCol.className = "col-3 pt-2";
+
+                // link
+                const productDetailLink = document.createElement("a");
+                productDetailLink.className = "row link-dcr-none text-black";
+                productDetailLink.href = `/shop/productDetailPage?productNo=${e.productDto.productNo}`;
+
+                const col = document.createElement("div");
+                col.className = "col";
+                
+                // 이미지
+                const imgrow1 = document.createElement("div");
+                imgrow1.className = "row";
+                const imgcol2 = document.createElement("div");
+                imgcol2.className = "col";
+                const img = document.createElement("img");
+                img.className = "img-fluid aspect-ratio";
+                img.src = `/uploadfiles/${e.productDto.mainImageUrl}`
+
+                imgcol2.appendChild(img);
+                imgrow1.appendChild(imgcol2);
+                col.appendChild(imgrow1);
+                productDetailLink.appendChild(col);
+
+                // 상품 정보
+                const detailRow1 = document.createElement("div");
+                detailRow1.className = "row pt-1";
+                const detailCol1 = document.createElement("div");
+                detailCol1.className = "col fs-0-7";
+                detailCol1.textContent = e.sellerDto.shopName;
+
+                detailRow1.appendChild(detailCol1);
+                col.appendChild(detailRow1);
+
+
+                const detailRow2 = document.createElement("div");
+                detailRow2.className = "row";
+                const detailCol2 = document.createElement("div");
+                detailCol2.className = "col fs-0-7 text-truncate";
+                detailCol2.textContent = e.productDto.productName;
+
+                detailRow2.appendChild(detailCol2);
+                col.appendChild(detailRow2);
+                
+                const detailRow3 = document.createElement("div");
+                detailRow3.className = "row";
+                const detailCol3 = document.createElement("div");
+                detailCol3.className = "col fs-0-7 fw-bold";
+                detailCol3.textContent = e.priceTans+"원";
+                
+                detailRow3.appendChild(detailCol3);
+                col.appendChild(detailRow3);
+
+                // 찜, 리뷰 
+                const wishRow = document.createElement("div");
+                wishRow.className = "row";
+                const heartcol = document.createElement("div");
+                heartcol.className = "col-auto p-0 ps-2 ms-1 fs-0-6";
+                const heartIcon = document.createElement("i");
+                heartIcon.className = "text-danger bi-heart-fill me-1";
+                const wishcount = document.createElement("span");
+                wishcount.textContent = e.wishlistCount;
+                
+                const reviewcol = document.createElement("div");
+                reviewcol.className = "col-auto p-0 fs-0-6 ms-1";
+                const reviewIcon = document.createElement("i");
+                reviewIcon.className = "text-warning bi-star-fill";
+                reviewIcon.setAttribute("style","margin: 0 .25em 0 0")
+                const reviewcount = document.createElement("span");
+                reviewcount.textContent = e.reviewCount;
+
+                heartcol.appendChild(heartIcon);
+                heartcol.appendChild(wishcount);                
+                reviewcol.appendChild(reviewIcon);
+                reviewcol.appendChild(reviewcount);
+                wishRow.appendChild(heartcol);
+                wishRow.appendChild(reviewcol);
+                col.appendChild(wishRow);
+
+
+                firstCol.appendChild(productDetailLink);
+                parentElement.appendChild(firstCol);
+                
+            });
+            
+        })
+    }
+
+    // 판매자 찜 리스트
+    function sellerWishList(){
+        fetch(`/api/consumer/sellerWishList`)
+        .then(r => r.json())
+        .then(response => {
+            const list = response.data.sellerWishList;
+            console.log(list);
+
+            const topbutton = document.getElementById("topbutton")
+            topbutton.innerHTML = "";
+
+            const col1 = document.createElement("div");
+            col1.className = "col-auto p-0 ps-2 ms-1 fs-0-8";
+            const productWish = document.createElement("button");
+            productWish.className = "btn btn-outline-dark btn-cus1 btn-sm link-dcr-none text-black over-g px-2 py-1 border rounded-2 p-0";
+            productWish.innerText = "상품";
+            productWish.setAttribute("onclick","productWishList()");
+            col1.appendChild(productWish);
+            topbutton.appendChild(col1);
+
+            const col2 = document.createElement("div");
+            col2.className = "col-auto p-0 fs-0-8";
+            const sellerWish = document.createElement("button");
+            sellerWish.className = "btn btn-dark btn-sm link-dcr-none text-white bg-dark px-2 py-1 border rounded-2 p-0 ms-1";
+            sellerWish.innerText = "브랜드";
+            sellerWish.setAttribute("onclick","sellerWishList()");
+            col2.appendChild(sellerWish);
+            topbutton.appendChild(col2);
+
+            // 상품 리스트
+            const parentElement = document.getElementById('parent');
+            parentElement.innerHTML = "";
+
+            const firstCol = document.createElement("div");
+            firstCol.className = "col pt-2";
+
+            list.forEach(e => {
+                const sellerRow = document.createElement("div");
+                sellerRow.className = "row";
+                const sellerCol = document.createElement("div");
+                sellerCol.className = "col";
+                const rowS = document.createElement("div");
+                rowS.className = "row border-bottom border-top py-2";
+                const colS = document.createElement("div");
+                colS.className = "col-auto align-self-center";
+                const sellerImage = document.createElement("img");
+                sellerImage.src = "/public/img/sellerLog.png";
+                sellerImage.className = "img-fluid rounded-5";
+                sellerImage.style = "width : 3em;";
+                const sellerNameCol = document.createElement("div");
+                sellerNameCol.className = "col-auto me-auto align-self-center fw-bold";
+                sellerNameCol.textContent = e.sellerDto.shopName;
+                
+
+                colS.appendChild(sellerImage);
+                rowS.appendChild(colS);
+                rowS.appendChild(sellerNameCol);
+                sellerCol.appendChild(rowS);
+                sellerRow.appendChild(sellerCol);
+                firstCol.appendChild(sellerRow);
+                parentElement.appendChild(firstCol);
+
+                const productRow = document.createElement("div");
+                productRow.className = "row";
+                const productOverflow = document.createElement("div");
+                productOverflow.className = "overflow-x-auto";
+                productOverflow.style = "max-width: 600px; white-space: nowrap;"
+
+                productRow.appendChild(productOverflow);
+                firstCol.appendChild(productRow);
+
+                e.DetailList.forEach(data => {
+                    const link = document.createElement("a");
+                    link.href = `/shop/productDetailPage?productNo=${data.productDto.productNo}`;
+                    link.className = "link-dcr-none fs-13px text-dark"
+                    const productCol = document.createElement("div");
+                    productCol.className = "col-4";
+                    productCol.style = "display: inline-block;";
+
+                    const productRow = document.createElement("div");
+                    productRow.className = "row"
+                    const productCol1 = document.createElement("div");
+                    productCol1.className = "col";
+                    const productImg = document.createElement("img");
+                    productImg.className = "img-fluid"
+                    productImg.src = `/uploadfiles/${data.productDto.mainImageUrl}`;
+                    const productNameRow = document.createElement("div");
+                    productNameRow.className = "row";
+                    const productNameCol = document.createElement("div");
+                    productNameCol.className = "col fs-13px";
+                    productNameCol.textContent = data.productDto.productName;
+                    const priceRow = document.createElement("div");
+                    priceRow.className = "row";
+                    const priceCol = document.createElement("div");
+                    priceCol.className = "col";
+                    priceCol.textContent = data.price + "원";
+
+                    
+                    priceRow.appendChild(priceCol);
+                    productNameRow.appendChild(productNameCol);
+                    productCol1.appendChild(productImg);
+                    productRow.appendChild(productCol1);
+                    productCol.appendChild(productRow);
+                    productCol.appendChild(productNameRow);
+                    productCol.appendChild(priceRow);
+                    link.appendChild(productCol);
+                    productOverflow.appendChild(link);
+                });
+
+
+            });
+
+
+                        
+        })
+    }
+</script>
 <body>
     <div class="container-fluid mw">
         <!-- navbar start -->
@@ -27,20 +268,20 @@
                         찜 목록
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="topbutton">
                     <div class="col-auto p-0 ps-2 ms-1 fs-0-8" th:if="${list.size() > 0}">
-                        <a class="btn btn-dark btn-sm link-dcr-none text-white bg-dark px-2 py-1 border rounded-2 p-0" href="">상품</a>
+                        <button class="btn btn-dark btn-sm link-dcr-none text-white bg-dark px-2 py-1 border rounded-2 p-0" onclick="productWishList()">상품</button>
                     </div>
                     <div class="col-auto p-0 ps-2 ms-1 fs-0-8" th:unless="${list.size() > 0}">
-                        <a class="btn btn-outline-dark btn-sm link-dcr-none text-black over-g px-2 py-1 border rounded-2 p-0" href="">상품</a>
+                        <button class="btn btn-outline-dark btn-sm link-dcr-none text-black over-g px-2 py-1 border rounded-2 p-0">상품</button>
                     </div>
                     <div class="col-auto p-0 fs-0-8">
-                        <a class="btn btn-outline-dark btn-cus1 btn-sm link-dcr-none ms-1 text-black over-g px-2 py-1 border rounded-2 p-0" href="">브랜드</a>
+                        <button class="btn btn-outline-dark btn-cus1 btn-sm link-dcr-none ms-1 text-black over-g px-2 py-1 border rounded-2 p-0" onclick="sellerWishList()">브랜드</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="row" th:if="${list.size() > 0}">
+                        <div class="row" th:if="${list.size() > 0}" id="parent">
                             <div class="col-3 pt-2" th:each="data : ${list}">
                                 <a class="row link-dcr-none text-black" th:href="@{/shop/productDetailPage(productNo=${data.productDto.productNo})}">
                                     <div class="col">
@@ -60,7 +301,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-auto p-0 ps-2 ms-1 fs-0-6">
-                                                <i class="text-danger bi-heart-fill"></i><span th:text="${data.wishlistCount}"></span>
+                                                <i class="text-danger bi-heart-fill me-1"></i><span th:text="${data.wishlistCount}"></span>
                                             </div>
                                             <div class="col-auto p-0 fs-0-6 ms-1">
                                                 <i class="text-warning bi-star-fill"></i>
