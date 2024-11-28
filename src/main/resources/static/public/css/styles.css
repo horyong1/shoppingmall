@@ -134,11 +134,11 @@ body{
 }
 
 .aspect-ratio{
-    aspect-ratio: 5 / 6
+    aspect-ratio: 5 / 6;
 }
 
 .ar-11{
-    aspect-ratio: 11 / 12
+    aspect-ratio: 11 / 12;
 }
 
 .link-dcr-none {
@@ -180,8 +180,8 @@ body{
     display: grid;
     grid-auto-flow: column;
     justify-content: flex-start;
-    max-width: 600px; 
-    white-space: nowrap; 
+    max-width: 600px;
+    white-space: nowrap;
     cursor: pointer;
     transition: transform 0.1s ease-out;
 }
