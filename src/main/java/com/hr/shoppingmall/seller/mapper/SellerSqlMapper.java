@@ -32,5 +32,24 @@ public interface SellerSqlMapper {
     // 상세 이미지 삭제
     void removeProductDetailImage(int product);
 
+    // 배송 현황 
     Map<String,Integer> checkShipmentStatusUpdates(int sellerNo);
+
+    // 현재 매출 금액
+    int getTodaySalesAmount(int sellerNo);
+
+    // 어제 매출 금액
+    int getYesterdaySalesAmount(int sellerNo);
+
+    // 그제 매출 금액
+    int getTwoDaysAgoSalesAmount(int sellerNo);
+
+    // 이달 제품 판매량 
+    int getCurrentMonthSales(int sellerNo);
+
+    // 이달 주문량
+    int getCurrentMonthOrderCount(int sellerNo);
+
+    // 해당 월 가져오기
+    String getMonth();
 }

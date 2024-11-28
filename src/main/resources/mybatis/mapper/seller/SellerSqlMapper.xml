@@ -117,9 +117,66 @@
         INNER JOIN 	sp_product_purchase_list sppl ON spp.purchase_no = sppl.purchase_no 
         INNER JOIN 	sp_product sp ON sppl.product_no = sp.product_no 
         INNER JOIN 	sp_seller ss ON sp.seller_no = ss.seller_no 
-        WHERE 		ss.seller_no = #{sellerNo};
+        WHERE 		ss.seller_no = #{sellerNo}
 
     </select>
 
-    
+    <!-- 현재 판매 금액 -->
+    <select id="getTodaySalesAmount" resultType="int">
+        SELECT  IFNULL(SUM(sppl.payment_price), 0) as sumAmount
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_product sp ON sp.product_no = sppl.product_no
+        WHERE 	sp.seller_no = #{selleNo}
+        AND 	sppl.created_at <![CDATA[>=]]> CURDATE()
+
+    </select>
+    <!-- 어제 판매 금액 -->
+    <select id="getYesterdaySalesAmount" resultType="int">
+        SELECT  IFNULL(SUM(sppl.payment_price), 0) as sumAmount
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_product sp ON sp.product_no = sppl.product_no
+        WHERE 	sp.seller_no = #{selleNo}
+        AND 	sppl.created_at <![CDATA[>=]]> CURDATE() - INTERVAL 1 DAY
+        AND 	sppl.created_at <![CDATA[<]]> CURDATE()
+
+    </select>
+
+    <!-- 그제 판매 금액 -->
+    <select id="getTwoDaysAgoSalesAmount" resultType="int">
+        SELECT  IFNULL(SUM(sppl.payment_price), 0) as sumAmount
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_product sp ON sp.product_no = sppl.product_no
+        WHERE 	sp.seller_no = #{selleNo}
+        AND 	sppl.created_at <![CDATA[>=]]> CURDATE() - INTERVAL 2 DAY
+        AND 	sppl.created_at <![CDATA[<]]> CURDATE() - INTERVAL 1 DAY
+    </select>
+
+    <!-- 이달 제품 판매량  -->
+    <select id="getCurrentMonthSales" resultType="int">
+        SELECT  IFNULL(SUM(sppl.quantity), 0) as sumCount  
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no
+        WHERE 	sp.seller_no = #{sellerNo}
+        AND 	sppl.created_at <![CDATA[>=]]> DATE_FORMAT(CURDATE(),'%Y-%m-01') 
+        AND 	sppl.created_at <![CDATA[<]]> DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH , '%Y-%m-01')
+    </select>
+
+    <!-- 이달 주문 량 -->
+    <select id="getCurrentMonthOrderCount" parameterType="int" resultType="int">
+        SELECT  COUNT(*) as sumCount
+        FROM 	sp_product_purchase_list sppl
+        INNER JOIN sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no
+        INNER JOIN sp_product sp ON sppl.product_no = sp.product_no
+        WHERE 	sp.seller_no = #{sellerNo}
+        AND 	sppl.created_at <![CDATA[>=]]> DATE_FORMAT(CURDATE(),'%Y-%m-01') 
+        AND 	sppl.created_at <![CDATA[<]]> DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH , '%Y-%m-01')
+    </select>
+
+    <!-- 해당 월 가져오기 -->
+    <select id="getMonth" resultType="string">
+        SELECT DATE_FORMAT(CURDATE(), '%m') AS Month;
+    </select>
 </mapper>

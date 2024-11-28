@@ -74,10 +74,13 @@
                                     </div>
                                     <div class="row py-3" th:if="${detail['productReviewDto'] == null}">
                                         <div class="col p-0">
-                                            <a class="d-grid link-dcr-none" th:href="@{/review/reviewEdit(purchaseNo=${list.purchaseDto.purchaseNo}, productNo=${detail.productDto.productNo})}">
-                                                <button class="btn btn-dark btn-sm">
-                                                    <span class="fs-0-9">리뷰작성</span>
-                                                </button>
+                                            <a class=" btn btn-outline-dark btn-sm d-grid link-dcr-none" th:href="@{/review/reviewEdit(purchaseNo=${list.purchaseDto.purchaseNo}, productNo=${detail.productDto.productNo})}">
+                                                <span class="fs-0-9">문의하기</span>
+                                            </a>
+                                        </div>
+                                        <div class="col p-0 ms-2" th:if="${list.purchaseDto.state == '4' or list.purchaseDto.state == '5'}">
+                                            <a class=" btn btn-dark btn-sm d-grid link-dcr-none" th:href="@{/review/reviewEdit(purchaseNo=${list.purchaseDto.purchaseNo}, productNo=${detail.productDto.productNo})}">
+                                                <span class="fs-0-9">리뷰작성</span>
                                             </a>
                                         </div>
                                     </div>
@@ -88,7 +91,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </div>

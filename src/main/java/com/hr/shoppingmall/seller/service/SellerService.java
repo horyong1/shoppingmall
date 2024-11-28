@@ -1,6 +1,8 @@
 package com.hr.shoppingmall.seller.service;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,6 +160,42 @@ public class SellerService {
         return list;
     }
 
+    /**
+     * 요약 정보
+     * @param sellerNo
+     * @return
+     */
+    public Map<String,Object> getSummaryStatistics(int sellerNo){
+        Map<String, Object> map = new HashMap<>();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate twoDaysAgo = LocalDate.now().minusDays(2);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+
+        int yAmount = sellerSqlMapper.getYesterdaySalesAmount(sellerNo); 
+        int tAmount = sellerSqlMapper.getTwoDaysAgoSalesAmount(sellerNo);
+        int minus = yAmount - tAmount;
+        String yesterDayAmount = decimelFormatter(yAmount);
+        String minusAmount = decimelFormatter(minus);
+        String todayAmount = decimelFormatter(sellerSqlMapper.getTodaySalesAmount(sellerNo));
+        System.out.println(minusAmount);
+
+        map.put("yesterDay", yesterday.format(formatter));
+        map.put("twoDaysAgo", twoDaysAgo.format(formatter));
+        map.put("todayAmount", todayAmount);
+        map.put("yesterDayAmount", yesterDayAmount);
+        map.put("minusAmount", minusAmount);
+        map.put("Sales",sellerSqlMapper.getCurrentMonthSales(sellerNo));
+        map.put("orderCount",sellerSqlMapper.getCurrentMonthOrderCount(sellerNo));
+        map.put("month", sellerSqlMapper.getMonth());
+        System.out.println(map.get("yesterDayAmount"));
+        
+        
+        
+
+
+        return map;
+    }
 
      /**
      * 금액 #,### 포멧터

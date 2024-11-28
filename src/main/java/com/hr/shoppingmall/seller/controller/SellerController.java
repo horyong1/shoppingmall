@@ -75,9 +75,12 @@ public class SellerController {
         if (!isSellerLoggedIn(session)) {
             return "redirect:./loginPage";
         }
+
         SellerDto sellerInfo = getSellerInfo(session);
-        System.out.println(sellerService.getSellerMainPageItem(sellerInfo.getSellerNo()));
-        model.addAttribute("count", sellerService.getSellerMainPageItem(sellerInfo.getSellerNo()));
+        int sellerNo = sellerInfo.getSellerNo();
+        model.addAttribute("count", sellerService.getSellerMainPageItem(sellerNo));
+        model.addAttribute("summary", sellerService.getSummaryStatistics(sellerNo));
+
         return "seller/mainPage";
     }
 

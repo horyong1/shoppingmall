@@ -156,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row p-0 bg-secondary-subtle">
+                        <div class="row p-0 bg-secondary-subtle pb-3">
                             <div class="col-4 bg-white rounded-3 ms-3">
                                 <div class="row">
                                     <div class="col">
@@ -164,25 +164,43 @@
                                             <div class="col fs-1-2 fw-bold">요약 통계</div>
                                         </div>
                                         <div class="row py-2">
-                                            <div class="col-auto ms-auto fs-0-9 text-secondary">
-                                                매출금액
-                                            </div>
+                                            <div class="col-auto fs-0-9">당일판매금액</div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold text-danger" th:text="${summary.todayAmount}+'원'"></div>
                                         </div>
                                         <div class="row pb-2">
                                             <div class="col-auto fs-0-9">
-                                                어제
+                                                어제(<span class="fs-0-8" th:text="${summary.yesterDay}"></span>)
                                             </div>
-                                            <div class="col-auto ms-auto fs-0-9 fw-bold text-danger">
-                                                +2,000,000원
-                                            </div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold text-dark"
+                                                 th:if="${summary.yesterDayAmount == '0'}"
+                                                 th:text="${summary.yesterDayAmount}+'원'"></div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold text-danger"
+                                                 th:unless="${summary.yesterDayAmount == '0'}"
+                                                 th:text="${summary.yesterDayAmount}+'원'"></div>
                                         </div>
                                         <div class="row pb-2">
                                             <div class="col-auto fs-0-9">
-                                                변화량(그제)
+                                                변화량(<span class="fs-0-8" th:text="${summary.twoDaysAgo}+' 대비'"></span>)
                                             </div>
-                                            <div class="col-auto ms-auto fs-0-9 fw-bold text-danger">
-                                                +1,000,000원
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold text-primary"
+                                                 th:if="${summary.minusAmount.startsWith('-')}"
+                                                 th:text="${summary.minusAmount}+'원'"></div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold text-danger"
+                                                 th:unless="${summary.minusAmount.startsWith('-')}"
+                                                 th:text="${summary.minusAmount}+'원'"></div>
+                                            
+                                        </div>
+                                        <div class="row pb-2">
+                                            <div class="col-auto fs-0-9">
+                                                판매량(<span class="fs-0-8" th:text="${summary.month}+'월'"></span>)
                                             </div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold" th:text="${summary.Sales}+'개'"></div>
+                                        </div>
+                                        <div class="row pb-2">
+                                            <div class="col-auto fs-0-9">
+                                                주문수(<span class="fs-0-8" th:text="${summary.month}+'월'"></span>)
+                                            </div>
+                                            <div class="col-auto ms-auto fs-0-8 fw-bold" th:text="${summary.orderCount}+'개'"></div>
                                         </div>
                                     </div>
                                 </div>
