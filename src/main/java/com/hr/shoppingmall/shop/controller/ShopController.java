@@ -44,9 +44,10 @@ public class ShopController {
             ConsumerDto consumerInfo = (ConsumerDto)session.getAttribute("consumerInfo");
             ProductWishlistDto wishlistDto = new ProductWishlistDto();
             SellerWishListDto sellerWishListDto = new SellerWishListDto();
-            
+            int consumerNo = 0;
             if(consumerInfo != null){
-                wishlistDto.setConsumerNo(consumerInfo.getConsumerNo());
+                consumerNo = consumerInfo.getConsumerNo();
+                wishlistDto.setConsumerNo(consumerNo);
                 wishlistDto.setProductNo(productNo);
                 wishlistDto = shopService.wishlistFindByConsumerNoAndProductNo(wishlistDto);
                 
@@ -58,6 +59,8 @@ public class ShopController {
             Map<String,Object> map =  shopService.getProductDetail(productNo);
             
             model.addAttribute("productMap", map);
+            model.addAttribute("best5", shopService.getContentBasedRecommendations(productNo, consumerNo));
+            System.out.println(shopService.getContentBasedRecommendations(productNo, consumerNo));
             return"shop/productDetailPage";
         }
     

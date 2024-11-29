@@ -1,6 +1,7 @@
 package com.hr.shoppingmall.shop.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -99,4 +100,7 @@ public interface ShopSqlMapper {
 
     // 남여 상품 구매 비율
     List<Double> avgProductPurchaseGender(int productNo);
+
+    // 추천상품 베스트5
+    List<Map<String,Object>> getContentBasedRecommendations(@Param("productNo")int productNo, @Param("consumerNo")int consumerNo);
 }

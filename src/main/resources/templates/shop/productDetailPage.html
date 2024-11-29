@@ -85,8 +85,31 @@
                             <input type="button" class="btn btn-secondary" disabled="true" value="품절">
                         </div>
                     </div>
-                    <div class="row py-4">
+                    <div class="row py-4"></div>
+                    <!-- 베스트 5 start -->
+                    <div class="row py-2">
+                        <div class="col fs-0-9 fw-bold">베스트 추천 상품</div>
                     </div>
+                    <div class="row fs-0-7 border-top border-bottom py-2">
+                        <div class="overflow-x-auto" style="max-width: 600px; white-space: nowrap;">
+                            <div class="col-3 p-0" th:each="list : ${best5}" style="display: inline-block;">
+                                    <a class="link-dcr-none text-black" th:href="@{./productDetailPage(productNo=${list.best.productNo})}" >
+                                        <div class="row">
+                                            <div class="col">
+                                                <img class="img-fluid aspect-ratio p-0" th:src="|/uploadfiles/${list.best.mainImageUrl}|" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col text-truncate" th:text="${list.best.productName}" ></div>
+                                        </div>
+                                        <div class="row fw-bold">
+                                            <div class="col" th:text="${list.priceTans}+'원'"></div>
+                                        </div>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 베스트 5 end -->
                     <div class="row py-4">
                         <div class="col fs-13px" th:text="${productMap.productDto.productDescription}"></div>
                     </div>
@@ -96,7 +119,7 @@
                         </div>
                     </div>
                     <div class="row pt-3">
-                        <div class="col fw-bold fs-1-2">
+                        <div class="col fw-bold fs-0-9">
                             남녀 구매 비율
                         </div>
                     </div>

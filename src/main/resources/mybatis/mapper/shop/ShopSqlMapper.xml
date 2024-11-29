@@ -322,5 +322,49 @@
         WHERE   sc.consumer_no = #{consumerNo}
     </select>
 
-    
+    <select id="getContentBasedRecommendations" resultType="map">
+        SELECT  
+            sp.product_no AS productNo,
+            sp.product_name AS productName,
+            sp.price AS price,
+            sp.main_image_url AS mainImageUrl,
+            COUNT(sppl.product_no) as purchaseCount,
+            COALESCE(spr.reviewCount, 0) as reviewCount,
+            COALESCE(spw.wishCount, 0) as wishCount
+        FROM 
+            sp_product_purchase_list sppl
+        INNER JOIN 
+            sp_product sp ON sp.product_no = sppl.product_no
+        INNER JOIN 
+            sp_product_purchase spp ON spp.purchase_no = sppl.purchase_no 
+        LEFT JOIN 
+            (SELECT 
+                product_no,
+                COUNT(product_no) as wishCount
+            FROM 
+                sp_product_wishlist
+            GROUP BY 
+                product_no) spw ON sp.product_no = spw.product_no  
+        LEFT JOIN 
+            (SELECT	
+                product_no,
+                COUNT(product_no) as reviewCount
+            FROM 	
+                sp_product_review spr
+            GROUP BY product_no) spr ON sp.product_no = spr.product_no
+        WHERE 
+            spp.consumer_no IN(
+                SELECT 	spp.consumer_no
+                FROM 	sp_product sp
+                INNER JOIN sp_product_purchase_list sppl ON sp.product_no = sppl.product_no 
+                INNER JOIN sp_product_purchase spp ON sppl.purchase_no = spp.purchase_no 
+                WHERE 	sp.product_no  = #{productNo}
+                AND 	spp.consumer_no NOT IN(#{consumerNo})
+                GROUP BY spp.consumer_no)
+        GROUP BY 
+            sp.product_no ,sp.product_name, sp.price
+        ORDER BY 
+            purchaseCount DESC, reviewCount DESC, wishCount DESC
+        LIMIT 5
+    </select>
 </mapper>

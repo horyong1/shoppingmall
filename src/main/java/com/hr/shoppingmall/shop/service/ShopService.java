@@ -551,12 +551,32 @@ public class ShopService {
         return totalPrice;
     }
 
-    // 남여 상품 구매 비율
+    /**
+     * 남 여 상품 구매 비율
+     * @param productNo
+     * @return
+     */
     public List<Double> getGenderPurchasePercentage(int productNo){
         return shopSqlMapper.avgProductPurchaseGender(productNo);
     }
 
 
+    public List<Map<String,Object>> getContentBasedRecommendations(int productNo, int consumerNo){
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<Map<String,Object>> bests = shopSqlMapper.getContentBasedRecommendations(productNo, consumerNo);
+
+        for(Map<String,Object> best : bests){
+            Map<String,Object> map = new HashMap<>();
+            int price = (int)best.get("price");
+            String priceTans = decimelFormatter(price);
+
+            map.put("best", best);
+            map.put("priceTans", priceTans);
+
+            list.add(map);
+        }
+        return list;
+    }
 
 
 
